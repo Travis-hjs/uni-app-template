@@ -1,5 +1,23 @@
 page{ background-color: #fff; width: 100%; box-sizing: border-box; min-height: 100vh; }
 
+/* flex布局 */
+.flex{ display: flex; flex-wrap: wrap; }
+.f1{ flex: 1; }
+.f2{ flex: 2; }
+.f3{ flex: 3; }
+/* 垂直居中 */
+.fvertical{ align-items: center; }
+/* 水平居中 */
+.fcenter{ justify-content: center; }
+
+/* 溢出...显示 当前节点生效 */
+.ellipsis{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* 溢出...显示 子节点生效 */
+.ellipsis-1{ display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden; }
+.ellipsis-2{ display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.ellipsis-3{ display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+
 /* iphoneX 吸底适配（前提是用了定位） */
 .iphonex_bottom{ bottom: 52rpx !important; }
 .iphonex_bottom::before{ content: ""; position: absolute; bottom: 0; left: 0; transform: translateY(100%); width: 100%; height: 52rpx; background-color: #181818; z-index: 10; }

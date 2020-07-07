@@ -1,5 +1,6 @@
 <template>
     <view class="home">
+        <button @click="addCount">当前页面`count`：{{ count }}</button>
         <view>userInfo.token: {{ userInfo.token }}</view>
         <button @click="setToken">修改`userInfo.token = "123"`</button>
     </view>    
@@ -11,7 +12,8 @@ import Global from '../../modules/Global'
 export default {
     data() {
         return {
-            userInfo: Global.userInfo
+            userInfo: Global.userInfo,
+            count: 0
         }
     },
     onLoad() {
@@ -20,6 +22,9 @@ export default {
     methods: {
         setToken() {
             this.userInfo.token = "123";
+        },
+        addCount() {
+            this.count ++;
         }
     }
 }

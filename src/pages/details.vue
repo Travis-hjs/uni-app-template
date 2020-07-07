@@ -4,7 +4,9 @@
         <view class="box" :style="{ 'padding-top': appOption.statusBarHeight + 90 + 'px' }">
             <view>页面参数{{ pageParam }}</view>
         </view>
-        <view :class="['footer',isIPhoneX ? 'iphonex_bottom' : '' ]"></view>
+        <view :class="['footer flex fvertical fcenter',isIPhoneX ? 'iphonex_bottom' : '' ]">
+            <view>footer</view>
+        </view>
     </view>
 </template>
 
@@ -42,6 +44,6 @@ export default {
 <style>
 .goback_btn{ width: 300rpx; height: 88rpx; border-radius: 4px; background-color: tomato; color: #fff; font-size: 32rpx; position: fixed; left: 20rpx; }
 .box{ width: 100%; height: 300vh; }
-.footer { width: 100%; height: 88rpx; background-color: #181818; position: fixed; bottom: 0; left: 0; }
+.footer { width: 100%; height: 88rpx; background-color: #181818; position: fixed; bottom: 0; left: 0; font-size: 32rpx; color: #fff; }
 
 </style>
