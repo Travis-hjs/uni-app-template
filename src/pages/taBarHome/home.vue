@@ -1,22 +1,26 @@
 <template>
     <view class="home">
-        home
+        <view>userInfo.token: {{ userInfo.token }}</view>
+        <button @click="setToken">修改`userInfo.token = "123"`</button>
     </view>    
 </template>
 
 <script>
+import Global from '../../modules/Global'
 
 export default {
     data() {
         return {
-            list: []
+            userInfo: Global.userInfo
         }
     },
     onLoad() {
         
     },
     methods: {
-        
+        setToken() {
+            this.userInfo.token = "123";
+        }
     }
 }
 </script>
