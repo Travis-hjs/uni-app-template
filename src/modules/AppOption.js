@@ -22,11 +22,15 @@ export default class ModuleAppOption extends StoreUserInfo {
     /** 初始化`APP`操作信息 */
     initAppOption() {
         const systemInfo = uni.getSystemInfoSync();
-        this.appOption.isIPhoneX = systemInfo.model.search('iPhone X') == 0 ? true : false;
-        // 导航栏高度 = 状态栏到胶囊的间距（胶囊距上距离-状态栏高度） * 2 + 胶囊高度 + 状态栏高度
+        // 网页中`model`只有`iPhone`字段不能这样判断
+        // this.appOption.isIPhoneX = systemInfo.model.search('iPhone X') == 0 ? true : false;
+        const isIos = systemInfo.system.toLocaleLowerCase().includes("ios");
+        const vaule = (systemInfo.screenWidth / systemInfo.screenHeight) < 0.5;
+        this.appOption.isIPhoneX = (isIos && vaule);
         this.appOption.statusBarHeight = systemInfo.statusBarHeight;
         // #ifdef MP-WEIXIN
         const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+        // 导航栏高度 = 状态栏到胶囊的间距（胶囊距上距离-状态栏高度） * 2 + 胶囊高度 + 状态栏高度
         this.appOption.navBarHeight = (menuButtonInfo.top - systemInfo.statusBarHeight) * 2 + menuButtonInfo.height + systemInfo.statusBarHeight;
         this.appOption.menuRight = systemInfo.screenWidth - menuButtonInfo.right;
         this.appOption.menuBottom = menuButtonInfo.top - systemInfo.statusBarHeight;
