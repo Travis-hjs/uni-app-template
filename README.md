@@ -5,7 +5,7 @@
 ** 平台兼容说明 ** [https://uniapp.dcloud.io/use](https://uniapp.dcloud.io/use "点击跳转")
 
 ### 模板说明：
-1. 轻量化项目模板，只保留`vue`最基础的使用方式，保证打包到多端时不需要作太多判断处理
+1. 基于`cli`创建的轻量化项目模板，只保留`vue`最基础的使用方式，保证打包到多端时不需要作太多判断处理
 
 2. 状态管理不建议使用`vuex`,因为会导致代码变得冗余，而且在编辑器中失去代码静态追踪和提示“[被忽略的官方说明](https://vuex.vuejs.org/zh/#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E6%88%91%E5%BA%94%E8%AF%A5%E4%BD%BF%E7%94%A8-vuex%EF%BC%9F)”所以这边使用一个`Global.js`的模块文件作为全局状态管理，然后逐个继承各个`store`模块来导出使用，使用方式可参考：[你不需要vuex](https://juejin.im/post/5d425a83f265da03d8719cb8) 
 
@@ -14,6 +14,8 @@
 4. 模板集成了官方的语法声明文件，在常规的`vue`语法中终于有正确的`this`指向了（增加`computed`会失去提示，估计是声明文件的问题）；代码注释建议使用标准的[JSDoc注释](https://blog.csdn.net/qq_40028324/article/details/95623401)，这样的好处是让`JavaScript`项目中也有`TypeScript`一样的代码提示
 
 5. 已经配置好在`manifest.json`文件中h5端请求代理，不需要可剔除
+
+6. 默认没有装`sass`、`less`之类的样式预处理，需要自行 npm install xxx 安装，[官方说明](https://uniapp.dcloud.io/quickstart?id=%e4%bd%bf%e7%94%a8cli%e5%88%9b%e5%bb%ba%e9%a1%b9%e7%9b%ae%e5%92%8c%e4%bd%bf%e7%94%a8hbuilderx%e5%8f%af%e8%a7%86%e5%8c%96%e7%95%8c%e9%9d%a2%e5%88%9b%e5%bb%ba%e9%a1%b9%e7%9b%ae%e6%9c%89%e4%bb%80%e4%b9%88%e5%8c%ba%e5%88%ab)
 
 ### 目录说明
 
