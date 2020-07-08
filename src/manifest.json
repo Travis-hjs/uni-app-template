@@ -71,7 +71,7 @@
             "port" : 2020,
             "proxy" : {
                 "/api" : {
-                    "target" : "https://123.com",
+                    "target" : "https://www.baidu.com/",
                     "ws" : false,
                     "secure" : false,
                     "changOrigin" : true,
