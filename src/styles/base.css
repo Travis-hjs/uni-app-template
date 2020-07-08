@@ -1,5 +1,10 @@
 page{ background-color: #fff; width: 100%; box-sizing: border-box; min-height: 100vh; }
 
+/* h5默认是100vh,即使页面没有内容也会滚动，这里取消这个设定 */
+/* #ifdef H5 */
+uni-page-body{ min-height: auto !important; }
+/* #endif */
+
 /* flex布局 */
 .flex{ display: flex; flex-wrap: wrap; }
 .f1{ flex: 1; }
