@@ -12,15 +12,14 @@ import Global from "./Global";
  */
 export default function request(method, path, data, success, fail) {
     const domain = process.env.NODE_ENV == "development" ? config.requestUrlDev : config.requestUrl;
-    console.log("运行状态：", process.env.NODE_ENV);
-    
+    // console.log("request 运行状态：", process.env.NODE_ENV);
     return new Promise(function(resolve, reject) {
         uni.request({
             method: method,
             header: {
                 "Authorization": Global.userInfo.token
             },
-            url: domain + path,
+            url: domain + config.apiPrefix + path,
             data: data,
             success(res) {
                 // console.log("request.success", res);

@@ -3,20 +3,14 @@ import ModuleAppOption from "./AppOption";
 class ModuleGlobal extends ModuleAppOption {
 
     icon = {
-        /** 金币 */
-        gold: "/static/gold.png",
-        /** 红包 */
-        redpack: "/static/redpack.png",
         /** 微信logo */
         logo_wx: "/static/logo_wx.png",
         /** 支付宝logo */
         logo_zfb: "/static/logo_zfb.png",
-        /** 签到icon */
-        sign_in: "/static/icon_signin.png",
-        
     }
 
     images = {
+        logo: "/static/logo.png",
         /** 默认头像 */
         default_head: "/static/default_head.png",
         /** 暂无数据 */
