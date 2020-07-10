@@ -4,7 +4,7 @@
         <view class="box" :style="{ 'padding-top': appOption.statusBarHeight + 90 + 'px' }">
             <view>页面参数{{ pageParam }}</view>
         </view>
-        <view :class="['footer flex fvertical fcenter',isIPhoneX ? 'iphonex_bottom' : '' ]">
+        <view :class="['footer flex fvertical fcenter', appOption.isIPhoneX ? 'iphonex_bottom' : '' ]">
             <view>footer</view>
         </view>
     </view>
@@ -18,14 +18,13 @@ export default {
     data() {
         return {
             appOption: Global.appOption,
-            isIPhoneX: Global.appOption.isIPhoneX,
             /** 页面传参接收数据 */
             pageParam: "",
         }
     },
     onLoad(param) {
         this.pageParam = JSON.stringify(param);
-        // console.log(Global.appOption);
+        console.log("appOption", Global.appOption);
     },
     methods: {
         goback() {
