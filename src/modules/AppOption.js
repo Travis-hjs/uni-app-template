@@ -26,14 +26,21 @@ export default class ModuleAppOption extends StoreUserInfo {
     initAppOption() {
         const systemInfo = uni.getSystemInfoSync();
         
-        // 网页中`model`只有`iPhone`字段，所以不能这样判断
-        // this.appOption.isIPhoneX = systemInfo.model.search('iPhone X') == 0 ? true : false;
-
-        const isIos = systemInfo.system.toLocaleLowerCase().includes("ios");
-        const vaule = (systemInfo.screenWidth / systemInfo.screenHeight) < 0.5;
-
-        this.appOption.isIPhoneX = (isIos && vaule);
         this.appOption.statusBarHeight = systemInfo.statusBarHeight;
+        
+        /**
+         * 方式 1.
+         * 网页中`model`只有`iPhone`字段；网页中不需要做吸底处理时可以这样
+         */
+        this.appOption.isIPhoneX = systemInfo.model.search("iPhone X") == 0 ? true : false;
+        
+        /**
+         * 方式 2.
+         * 所有平台都可以兼容
+         */
+        // const isIos = systemInfo.system.toLocaleLowerCase().includes("ios");
+        // const vaule = (systemInfo.screenWidth / systemInfo.screenHeight) < 0.5;
+        // this.appOption.isIPhoneX = (isIos && vaule);
 
         // #ifdef MP
         const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
