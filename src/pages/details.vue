@@ -2,7 +2,7 @@
     <view class="details">
         <button class="goback_btn" :style="{ 'top': appOption.statusBarHeight + 10 + 'px' }" @click="goback">返回上一页</button>
         <view class="box" :style="{ 'padding-top': appOption.statusBarHeight + 90 + 'px' }">
-            <view>页面参数{{ pageParam }}</view>
+            <view>页面参数{{ pageParam }} test: {{loadMore.page}}</view>
         </view>
         <view :class="['footer flex fvertical fcenter', appOption.isIPhoneX ? 'iphonex_bottom' : '' ]">
             <view>footer</view>
@@ -12,11 +12,13 @@
 
 <script>
 import apiUser from "../api/user";
-import Global from '../modules/Global';
+import Global from "../modules/Global";
+import { LoadMoreData, LoadMoreMethods } from "../mixins/loadMore";
 
 export default {
     data() {
         return {
+            ...LoadMoreData,
             appOption: Global.appOption,
             /** 页面传参接收数据 */
             pageParam: "",
@@ -24,9 +26,11 @@ export default {
     },
     onLoad(param) {
         this.pageParam = JSON.stringify(param);
-        console.log("appOption", Global.appOption);
+        console.log("appOption", Global.appOption, this.loadMore.page);
+        this.addPage();
     },
     methods: {
+        ...LoadMoreMethods,
         goback() {
             uni.navigateBack();
         },
