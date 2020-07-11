@@ -13,12 +13,12 @@
 <script>
 import apiUser from "../api/user";
 import Global from "../modules/Global";
-import { LoadMoreData, LoadMoreMethods } from "../mixins/loadMore";
+import { loadMoreData, loadMoreMethods } from "../mixins/loadMore";
 
 export default {
     data() {
         return {
-            ...LoadMoreData,
+            ...loadMoreData(),
             appOption: Global.appOption,
             /** 页面传参接收数据 */
             pageParam: "",
@@ -30,7 +30,7 @@ export default {
         this.addPage();
     },
     methods: {
-        ...LoadMoreMethods,
+        ...loadMoreMethods(),
         goback() {
             uni.navigateBack();
         },

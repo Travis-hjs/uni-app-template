@@ -67,25 +67,30 @@
 
 export default LoadMore;
 
-export const LoadMoreData = {
-    /** 加载更多数据 */
-    loadMore: {
-        /** 页数 */
-        page: 1
+/** 加载更多数据 */
+export function loadMoreData() {
+    return {
+        /** 加载更多数据 */
+        loadMore: {
+            /** 页数 */
+            page: 1
+        }
     }
 }
 
 /** 加载更多-方法 */
-export const LoadMoreMethods = {
-    /** 加载更多 */
-    addPage() {
-        this.loadMore.page ++;
-    },
-    /**
-     * 设置页数
-     * @param {number} value 
-     */
-    setPage(value) {
-        this.loadMore.page = value;
+export function loadMoreMethods() {
+    return {
+        /** 加载更多 */
+        addPage() {
+            this.loadMore.page ++;
+        },
+        /**
+         * 设置页数
+         * @param {number} value 
+         */
+        setPage(value) {
+            this.loadMore.page = value;
+        }
     }
 }
