@@ -1,5 +1,7 @@
 page{ background-color: #fff; width: 100%; box-sizing: border-box; min-height: 100vh; }
-view{ box-sizing: border-box; }
+view, button, input, textarea{ box-sizing: border-box; font-family: "Arial", "Helvetica Neue", "Helvetica", "sans-serif"; }
+image, input, textarea, picker{ display: block; }
+input::after, input::before, button::after, button::before{ border: none; }
 
 /* h5默认是100vh,即使页面没有内容也会滚动，这里取消这个设定 */
 /* #ifdef H5 */
@@ -15,6 +17,8 @@ uni-page-body{ min-height: auto !important; }
 .fvertical{ align-items: center; }
 /* 水平居中 */
 .fcenter{ justify-content: center; }
+/* 右对齐 */
+.fright{ flex-direction: row; justify-content: flex-end; }
 
 /* 溢出...显示 当前节点生效 */
 .ellipsis{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
