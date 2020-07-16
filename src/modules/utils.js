@@ -47,14 +47,55 @@ class ModuleUtils{
     }
     
     /**
-     * 从底部显示提示（app端生效）
-     * @param {string} tip 
+     * 显示提示条（app端从底部弹起）
+     * @param {string} tip 提示文字
+     * @param {string} src 图片路径
      */
-    showToastBottom(tip) {
+    showToast(tip, src = null) {
         uni.showToast({
             title: tip,
-            position: 'bottom'
+            position: 'bottom',
+            icon: "none",
+            duration: 2000,
+            image: src
         });
+    }
+
+    /**
+     * 显示提示框
+     * @param {string} content 提示的内容 
+     * @param {Function} success 确认回调 
+     * @param {string} title 提示标题 
+     */
+    showAlert(content, success = null, title = "操作提示") {
+        uni.showModal({
+            title: title,
+            content: content,
+            showCancel: false,
+            success: success
+        })
+    }
+
+    /**
+     * 显示确认框
+     * @param {string} content 提示的内容
+     * @param {Function} success 确认回调
+     * @param {Function} fail 取消回调
+     * @param {string} title 提示标题
+     */
+    showConfirm(content, success = null, fail = null, title = "操作提示") {
+        uni.showModal({
+            title: title,
+            content: content,
+            showCancel: false,
+            success(res) {
+                if (res.confirm) {
+                    typeof success === 'function' && success();
+                } else {
+                    typeof fail === 'function' && fail();
+                }
+            }
+        })
     }
 }
 
