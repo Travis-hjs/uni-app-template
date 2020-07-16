@@ -5,6 +5,7 @@ export default {
     onLaunch() {
         console.log("App Launch")
         Global.initAppOption();
+        Global.initUserInfo();
     },
     onShow() {
         console.log("App Show")
