@@ -15,6 +15,10 @@ export default class ModuleAppOption extends StoreUserInfo {
         menuWidth: 0,
         /** 状态栏高度 */
         statusBarHeight: 0,
+        /** 原生底部`tabbar`高度 */
+        tabBarHeight: 0,
+        /** 可使用窗口高度 */
+        windowHeight: 0,
         /** 是否为`iPhoneX`系列（做底部`UI`判断） */
         isIPhoneX: false
     }
@@ -27,7 +31,13 @@ export default class ModuleAppOption extends StoreUserInfo {
         const systemInfo = uni.getSystemInfoSync();
         
         this.appOption.statusBarHeight = systemInfo.statusBarHeight;
-        
+        this.appOption.tabBarHeight = systemInfo.screenHeight - systemInfo.windowHeight - systemInfo.statusBarHeight;
+        this.appOption.windowHeight = systemInfo.windowHeight;
+
+        // #ifdef H5
+        this.appOption.tabBarHeight = 50;
+        // #endif
+
         /**
          * 方式 1.
          * 网页中`model`只有`iPhone`字段；网页中不需要做吸底处理时可以这样
