@@ -97,6 +97,46 @@ class ModuleUtils{
             }
         })
     }
+
+    /**
+     * 复制文本
+     * @param {string} value 复制的内容 
+     * @param {Function} success 成功回调
+     */
+    copyText(value, success = null) {
+        value = value.replace(/(^\s*)|(\s*$)/g, "");
+        if (!value) {
+            return this.showToast("复制的内容不能为空！");
+        }
+
+        // #ifndef H5
+        const THAT = this;
+        uni.setClipboardData({
+            data: value,
+            success() {
+                THAT.showToast("复制成功", "success");
+                typeof success === "function" && success();
+            }
+        });
+        // #endif
+
+        // #ifdef H5
+        const id = "the-clipboard";
+        let clipboard = document.getElementById(id);
+        if (!clipboard) {
+            clipboard = document.createElement("textarea");
+            clipboard.id = id;
+            clipboard.style.cssText = "font-size: 15px; position: fixed; top: -1000%; left: -1000%;";
+            document.body.appendChild(clipboard);
+        }
+        clipboard.value = value;
+        clipboard.select();
+        clipboard.setSelectionRange(0, clipboard.value.length);
+        document.execCommand("copy");
+        typeof success === "function" && success();
+        this.showToast("复制成功", "success");
+        // #endif
+    }
 }
 
 /** 工具类模块 */
