@@ -87,7 +87,7 @@ class ModuleUtils{
         uni.showModal({
             title: title,
             content: content,
-            showCancel: false,
+            showCancel: true,
             success(res) {
                 if (res.confirm) {
                     typeof success === 'function' && success();
