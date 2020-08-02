@@ -16,8 +16,9 @@ export default {
 }
 </script>
 
-<style>
-/*每个页面公共css */
-@import "./styles/base.css";
+<style lang="scss">
+/* 每个页面公共样式，variable 和 mixins 这些在 uni.scss 中全局引用 */
+@import "./styles/global.scss";
+@import "./styles/loading.scss";
 
 </style>

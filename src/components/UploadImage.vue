@@ -32,6 +32,11 @@ export default {
             type: String,
             default: ""
         },
+        /** this.$emit 携带的id */
+        uploadId: {
+            type: String | Number,
+            default: ""
+        }
     },
     data() {
         return {
@@ -53,14 +58,15 @@ export default {
                 sourceType: ["album"],
                 success(res) {
                     // console.log(res);
+                    // 模拟上传
                     THAT.loading = true;
                     setTimeout(() => {
                         THAT.loading = false;
-                        THAT.$emit("getImage", res.tempFilePaths[0]);
+                        THAT.$emit("getImage", {
+                            id: THAT.uploadId,
+                            src: res.tempFilePaths[0]
+                        });
                     }, 800);
-
-                    // 本地路径
-                    // THAT.$emit("getImage", res.tempFilePaths[0]);
 
                     // THAT.loading = true;
                     // uni.uploadFile({
@@ -71,7 +77,10 @@ export default {
                     //     success(uploadResult) {
                     //         THAT.loading = false;
                     //         console.log("上传组件上传成功 >>", uploadResult.data);
-                    //         THAT.$emit("success", res.tempFilePaths[0]);
+                    //         THAT.$emit("getImage", {
+                    //             id: THAT.uploadId,
+                    //             src: uploadResult.data
+                    //         });
                     //     },
                     //     fail(uploadFail) {
                     //         THAT.loading = false;
@@ -88,18 +97,26 @@ export default {
         },
         /** 清除图片 */
         removeImage() {
-            this.$emit("getImage", "");
+            this.$emit("getImage", {
+                id: this.uploadId,
+                src: ""
+            });
         }
     }
 }
 </script>
-<style>
-.upload_image{ width: 100%; position: relative; }
-.upload_image .close{ width: 70rpx; height: 70rpx; background-color: rgba(0,0,0,0.45); border-radius: 50%; position: absolute; top: 16rpx; right: 16rpx; }
-.upload_image .close::before{ content: ""; width: 64%; height: 2px; background-color: #eee; border-radius: 1px; position: absolute; top: 50%; left: 18%; transform: translateY(-50%) rotate(45deg);}
-.upload_image .close::after{ content: ""; width: 64%; height: 2px; background-color: #eee; border-radius: 1px; position: absolute; top: 50%; left: 18%; transform: translateY(-50%) rotate(-45deg); }
-.upload_image .upload_icon{ width: 100%; height: 100%; position: relative; }
-.upload_image .upload_icon::before{ content: ""; width: 100rpx; height: 2px; background-color: #999; border-radius: 1px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}
-.upload_image .upload_icon::after{ content: ""; width: 100rpx; height: 2px; background-color: #999; border-radius: 1px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); }
-
+<style lang="scss">
+.upload_image{ 
+    width: 100%; position: relative; 
+    .close{ 
+        width: 70rpx; height: 70rpx; background-color: rgba(0,0,0,0.45); border-radius: 50%; position: absolute; top: 16rpx; right: 16rpx; 
+        &::before{ content: ""; width: 64%; height: 2px; background-color: #eee; border-radius: 1px; position: absolute; top: 50%; left: 18%; transform: translateY(-50%) rotate(45deg); }
+        &::after{ content: ""; width: 64%; height: 2px; background-color: #eee; border-radius: 1px; position: absolute; top: 50%; left: 18%; transform: translateY(-50%) rotate(-45deg); }
+    }
+    .upload_icon{ 
+        width: 100%; height: 100%; position: relative; 
+        &::before{ content: ""; width: 100rpx; height: 2px; background-color: #999; border-radius: 1px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}
+        &::after{ content: ""; width: 100rpx; height: 2px; background-color: #999; border-radius: 1px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); }
+    }
+}
 </style>

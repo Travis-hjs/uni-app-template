@@ -15,7 +15,8 @@
 
 5. 已经配置好在`manifest.json`文件中h5端请求代理，不需要可剔除
 
-6. 默认没有装`sass`、`less`之类的样式预处理，需要自行 npm install xxx 安装，[官方说明](https://uniapp.dcloud.io/quickstart?id=%e4%bd%bf%e7%94%a8cli%e5%88%9b%e5%bb%ba%e9%a1%b9%e7%9b%ae%e5%92%8c%e4%bd%bf%e7%94%a8hbuilderx%e5%8f%af%e8%a7%86%e5%8c%96%e7%95%8c%e9%9d%a2%e5%88%9b%e5%bb%ba%e9%a1%b9%e7%9b%ae%e6%9c%89%e4%bb%80%e4%b9%88%e5%8c%ba%e5%88%ab)
+6. 默认是有装`sass`的
+**注意：`vue.config.js` 中配置的 `css.loaderOptions` 是无法在当前项目生效的，可能是`uni-app`项目设定和标准`vue-cli`项目设定不一样导致的，需要在`uni.scss`文件全局引入即可，具体看代码**
 
 ### 目录说明
 
@@ -37,6 +38,11 @@
 
 > `styles` 不说了...
 
+
+### sass安装失败时配置（window系统）cmd 窗口首先执行命令再初始化
+```
+set sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
+```
 
 ## 初始化项目
 ```
