@@ -30,16 +30,3 @@
     @include fvertical();
     @include fcenter();
 }
-
-@mixin button_black {
-    @include button();
-    background-color: $black;
-    color: $white;
-}
-
-@mixin button_pink {
-    @include button();
-    background-color: $pink;
-    border-color: $pink;
-    color: $white;
-}
