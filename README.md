@@ -16,6 +16,7 @@
 5. 已经配置好在`manifest.json`文件中h5端请求代理，不需要可剔除
 
 6. 默认是有装`sass`的
+
 **注意：`vue.config.js` 中配置的 `css.loaderOptions` 是无法在当前项目生效的，可能是`uni-app`项目设定和标准`vue-cli`项目设定不一样导致的，需要在`uni.scss`文件全局引入即可，具体看代码**
 
 ### 目录说明
