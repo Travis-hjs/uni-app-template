@@ -47,12 +47,12 @@ uni-page-body{ min-height: auto !important; }
 
 .button{ @include button(); }
 .button_dark{ 
-    @include button_black(); 
+    @include button(); 
     background-color: $black;
     color: $white;
 }
 .button_pink{ 
-    @include button_pink(); 
+    @include button(); 
     background-color: $pink;
     border-color: $pink;
     color: $white;
