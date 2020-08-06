@@ -123,7 +123,7 @@ class ModuleUtils{
         // #ifdef H5
         const id = "the-clipboard";
         /**
-         * 找贴版节点
+         * 粘贴板节点
          * @type {HTMLTextAreaElement}
          */
         let clipboard = document.getElementById(id);
