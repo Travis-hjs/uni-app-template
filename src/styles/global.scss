@@ -46,14 +46,6 @@ uni-page-body{ min-height: auto !important; }
 }
 
 .button{ @include button(); }
-.button_dark{ 
-    @include button(); 
-    background-color: $black;
-    color: $white;
-}
-.button_pink{ 
-    @include button(); 
-    background-color: $pink;
-    border-color: $pink;
-    color: $white;
-}
+.button_dark{ @include button(); background-color: $black; color: $white; }
+.button_pink{  @include button(); background-color: $pink; border-color: $pink; color: $white; }
+.button_red{ @include button(); background-color: $red; border-color: $red; color: $white; }
