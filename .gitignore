@@ -22,4 +22,4 @@ yarn-error.log*
 *.sln
 *.sw*
 
-src/package-lock.json
+package-lock.json
