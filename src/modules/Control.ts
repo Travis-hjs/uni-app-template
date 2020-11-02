@@ -25,18 +25,17 @@ export default class ModuleControl {
     }
     
     /**
-     * 显示提示条（app端从底部弹起）
+     * 显示提示条
      * @param tip 提示文字
      * @param src 图片路径
      */
     showToast(tip: string, src?: string) {
         uni.showToast({
             title: tip,
-            position: "bottom",
             icon: "none",
             duration: 2000,
             image: src
-        } as any);
+        });
     }
 
     /**
