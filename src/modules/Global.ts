@@ -2,14 +2,14 @@ import ModuleAppOption from "./AppOption";
 
 class ModuleGlobal extends ModuleAppOption {
 
-    icon = {
+    readonly icon = {
         /** 微信logo */
         logo_wx: "/static/logo_wx.png",
         /** 支付宝logo */
         logo_zfb: "/static/logo_zfb.png",
     }
 
-    images = {
+    readonly images = {
         logo: "/static/logo.png",
         /** 默认头像 */
         default_head: "/static/default_head.png",

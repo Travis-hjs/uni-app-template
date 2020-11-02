@@ -42,3 +42,10 @@ export interface UploadImageRes {
     /** 图片路径 */
     src: string
 }
+
+export interface UserInfoType {
+    /** 登录凭据 */
+    token: string
+    /** 用户手机号 */
+    phone: number | ""
+}

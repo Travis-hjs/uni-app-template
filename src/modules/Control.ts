@@ -4,6 +4,7 @@ import {
 
 /** 控件模块 */
 export default class ModuleControl {
+
     /**
      * 打开其他应用
      * @param name 应用名
@@ -113,4 +114,5 @@ export default class ModuleControl {
         this.showToast("复制成功", "success");
         // #endif
     }
+    
 }

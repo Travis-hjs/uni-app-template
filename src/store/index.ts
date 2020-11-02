@@ -1,18 +1,24 @@
 import { ModuleModifyObject } from "../modules/ModifyObject";
+import { 
+    DeepPartial,
+    UserInfoType 
+} from "../utils/interfaces";
 
 const cacheName = "user-info";
 
 export class StoreUserInfo extends ModuleModifyObject {
     /** 用户信息 */
-    readonly userInfo = {
-        /** 登录凭据 */
+    readonly userInfo: UserInfoType = {
         token: "",
-        /** 用户手机号 */
         phone: ""
     }
 
-    /** 存储用户信息到本地 */
-    saveUserInfo() {
+    /**
+     * 更新用户信息字段
+     * @param value 
+     */
+    updateUserInfo(value: DeepPartial<UserInfoType>) {
+        this.modifyData(this.userInfo, value);
         uni.setStorageSync(cacheName, JSON.stringify(this.userInfo));
     }
 
@@ -20,7 +26,7 @@ export class StoreUserInfo extends ModuleModifyObject {
     initUserInfo() {
         const data = uni.getStorageSync(cacheName);
         if (data) {
-            this.modifyData(this.userInfo, JSON.parse(data));
+            this.updateUserInfo(JSON.parse(data));
         }
     }
 
