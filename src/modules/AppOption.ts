@@ -1,6 +1,7 @@
 export default class ModuleAppOption {
+    
     /** `APP`操作信息 */
-    appOption = {
+    readonly appOption = {
         /** `小程序`导航栏高度 */
         navBarHeight: 0,
         /** `小程序`胶囊距右方间距（方保持左、右间距一致） */
@@ -32,23 +33,14 @@ export default class ModuleAppOption {
         this.appOption.tabBarHeight = systemInfo.screenHeight - systemInfo.windowHeight - systemInfo.statusBarHeight;
         this.appOption.windowHeight = systemInfo.windowHeight;
 
+        const isIos = systemInfo.system.toLocaleLowerCase().includes("ios");
+        const vaule = (systemInfo.screenWidth / systemInfo.screenHeight) < 0.5;
+        this.appOption.isIPhoneX = (isIos && vaule);
+
         // #ifdef H5
         this.appOption.tabBarHeight = 50;
+        this.appOption.isIPhoneX = false; // 网页端不需要判断底部UI判断
         // #endif
-
-        /**
-         * 方式 1.
-         * 网页中`model`只有`iPhone`字段；网页中不需要做吸底处理时可以这样
-         */
-        this.appOption.isIPhoneX = systemInfo.model.search("iPhone X") == 0 ? true : false;
-        
-        /**
-         * 方式 2.
-         * 所有平台都可以兼容
-         */
-        // const isIos = systemInfo.system.toLocaleLowerCase().includes("ios");
-        // const vaule = (systemInfo.screenWidth / systemInfo.screenHeight) < 0.5;
-        // this.appOption.isIPhoneX = (isIos && vaule);
 
         // #ifdef MP
         const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
