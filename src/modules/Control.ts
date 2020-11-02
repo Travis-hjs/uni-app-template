@@ -32,11 +32,11 @@ export default class ModuleControl {
     showToast(tip: string, src?: string) {
         uni.showToast({
             title: tip,
-            position: 'bottom',
+            position: "bottom",
             icon: "none",
             duration: 2000,
             image: src
-        });
+        } as any);
     }
 
     /**

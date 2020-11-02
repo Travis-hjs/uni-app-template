@@ -56,13 +56,14 @@ export default class UploadImage extends Vue {
             sourceType: ["album"],
             success(res) {
                 // console.log(res);
+                const result = res.tempFilePaths as Array<string>;
                 // 模拟上传
                 THAT.loading = true;
                 setTimeout(() => {
                     THAT.loading = false;
                     THAT.$emit("change", {
                         id: THAT.uploadId,
-                        src: res.tempFilePaths[0]
+                        src: result[0]
                     });
                 }, 800);
 
