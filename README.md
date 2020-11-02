@@ -7,7 +7,7 @@
 ### 模板说明：
 1. 基于`cli`创建的轻量化项目模板，只保留`vue`最基础的使用方式，保证打包到多端时不需要作太多判断处理
 
-2. 状态管理不建议使用`vuex`，因为会导致代码变得冗余，而且在编辑器中失去代码静态追踪和提示“[被忽略的官方说明](https://vuex.vuejs.org/zh/#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E6%88%91%E5%BA%94%E8%AF%A5%E4%BD%BF%E7%94%A8-vuex%EF%BC%9F)”所以这边使用一个`Global.js`的模块文件作为全局状态管理，然后逐个继承各个`store`模块来导出使用，使用方式可参考：[你不需要vuex](https://juejin.im/post/5d425a83f265da03d8719cb8) 
+2. 状态管理不建议使用`vuex`，因为会导致代码变得冗余，而且在编辑器中失去代码静态追踪和提示“[被忽略的官方说明](https://vuex.vuejs.org/zh/#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E6%88%91%E5%BA%94%E8%AF%A5%E4%BD%BF%E7%94%A8-vuex%EF%BC%9F)”使用方式可参考：[你不需要vuex](https://juejin.im/post/5d425a83f265da03d8719cb8) 
 
 3. 模板为了轻量化只保留了`uni-icons`的icon组件，需要其他组件自行添加，[官方扩展组件](https://uniapp.dcloud.io/component/README?id=uniui)，这里推荐使用官方的扩展组件，这样可以确保打包成多端的兼容问题
 
