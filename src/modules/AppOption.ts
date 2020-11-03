@@ -1,4 +1,6 @@
-export default class ModuleAppOption {
+import { ModuleModifyObject } from "./ModifyObject";
+
+export default class ModuleAppOption extends ModuleModifyObject {
     
     /** `APP`操作信息 */
     readonly appOption = {
@@ -27,14 +29,14 @@ export default class ModuleAppOption {
      * @learn 条件编译 https://uniapp.dcloud.io/platform
     */
     initAppOption() {
-        const systemInfo = uni.getSystemInfoSync();
+        const systemInfo = uni.getSystemInfoSync() as Required<UniApp.GetSystemInfoResult>;
         
-        this.appOption.statusBarHeight = (systemInfo.statusBarHeight as number);
-        this.appOption.tabBarHeight = (systemInfo.screenHeight as number) - (systemInfo.windowHeight as number) - (systemInfo.statusBarHeight as number);
-        this.appOption.windowHeight = (systemInfo.windowHeight as number);
+        this.appOption.statusBarHeight = systemInfo.statusBarHeight;
+        this.appOption.tabBarHeight = systemInfo.screenHeight - systemInfo.windowHeight - systemInfo.statusBarHeight;
+        this.appOption.windowHeight = systemInfo.windowHeight;
 
-        const isIos = (systemInfo.system  as string).toLocaleLowerCase().includes("ios");
-        const vaule = ((systemInfo.screenWidth as number) / (systemInfo.screenHeight as number)) < 0.5;
+        const isIos = systemInfo.system.toLocaleLowerCase().includes("ios");
+        const vaule = (systemInfo.screenWidth / systemInfo.screenHeight) < 0.5;
         this.appOption.isIPhoneX = (isIos && vaule);
 
         // #ifdef H5
@@ -45,11 +47,11 @@ export default class ModuleAppOption {
         // #ifdef MP
         const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
         // 导航栏高度 = 状态栏到胶囊的间距（胶囊距上距离-状态栏高度） * 2 + 胶囊高度 + 状态栏高度
-        this.appOption.navBarHeight = ((menuButtonInfo.top as number) - (systemInfo.statusBarHeight as number)) * 2 + (menuButtonInfo.height as number) + (systemInfo.statusBarHeight as number);
-        this.appOption.menuRight = (systemInfo.screenWidth as number) - (menuButtonInfo.right as number);
-        this.appOption.menuBottom = (menuButtonInfo.top as number) - (systemInfo.statusBarHeight as number);
-        this.appOption.menuHeight = (menuButtonInfo.height as number);
-        this.appOption.menuWidth = (menuButtonInfo.width as number);
+        this.appOption.navBarHeight = (menuButtonInfo.top - systemInfo.statusBarHeight) * 2 + menuButtonInfo.height + systemInfo.statusBarHeight;
+        this.appOption.menuRight = systemInfo.screenWidth - menuButtonInfo.right;
+        this.appOption.menuBottom = menuButtonInfo.top - systemInfo.statusBarHeight;
+        this.appOption.menuHeight = menuButtonInfo.height;
+        this.appOption.menuWidth = menuButtonInfo.width;
         // #endif
     }   
 }
