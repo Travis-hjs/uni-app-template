@@ -65,8 +65,8 @@
     "vuex": "^3.2.0"
   },
   "devDependencies": {
+    "@dcloudio/types": "^2.0.10",
     "@babel/plugin-syntax-typescript": "^7.2.0",
-    "@dcloudio/types": "*",
     "@dcloudio/uni-automator": "^2.0.0-29320201014001",
     "@dcloudio/uni-cli-shared": "^2.0.0-29320201014001",
     "@dcloudio/uni-migration": "^2.0.0-29320201014001",
@@ -82,8 +82,8 @@
     "babel-plugin-import": "^1.11.0",
     "cross-env": "^7.0.2",
     "jest": "^25.4.0",
-    "mini-types": "*",
-    "miniprogram-api-typings": "*",
+    "mini-types": "^0.1.4",
+    "miniprogram-api-typings": "^3.1.2",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.0",
     "postcss-comment": "^2.0.0",

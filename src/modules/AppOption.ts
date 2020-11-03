@@ -29,7 +29,7 @@ export default class ModuleAppOption extends ModuleModifyObject {
      * @learn 条件编译 https://uniapp.dcloud.io/platform
     */
     initAppOption() {
-        const systemInfo = uni.getSystemInfoSync() as Required<UniApp.GetSystemInfoResult>;
+        const systemInfo = uni.getSystemInfoSync();
         
         this.appOption.statusBarHeight = systemInfo.statusBarHeight;
         this.appOption.tabBarHeight = systemInfo.screenHeight - systemInfo.windowHeight - systemInfo.statusBarHeight;
