@@ -15,9 +15,9 @@ export interface ShowConfirmOptions {
     /** 标题 */
     title?: string
     /** 确认回调 */
-    callback?: () => void
+    callback?(): void
     /** 取消回调 */
-    cancel?: () => void 
+    cancel?(): void 
     /** 确认按钮文字 */
     text: string
 }
@@ -30,9 +30,9 @@ export interface RequestParams {
     /** 传参对象 */
     data: any
     /** 请求成功回调 */
-    success: (res: any) => void
+    success?(res: any): void
     /** 请求失败回调 */
-    fail: (res: any) => void
+    fail?(res: any): void
 }
 
 /** 上传图片返回结果 */
@@ -48,4 +48,43 @@ export interface UserInfoType {
     token: string
     /** 用户手机号 */
     phone: number | ""
+}
+
+/** 接口请求基础响应数据 */
+export interface ApiResult {
+    /** 接口状态（1为成功） */
+    state: 0|1|2|3
+    /** 接口响应数据 */
+    data: any
+    /** 接口响应信息 */
+    msg: string
+}
+
+/** 接口请求列表响应数据 */
+export interface ApiListData extends ApiResult {
+    data: {
+        /** 当前页码 */
+        pageIndex: number
+        /** 每页条数 */
+        pageSize: number
+        /** 列表数据 */
+        data: Array<any>
+    }
+}
+
+/** 列表基础请求字段 */
+export interface ListParams {
+    /** 当前页码 */
+    pageIndex: number
+    /** 每页条数 */
+    pageSize: number
+    /** 其他索引签名 */
+    [key: string]: any
+}
+
+export interface LoadMoreType extends ListParams {
+    /** 加载状态 */ 
+    state: "wait" | "loading" | "nomore"
+    /** 加载的列表数据 */
+    list: Array<any>
 }

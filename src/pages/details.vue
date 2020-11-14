@@ -36,32 +36,6 @@ export default class DetailsPage extends Vue {
         })
     }
 }
-
-// import Vue from "vue";
-// export default Vue.extend({
-//     data() {
-//         return {
-//             appOption: Global.appOption,
-//             /** 页面传参接收数据 */
-//             pageParam: "",
-//         }
-//     },
-//     onLoad(param) {
-//         this.pageParam = JSON.stringify(param);
-//         console.log("appOption", Global.appOption);
-//     },
-//     methods: {
-//         goback() {
-//             uni.navigateBack({});
-//         },
-//         getData() {
-//             apiUser.searchUserType("vip").then(res => {
-//                 console.log(res);
-                
-//             })
-//         }
-//     }
-// })
 </script>
 
 <style lang="scss">

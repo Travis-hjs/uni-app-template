@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "experimentalDecorators": true,
         "target": "esnext",
         "module": "esnext",
         "strict": true,
@@ -8,10 +9,14 @@
         "moduleResolution": "node",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "experimentalDecorators": true,
         "sourceMap": true,
         "skipLibCheck": true,
         "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        },
         "types": [
             "webpack-env",
             "@dcloudio/types",

@@ -17,6 +17,15 @@
             "style": {
                 "navigationStyle": "custom"
             }
+        },
+        {
+            "path": "pages/list",
+            "style": {
+                "navigationBarTitleText": "加载更多列表",
+                "navigationBarBackgroundColor": "#222222",
+                "navigationBarTextStyle": "white",
+                "enablePullDownRefresh": true
+            }
         }
 	],
 	"globalStyle": {

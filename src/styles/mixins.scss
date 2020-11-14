@@ -17,16 +17,18 @@
 }
 
 @mixin button {
-    font-size: 30rpx; 
-    min-width: 160rpx; 
+    font-size: 30rpx;
+    min-width: 160rpx;
     padding: 0 20rpx;
-    border-radius: 2px; 
-    height: 80rpx; 
-    border: solid 1px $black;
-    background-color: #fff; 
-    color: $black;
+    border-radius: 2px;
+    height: 80rpx;
+    background-color: #eee; 
+    color: $dark;
     line-height: 1;
     @include flex();
     @include fvertical();
     @include fcenter();
+    &:active{
+        opacity: 0.85;
+    }
 }
