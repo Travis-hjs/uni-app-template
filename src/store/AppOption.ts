@@ -1,4 +1,4 @@
-import { ModuleModifyObject } from "./ModifyObject";
+import { ModuleModifyObject } from "../modules/ModifyObject";
 
 export default class ModuleAppOption extends ModuleModifyObject {
     

@@ -1,20 +1,19 @@
 <script lang="ts">
-import Global from "./modules/Global";
-import store from "./store";
 import Vue from "vue";
+import store from "./store";
 
 export default Vue.extend({
     mpType: "app",
     onLaunch() {
-        console.log("App Launch")
-        Global.initAppOption();
+        console.log("【App Launch】")
+        store.initAppOption();
         store.initUserInfo();
     },
     onShow() {
-        console.log("App Show")
+        console.log("【App Show】")
     },
     onHide() {
-        console.log("App Hide")
+        console.log("【App Hide】")
     }
 });
 </script>

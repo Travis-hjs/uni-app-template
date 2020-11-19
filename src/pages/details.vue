@@ -12,18 +12,18 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Global from "../modules/Global";
+import store from "../store";
 import apiUser from "../api";
 
 @Component({})
 export default class DetailsPage extends Vue {
-    appOption = Global.appOption
+    appOption = store.appOption
     /** 页面传参接收数据 */
     pageParam = ""
 
     onLoad(param: any) {
         this.pageParam = JSON.stringify(param);
-        console.log("appOption", Global.appOption);
+        console.log("appOption", store.appOption);
     }
 
     goback() {

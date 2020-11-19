@@ -9,12 +9,11 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Global from "../../modules/Global";
 import store from "../../store";
 
 @Component({})
 export default class Home extends Vue {
-    logo = Global.images.logo;
+    logo = store.images.logo;
 
     readonly userInfo = store.userInfo;
 

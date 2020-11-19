@@ -47,7 +47,9 @@ export interface UserInfoType {
     /** 登录凭据 */
     token: string
     /** 用户手机号 */
-    phone: number | ""
+    phone: number | "",
+    /** 用户`id` */
+    id: number | ""
 }
 
 /** 接口请求基础响应数据 */

@@ -1,4 +1,4 @@
-import { ModuleModifyObject } from "../modules/ModifyObject";
+import ModuleAppOption from "./AppOption";
 import { 
     DeepPartial,
     UserInfoType 
@@ -6,7 +6,23 @@ import {
 
 const cacheName = "user-info";
 
-export class StoreUserInfo extends ModuleModifyObject {
+export class StoreUserInfo extends ModuleAppOption {
+    
+    readonly icon = {
+        /** 微信logo */
+        logo_wx: "/static/logo_wx.png",
+        /** 支付宝logo */
+        logo_zfb: "/static/logo_zfb.png",
+    }
+
+    readonly images = {
+        logo: "/static/logo.png",
+        /** 默认头像 */
+        default_head: "/static/default_head.png",
+        /** 暂无数据 */
+        none_data: "/static/none_data.png",
+    }
+
     /** 用户信息 */
     readonly userInfo: UserInfoType = {
         token: "",

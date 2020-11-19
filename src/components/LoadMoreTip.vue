@@ -27,7 +27,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { LoadMoreType } from "../utils/interfaces";
-import Global from "../modules/Global";
+import store from "../store";
 
 @Component({})
 export default class LoadMoreTip extends Vue {
@@ -41,7 +41,7 @@ export default class LoadMoreTip extends Vue {
         default: ""
     }) paddingBottom!: string | number
     
-    private nodataImage = Global.images.none_data
+    private nodataImage = store.images.none_data
 
 }
 </script>
