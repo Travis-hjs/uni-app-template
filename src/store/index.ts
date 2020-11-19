@@ -25,6 +25,7 @@ export class StoreUserInfo extends ModuleAppOption {
 
     /** 用户信息 */
     readonly userInfo: UserInfoType = {
+        id: "",
         token: "",
         phone: ""
     }
