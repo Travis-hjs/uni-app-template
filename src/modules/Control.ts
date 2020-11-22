@@ -14,14 +14,25 @@ export default class ModuleControl {
         // #ifdef APP-PLUS
         // learn: https://ask.dcloud.net.cn/article/35621
         const data = {
-            qq: 'mqq://',
-            wx: 'weixin://',
-            zfb: 'alipay://',
-            sina: 'sinaweibo://',
-            taobao: 'taobao://',
+            qq: "mqq://",
+            wx: "weixin://",
+            zfb: "alipay://",
+            sina: "sinaweibo://",
+            taobao: "taobao://",
         }
         plus.runtime.openURL(data[name], callback);
         // #endif
+    }
+    
+    /**
+     * 显示加载提示
+     * @param text 提示文字
+     */
+    showLoading(text: string = "加载中..") {
+        uni.showLoading({
+            title: text,
+            mask: true
+        });
     }
     
     /**
