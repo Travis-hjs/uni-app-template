@@ -101,8 +101,8 @@ export default class ModuleControl {
         uni.setClipboardData({
             data: value,
             success() {
-                THAT.showToast("复制成功", "success");
-                typeof success === "function" && success();
+                THAT.showToast("复制成功");
+                success && success();
             }
         });
         // #endif
@@ -113,16 +113,20 @@ export default class ModuleControl {
         if (!clipboard) {
             clipboard = document.createElement("textarea");
             clipboard.id = id;
+            clipboard.readOnly = true;
             clipboard.style.cssText = "font-size: 15px; position: fixed; top: -1000%; left: -1000%;";
             document.body.appendChild(clipboard);
         }
         clipboard.value = value;
         clipboard.select();
         clipboard.setSelectionRange(0, clipboard.value.length);
-        document.execCommand("copy");
-        clipboard.blur();
-        typeof success === "function" && success();
-        this.showToast("复制成功", "success");
+        const state = document.execCommand("copy");
+        if (state) {
+          this.showToast("复制成功");
+          success && success();
+        } else {
+          this.showToast("复制失败");
+        }
         // #endif
     }
     
