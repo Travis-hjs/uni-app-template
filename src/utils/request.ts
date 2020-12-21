@@ -20,7 +20,7 @@ export default function request(
             header: {
                 "Authorization": store.userInfo.token
             },
-            url: config.baseUrl + path,
+            url: config.apiUrl + path,
             data: data,
             timeout: config.requestOvertime,
             success(res: any) {
