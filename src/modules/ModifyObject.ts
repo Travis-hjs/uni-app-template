@@ -13,7 +13,7 @@ export class ModuleModifyObject {
                 // target[key] = value[key];
                 // 需要的话，深层逐个赋值
                 if (utils.checkType(target[key]) === "object") {
-                    this.modifyData(target[key], value[key])
+                    this.modifyData(target[key], value[key]);
                 } else {
                     target[key] = value[key];
                 }
@@ -28,14 +28,7 @@ export class ModuleModifyObject {
      */
     setData<T>(target: T, value: T) {
         for (const key in value) {
-            if (!Object.prototype.hasOwnProperty.call(target, key)) {
-                target[key] = {} as any;
-            }
-            if (utils.checkType(target[key]) === "object") {
-                this.setData(target[key], value[key])
-            } else {
-                target[key] = value[key];
-            }
+            target[key] = value[key];
         }
     }
 }
