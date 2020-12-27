@@ -3,6 +3,16 @@ export type DeepPartial<T> = {
     [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 }
 
+/** 深层递归所有属性为只读 */
+export type DeepReadonly<T> = {
+    readonly [P in keyof T]: T[P] extends object ? DeepReadonly<T[P]> : T[P];
+}
+
+/** 深层递归所有属性为必选选（貌似不生效） */
+export type DeepRequired<T> = {
+    [P in keyof T]-?: T[P] extends object ? Required<T[P]> : T[P]
+}
+
 /** 运算符号 */
 export type NumberSymbols = "+" | "-"| "*" | "/";
 
