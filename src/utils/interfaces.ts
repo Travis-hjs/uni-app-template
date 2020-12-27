@@ -30,9 +30,9 @@ export interface RequestParams {
     /** 传参对象 */
     data: any
     /** 请求成功回调 */
-    success?(res: any): void
+    success?(res: ApiResult): void
     /** 请求失败回调 */
-    fail?(res: any): void
+    fail?(res: ApiResult): void
 }
 
 /** 上传图片返回结果 */
@@ -55,7 +55,7 @@ export interface UserInfoType {
 /** 接口请求基础响应数据 */
 export interface ApiResult {
     /** 接口状态（1为成功） */
-    state: 0|1|2|3
+    state: number
     /** 接口响应数据 */
     data: any
     /** 接口响应信息 */

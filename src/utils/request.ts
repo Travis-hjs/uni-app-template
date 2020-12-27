@@ -1,6 +1,33 @@
 import config from "../modules/Config";
 import store from "../store";
-import { RequestParams } from "./interfaces";
+import { ApiResult, RequestParams } from "./interfaces";
+
+function getResultInfo(result: { statusCode: number, data: any }) {
+    const info: ApiResult = { state: -1, msg: "", data: null }
+    switch (result.statusCode) {
+        case 999:
+            info.msg = "网络出错了";
+            break;
+        case 200:
+            info.state = 1;
+            info.msg = "ok";
+            info.data = result.data;
+            break;
+        case 403:
+            info.msg = "登录已过期";
+            store.userInfo.token = "";
+            break;
+        case 404:
+            info.msg = "接口不存在";
+            break;
+        default:
+            break;
+    }
+    if (result.statusCode >= 500) {
+        info.msg = "服务器闹脾气了";
+    }
+    return info;
+}
 
 /**
  * 基础请求
@@ -12,8 +39,7 @@ export default function request(
     data: RequestParams["data"], 
     success?: RequestParams["success"], 
     fail?: RequestParams["fail"]
-): Promise<any> {
-    // console.log("request 运行状态：", process.env.NODE_ENV);
+): Promise<ApiResult> {
     return new Promise(function(resolve, reject) {
         uni.request({
             method: method,
@@ -23,27 +49,26 @@ export default function request(
             url: config.apiUrl + path,
             data: data,
             timeout: config.requestOvertime,
-            success(res: any) {
+            success(res) {
                 // console.log("request.success", res);
-                if (res.data.code == 200) {
-                    typeof success === "function" && success(res.data.data);
-                    resolve(res.data.data);
+                const info = getResultInfo(res);
+                if (info.state === 1) {
+                    success && success(info);
+                    resolve(info);
                 } else {
-                    let tip = res.data.message || "服务端错误：" + res.statusCode;
-                    if (res.data.code == 403) {
-                        tip = "登录已过期";
-                        store.userInfo.token = "";
-                    }
                     uni.showToast({
-                        title: tip,
+                        title: info.msg,
                         position: "bottom"
                     });
-                    typeof fail === "function" && fail(res);
+                    fail && fail(info);
+                    resolve(info);
                 }
             },
             fail(err) {
-                typeof fail === "function" && fail(err);
-                reject(err);
+                const info = getResultInfo({ statusCode: 999, data: null });
+                info.msg = err.errMsg;
+                fail && fail(info);
+                resolve(info);
             }
         })
     })
