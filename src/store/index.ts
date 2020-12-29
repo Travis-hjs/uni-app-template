@@ -6,7 +6,7 @@ import {
 
 const cacheName = "user-info";
 
-export class StoreUserInfo extends ModuleAppOption {
+export class ModuleStore extends ModuleAppOption {
     
     readonly icon = {
         /** 微信logo */
@@ -50,6 +50,6 @@ export class StoreUserInfo extends ModuleAppOption {
 }
 
 /** 状态模块 */
-const store = new StoreUserInfo();
+const store = new ModuleStore();
 
 export default store;
