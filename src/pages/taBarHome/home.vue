@@ -3,7 +3,7 @@
         <button class="button_pink" @click="addCount">当前页面`count`：{{ count }}</button>
         <view>userInfo.token: {{ userInfo.token }}</view>
         <button class="button" @click="setToken">修改`userInfo.token = "123"`</button>
-        <image class="logo" :src="logo"></image>
+        <image class="logo" :src="imageInfo.logo"></image>
     </view>    
 </template>
 
@@ -13,7 +13,7 @@ import store from "../../store";
 
 @Component({})
 export default class Home extends Vue {
-    logo = store.images.logo;
+    imageInfo = store.imageInfo;
 
     readonly userInfo = store.userInfo;
 

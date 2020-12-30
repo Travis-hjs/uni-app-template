@@ -18,7 +18,7 @@
         </view>
         
         <view class="content" v-if="state == 'nomore'" style="padding-bottom: 10px;">
-            <image class="nodata_img" :src="nodataImage" mode="aspectFill" />
+            <image class="nodata_img" :src="imageInfo.noneData" mode="aspectFill" />
             <view class="text">没有数据了</view>
         </view>
         
@@ -41,7 +41,7 @@ export default class LoadMoreTip extends Vue {
         default: ""
     }) paddingBottom!: string | number
     
-    private nodataImage = store.images.none_data
+    private imageInfo = store.imageInfo
 
 }
 </script>

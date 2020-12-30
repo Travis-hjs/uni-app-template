@@ -7,20 +7,16 @@ import {
 const cacheName = "user-info";
 
 export class ModuleStore extends ModuleAppOption {
-    
-    readonly icon = {
-        /** 微信logo */
-        logo_wx: "/static/logo_wx.png",
-        /** 支付宝logo */
-        logo_zfb: "/static/logo_zfb.png",
-    }
-
-    readonly images = {
-        logo: "/static/logo.png",
-        /** 默认头像 */
-        default_head: "/static/default_head.png",
-        /** 暂无数据 */
-        none_data: "/static/none_data.png",
+    /** 图片对象集 */
+    get imageInfo() {
+        // 需要用作背景图的可以用`require`引入
+        return {
+            iconWx: "/static/logo_wx.png",
+            iconZfb: "/static/logo_zfb.png",
+            logo: "/static/logo.png",
+            defaultHead: "/static/default_head.png",
+            noneData: "/static/none_data.png",
+        }
     }
 
     /** 用户信息 */
