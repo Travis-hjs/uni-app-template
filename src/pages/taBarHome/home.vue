@@ -20,11 +20,11 @@ export default class Home extends Vue {
     count = 0
 
     onLoad() {
-        console.log("执行");
+        // console.log("执行");
     }
 
     setToken() {
-        this.userInfo.token = "123";
+        store.updateUserInfo({ token: "123" });
     }
 
     addCount() {

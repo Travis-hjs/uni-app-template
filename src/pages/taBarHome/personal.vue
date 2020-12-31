@@ -45,7 +45,7 @@ export default class Personal extends Vue {
     }
 
     clearToken() {
-        this.userInfo.token = "";
+        store.updateUserInfo({ token: "" });
     }
 
     setContentImage(res: UploadImageRes) {
