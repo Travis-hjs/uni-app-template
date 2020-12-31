@@ -11,11 +11,9 @@
 
 3. 模板为了轻量化只保留了常用的组件，需要其他组件自行添加，[官方扩展组件](https://uniapp.dcloud.io/component/README?id=uniui)，这里推荐使用官方的扩展组件，这样可以确保打包成多端的兼容问题
 
-4. 模板集成了官方的语法声明文件，在常规的`vue`语法中终于有正确的`this`指向了（增加`computed`会失去提示，估计是声明文件的问题）；代码注释建议使用标准的[JSDoc注释](https://blog.csdn.net/qq_40028324/article/details/95623401)，这样的好处是让`JavaScript`项目中也有`TypeScript`一样的代码提示
+4. 已经配置好在`manifest.json`文件中h5端请求代理，不需要可剔除
 
-5. 已经配置好在`manifest.json`文件中h5端请求代理，不需要可剔除
-
-6. 默认是有装`sass`的
+5. 预装了`sass`，部分注意事项请看`uni.scss`代码注释
 
 **注意：`vue.config.js` 中配置的 `css.loaderOptions` 是无法在当前项目生效的，可能是`uni-app`项目设定和标准`vue-cli`项目设定不一样导致的，需要在`uni.scss`文件全局引入即可，具体看代码**
 
@@ -55,7 +53,7 @@ npm install
 npm run serve
 ```
 
-### 打包项目，这边建议用官方 HBuildX IDE 去打包
+### 打包项目，APP项目只能用官方 HBuildX IDE 去打包
 ```
 npm run build
 ```
