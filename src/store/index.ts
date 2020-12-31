@@ -1,6 +1,7 @@
 import ModuleAppOption from "./AppOption";
 import { 
     DeepPartial,
+    DeepReadonly,
     UserInfoType 
 } from "../utils/interfaces";
 
@@ -20,7 +21,7 @@ export class ModuleStore extends ModuleAppOption {
     }
 
     /** 用户信息 */
-    readonly userInfo: UserInfoType = {
+    readonly userInfo: DeepReadonly<UserInfoType> = {
         id: "",
         token: "",
         phone: ""

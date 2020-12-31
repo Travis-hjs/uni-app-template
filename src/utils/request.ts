@@ -17,7 +17,7 @@ function getResultInfo(result: { statusCode: number, data: any }) {
             info.msg = "接口传参不正确";
         case 403:
             info.msg = "登录已过期";
-            store.userInfo.token = "";
+            store.updateUserInfo({ token: "" });
             break;
         case 404:
             info.msg = "接口不存在";
