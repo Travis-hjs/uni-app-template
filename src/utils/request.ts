@@ -38,7 +38,7 @@ function getResultInfo(result: { statusCode: number, data: any }) {
 export default function request(
     method: RequestParams["method"],
     path: RequestParams["path"], 
-    data: RequestParams["data"], 
+    data?: RequestParams["data"], 
     success?: RequestParams["success"], 
     fail?: RequestParams["fail"]
 ): Promise<ApiResult> {
