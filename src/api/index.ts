@@ -2,7 +2,7 @@ import { RequestParams, ApiListData, ListParams } from "../utils/interfaces";
 import request from "../utils/request";
 import utils from "../utils";
 
-class ModuleApiUser {
+class ModuleApi {
     /**
      * 用户登录 （回调用法）
      * @param form 
@@ -71,6 +71,6 @@ class ModuleApiUser {
 }
 
 /** 用户接口模块 */
-const api = new ModuleApiUser();
+const api = new ModuleApi();
 
 export default api;
