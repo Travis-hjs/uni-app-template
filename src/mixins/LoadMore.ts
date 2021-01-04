@@ -59,7 +59,15 @@ export default class LoadMore extends Vue {
             callback && callback();
         })
     }
-
+  
+    /** 刷新数据 */
+    refreshData() {
+        this.loadMoreData.pageIndex = 0;
+        this.loadMoreData.list = [];
+        this.loadMoreData.state = "wait";
+        this.getListData();
+    }
+  
     /**
      * 生命周期回调 监听页面隐藏
      *
