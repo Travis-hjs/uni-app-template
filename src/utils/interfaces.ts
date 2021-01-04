@@ -29,7 +29,7 @@ export interface ShowConfirmOptions {
     /** 取消回调 */
     cancel?(): void 
     /** 确认按钮文字 */
-    text: string
+    text?: string
 }
 
 export interface RequestParams {
