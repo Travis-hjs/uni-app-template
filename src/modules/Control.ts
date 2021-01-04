@@ -70,7 +70,7 @@ export default class ModuleControl {
      * @param options 传参对象
      */
     showConfirm(options: ShowConfirmOptions) {
-        wx.showModal({
+        uni.showModal({
             title: options.title || "操作提示",
             content: options.content,
             showCancel: true,
