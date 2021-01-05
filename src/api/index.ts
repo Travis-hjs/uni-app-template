@@ -70,7 +70,7 @@ class ModuleApi {
     }
 }
 
-/** 用户接口模块 */
+/** 接口模块 */
 const api = new ModuleApi();
 
 export default api;
