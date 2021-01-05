@@ -74,12 +74,12 @@ export default class ModuleControl {
             title: options.title || "操作提示",
             content: options.content,
             showCancel: true,
-            confirmText: options.text,
+            confirmText: options.text || "确认",
             success(res) {
                 if (res.confirm) {
-                    typeof options.callback === "function" && options.callback();
+                    options.callback && options.callback();
                 } else if (res.cancel) {
-                    typeof options.cancel === "function" && options.cancel();
+                    options.cancel && options.cancel();
                 }
             },
         });
