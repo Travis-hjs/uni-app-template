@@ -17,7 +17,7 @@
             <view class="text">上拉加载更多</view>
         </view>
         
-        <view class="content" v-show="info.state === 'nomore'" style="padding-bottom: 10px;">
+        <view class="content" v-show="info.state === 'nomore'" style="padding: 10px 0;">
             <image class="nodata_img" :src="imageInfo.noneData" mode="aspectFill" />
             <view class="text">没有数据了</view>
         </view>
