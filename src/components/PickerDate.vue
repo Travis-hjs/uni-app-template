@@ -154,14 +154,14 @@ export default class PickerDate extends Vue {
 <style lang="scss">
 .picker_date {
     width: 100%; height: 100%; position: fixed; top: 0; left: 0; background-color: rgba(0,0,0,.45); z-index: 999; overflow: hidden; flex-direction: column; -webkit-flex-direction: column; animation: fadeShow 0.3s ease;
-    .picker_option{ 
+    .picker_option { 
         width: 100%; padding: 12rpx 0;
         .btn { font-size: 30rpx; width: 160rpx; line-height: 80rpx; color: #999; text-align: center; }
         .confirm { color: #F37131; }
     }
     .picker_content { 
         background-color: #ffffff; animation: pickerShowSlide 0.24s ease; 
-        .picker_view{ 
+        .picker_view { 
             width: 100%; height: 236px; 
             .picker_item { text-align: center; line-height: 36px; }
         }

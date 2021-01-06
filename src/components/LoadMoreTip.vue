@@ -17,7 +17,7 @@
             <view class="text">上拉加载更多</view>
         </view>
         
-        <view class="content" v-show="info.state === 'nomore'" style="padding: 10px 0;">
+        <view class="content nomore_box" v-show="info.state === 'nomore'">
             <image class="nodata_img" :src="imageInfo.noneData" mode="aspectFill" />
             <view class="text">没有数据了</view>
         </view>
@@ -55,11 +55,12 @@ export default class LoadMoreTip extends Vue {
 <style lang="scss">
 .load_more_tip{ 
     width: 100%; min-height: 180rpx; 
-    .content{ 
+    .content { 
         text-align: center; 
-        .text{ font-size: 28rpx; color: #999; }
-        .iconfont{ font-size: 48rpx; color: #999; margin-bottom: 4px; }
-        .nodata_img{ width: 186rpx; height: 128rpx; margin: 0 auto 4px; }
+        .text { font-size: 28rpx; color: #999; }
+        .iconfont { font-size: 48rpx; color: #999; margin-bottom: 4px; }
+        .nodata_img { width: 186rpx; height: 128rpx; margin: 0 auto 4px; }
     }
+    .nomore_box { padding: 10px 0; }
 }
 </style>
