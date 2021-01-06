@@ -39,7 +39,7 @@ class ModuleApi {
             data: {
                 pageIndex: params.pageIndex,
                 pageSize: params.pageSize,
-                data: []
+                list: []
             },
             msg: ""
         }
@@ -56,7 +56,7 @@ class ModuleApi {
                     }
                     result.msg = "success"
                     result.state = 1;
-                    result.data.data = new Array(total).fill(0).map(function(_, index) {
+                    result.data.list = new Array(total).fill(0).map(function(_, index) {
                         return {
                             id: params.pageIndex * params.pageSize + index + 1,
                             value: utils.randomText(6, 30),

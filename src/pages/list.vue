@@ -6,7 +6,7 @@
             <view class="value">{{ item.value }}</view>
         </view>
         <view style="height: 30vh" v-if="loadMoreData.list.length === 0"></view>
-        <LoadMoreTip :state="loadMoreData.state" />
+        <LoadMoreTip :info="loadMoreData" />
     </view>
 </template>
 <script lang="ts">

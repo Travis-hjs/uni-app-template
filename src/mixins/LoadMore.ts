@@ -7,7 +7,8 @@ function createLoadMoreData(): LoadMoreType {
         state: "wait",
         list: [],
         pageIndex: 0,
-        pageSize: 10
+        pageSize: 10,
+        requestCount: 0
     }
 }
 
@@ -41,9 +42,10 @@ export default class LoadMore extends Vue {
         this.requestList().then(result => {
             this.loadMoreData.state = "wait";
             if (result.state === 1) {
-                this.loadMoreData.list = list.concat(result.data.data);
+                this.loadMoreData.requestCount++;
+                this.loadMoreData.list = list.concat(result.data.list);
                 // 判断是否没有数据了
-                if (result.data.data.length < this.loadMoreData.pageSize) {
+                if (result.data.list.length < this.loadMoreData.pageSize) {
                     this.loadMoreData.state = "nomore";
                 } else {
                     this.loadMoreData.pageIndex++;

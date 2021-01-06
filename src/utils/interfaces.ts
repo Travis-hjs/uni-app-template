@@ -80,7 +80,7 @@ export interface ApiListData extends ApiResult {
         /** 每页条数 */
         pageSize: number
         /** 列表数据 */
-        data: Array<any>
+        list: Array<any>
     }
 }
 
@@ -99,4 +99,9 @@ export interface LoadMoreType extends ListParams {
     state: "wait" | "loading" | "nomore"
     /** 加载的列表数据 */
     list: Array<any>
+    /**
+     * 请求成功次数
+     * @description 成功时才会累加，`requestCount === 1` 时为首次获取数据 
+    */
+    requestCount: number
 }

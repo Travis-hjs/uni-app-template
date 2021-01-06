@@ -1,6 +1,6 @@
 <template>
     <view class="load_more_tip flex fcenter fvertical">
-        <view class="preloader" v-show="state == 'loading'">
+        <view class="preloader" v-show="info.state === 'loading'">
             <view class="preloader-inner">
                 <view class="preloader-inner-gap"></view>
                 <view class="preloader-inner-left">
@@ -12,12 +12,12 @@
             </view>
         </view>
 
-        <view class="content" v-show="state == 'wait'" :style="{ 'padding-bottom':  paddingBottom + 'px' }">
+        <view class="content" v-show="info.state === 'wait' && info.requestCount > 0" :style="{ 'padding-bottom':  paddingBottom + 'px' }">
             <view class="iconfont icon-arrow_up_fill"></view>
             <view class="text">上拉加载更多</view>
         </view>
         
-        <view class="content" v-if="state == 'nomore'" style="padding-bottom: 10px;">
+        <view class="content" v-show="info.state === 'nomore'" style="padding-bottom: 10px;">
             <image class="nodata_img" :src="imageInfo.noneData" mode="aspectFill" />
             <view class="text">没有数据了</view>
         </view>
@@ -32,15 +32,22 @@ import store from "../store";
 @Component({})
 export default class LoadMoreTip extends Vue {
     @Prop({
-        type: String,
-        default: "wait"
-    }) state!: LoadMoreType["state"]
+        type: Object,
+        default() {
+            return {
+                state: "wait",
+                requestCount: 0
+            }
+        }
+    })
+    info!: LoadMoreType
 
      @Prop({
         type: [String, Number],
         default: ""
-    }) paddingBottom!: string | number
-    
+    })
+    paddingBottom!: string | number
+
     private imageInfo = store.imageInfo
 
 }
