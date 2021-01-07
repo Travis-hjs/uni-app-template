@@ -9,7 +9,7 @@
 
 2. 状态管理不建议使用`vuex`，因为会导致代码变得冗余，而且在编辑器中失去代码静态追踪和提示“[被忽略的官方说明](https://vuex.vuejs.org/zh/#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E6%88%91%E5%BA%94%E8%AF%A5%E4%BD%BF%E7%94%A8-vuex%EF%BC%9F)”使用方式可参考：[你不需要vuex](https://juejin.im/post/5d425a83f265da03d8719cb8) 
 
-3. 模板为了轻量化只保留了常用的组件，需要其他组件自行添加，[官方扩展组件](https://uniapp.dcloud.io/component/README?id=uniui)，这里推荐使用官方的扩展组件，这样可以确保打包成多端的兼容问题
+3. 模板为了轻量化只保留了常用的组件，需要其他组件自行添加，[官方扩展组件](https://uniapp.dcloud.io/component/README?id=uniui)，这里不推荐使用除官方外的扩展组件，因为打包成多端可能会有兼容问题，所以我习惯自己写，这样代码会更少
 
 4. 已经配置好在`manifest.json`文件中h5端请求代理，不需要可剔除
 
