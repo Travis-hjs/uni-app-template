@@ -38,15 +38,15 @@ export default class ModuleControl {
     /**
      * 显示提示条
      * @param tip 提示文字
-     * @param src 图片路径
+     * @param duration 持续时间
      */
-    showToast(tip: string, src?: string) {
+    showToast(tip: string, duration = 2000) {
         uni.showToast({
             title: tip,
             // position: "bottom",
             icon: "none",
-            duration: 2000,
-            image: src
+            duration: duration,
+            // image: src
         });
     }
 
