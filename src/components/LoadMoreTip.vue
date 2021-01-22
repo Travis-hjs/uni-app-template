@@ -17,9 +17,13 @@
             <view class="text">上拉加载更多</view>
         </view>
         
-        <view class="content nomore_box" v-show="info.state === 'nomore'">
+        <view class="content nomore_box" v-show="info.state === 'nomore' && info.list.length == 0">
             <image class="nodata_img" :src="imageInfo.noneData" mode="aspectFill" />
-            <view class="text">没有数据了</view>
+            <view class="text">{{ noneDataText }}</view>
+        </view>
+        
+        <view class="content nomore_box" v-show="info.state === 'nomore' && info.list.length >= info.pageSize">
+            <view class="text">{{ finishText }}</view>
         </view>
         
     </view>
@@ -31,24 +35,38 @@ import store from "../store";
 
 @Component({})
 export default class LoadMoreTip extends Vue {
+    readonly imageInfo = store.imageInfo
+
     @Prop({
         type: Object,
         default() {
             return {
                 state: "wait",
-                requestCount: 0
+                requestCount: 0,
+                list: [],
+                pageSize: 10
             }
         }
     })
     info!: LoadMoreType
 
-     @Prop({
+    @Prop({
+        type: String,
+        default: "没有数据了"
+    })
+    noneDataText!: string
+
+    @Prop({
+        type: String,
+        default: "没有更多了"
+    })
+    finishText!: string
+
+    @Prop({
         type: [String, Number],
         default: ""
     })
     paddingBottom!: string | number
-
-    private imageInfo = store.imageInfo
 
 }
 </script>
