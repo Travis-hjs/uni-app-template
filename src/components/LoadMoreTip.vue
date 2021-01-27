@@ -57,7 +57,7 @@ export default class LoadMoreTip extends Vue {
 
     @Prop({
         type: String,
-        default: "没有更多了"
+        default: "数据已全部加载完"
     })
     finishText!: string
 
