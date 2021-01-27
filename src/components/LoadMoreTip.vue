@@ -22,7 +22,7 @@
             <view class="text">{{ noneDataText }}</view>
         </view>
         
-        <view class="content nomore_box" v-show="info.state === 'nomore' && info.list.length >= info.pageSize">
+        <view class="content nomore_box" v-show="info.state === 'nomore' && info.list.length > 0">
             <view class="text">{{ finishText }}</view>
         </view>
         
@@ -43,8 +43,7 @@ export default class LoadMoreTip extends Vue {
             return {
                 state: "wait",
                 requestCount: 0,
-                list: [],
-                pageSize: 10
+                list: []
             }
         }
     })
