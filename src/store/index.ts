@@ -8,6 +8,10 @@ import {
 const cacheName = "user-info";
 
 export class ModuleStore extends ModuleAppOption {
+    constructor() {
+        super();
+        this.initUserInfo();
+    }
     /** 图片对象集 */
     get imageInfo() {
         // 需要用作背景图的可以用`require`引入
@@ -37,7 +41,7 @@ export class ModuleStore extends ModuleAppOption {
     }
 
     /** 初始化用户数据（从本地获取） */
-    initUserInfo() {
+    private initUserInfo() {
         const data = uni.getStorageSync(cacheName);
         if (data) {
             this.updateUserInfo(JSON.parse(data));
