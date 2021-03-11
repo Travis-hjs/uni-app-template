@@ -3,13 +3,13 @@ import store from "../store";
 import { ApiResult, RequestParams } from "./interfaces";
 
 function getResultInfo(result: { statusCode: number, data: any }) {
-    const info: ApiResult = { state: -1, msg: "", data: null }
+    const info: ApiResult = { code: -1, msg: "", data: null }
     switch (result.statusCode) {
         case 999:
             info.msg = "网络出错了";
             break;
         case 200:
-            info.state = 1;
+            info.code = 1;
             info.msg = "ok";
             info.data = result.data;
             break;
@@ -54,7 +54,7 @@ export default function request(
             success(res) {
                 // console.log("request.success", res);
                 const info = getResultInfo(res);
-                if (info.state === 1) {
+                if (info.code === 1) {
                     success && success(info);
                     resolve(info);
                 } else {

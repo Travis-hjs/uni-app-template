@@ -41,7 +41,7 @@ export default class LoadMore extends Vue {
         this.loadMoreData.state = "loading";
         this.requestList().then(result => {
             this.loadMoreData.state = "wait";
-            if (result.state === 1) {
+            if (result.code === 1) {
                 this.loadMoreData.requestCount++;
                 this.loadMoreData.list = list.concat(result.data.list);
                 // 判断是否没有数据了

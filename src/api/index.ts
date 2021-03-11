@@ -35,7 +35,7 @@ class ModuleApi {
             "https://muse-ui.org/img/breakfast.f1098290.jpg"
         ]
         const result: ApiListData = {
-            state: 1,
+            code: 1,
             data: {
                 pageIndex: params.pageIndex,
                 pageSize: params.pageSize,
@@ -47,7 +47,7 @@ class ModuleApi {
             setTimeout(function () {
                 if (delay > 900 && params.pageIndex !== 0) {
                     result.msg = "接口查询超时"
-                    result.state = 0;
+                    result.code = 0;
                     reject(result);
                 } else {
                     let total = params.pageSize;
@@ -55,7 +55,7 @@ class ModuleApi {
                         total = utils.ranInt(2, params.pageSize - 2);
                     }
                     result.msg = "success"
-                    result.state = 1;
+                    result.code = 1;
                     result.data.list = new Array(total).fill(0).map(function(_, index) {
                         return {
                             id: params.pageIndex * params.pageSize + index + 1,
