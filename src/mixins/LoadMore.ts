@@ -62,12 +62,15 @@ export default class LoadMore extends Vue {
         })
     }
   
-    /** 刷新数据 */
-    refreshData() {
+    /**
+     * 刷新数据
+     * @param callback 加载结束回调
+    */
+    refreshData(callback?: () => void) {
         this.loadMoreData.pageIndex = 0;
         this.loadMoreData.list = [];
         this.loadMoreData.state = "wait";
-        this.getListData();
+        this.getListData(callback);
     }
   
     /**

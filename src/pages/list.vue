@@ -41,13 +41,13 @@ export default class LoadMoreList extends LoadMore {
      * - 当处理完数据刷新后，`uni.stopPullDownRefresh` 可以停止当前页面的下拉刷新。
      */
     onPullDownRefresh() {
-        this.resetListData();
-        this.getListData(() => {
+        this.refreshData(() => {
             uni.stopPullDownRefresh();
         });
     }
 
     onLoad() {
+        // 页面一开始用 getListData 和 refreshData都是一样的，因为变量一开始都一样
         this.getListData();
     }
 }
