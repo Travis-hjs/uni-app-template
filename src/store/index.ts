@@ -52,7 +52,11 @@ export class ModuleStore extends ModuleAppOption {
 
 }
 
-/** 状态模块 */
+/**
+ * 状态管理模块
+ * - `OOP`单例设计模式
+ * - 参考 [你不需要`Vuex`](https://juejin.cn/post/6844903904023429128)
+ */
 const store = new ModuleStore();
 
 export default store;
