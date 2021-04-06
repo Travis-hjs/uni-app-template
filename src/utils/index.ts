@@ -122,7 +122,7 @@ class ModuleUtils extends ModuleControl {
          * 获取数字小数点的长度
          * @param n 数字
          */
-         function getDecimalLength(n: number) {
+        function getDecimalLength(n: number) {
             const decimal = n.toString().split(".")[1];
             return decimal ? decimal.length : 0;
         }
