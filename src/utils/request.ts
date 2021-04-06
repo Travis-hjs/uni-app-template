@@ -1,6 +1,6 @@
 import config from "./Config";
 import store from "../store";
-import { ApiResult, RequestParams } from "./interfaces";
+import { ApiResult } from "./interfaces";
 
 function getResultInfo(result: { statusCode: number, data: any }) {
     const info: ApiResult = { code: -1, msg: "", data: null }
@@ -33,15 +33,13 @@ function getResultInfo(result: { statusCode: number, data: any }) {
 
 /**
  * 基础请求
- * @description 可使用回调方式使用和`Promise`方式
+ * @param method 请求方法
+ * @param path 请求路径
+ * @param data 请求参数
+ * @param heders 设置请求的 header，header 中不能设置 Referer。
  */
-export default function request(
-    method: RequestParams["method"],
-    path: RequestParams["path"],
-    data?: RequestParams["data"],
-    heders: RequestParams["headers"] = {}
-): Promise<ApiResult> {
-    return new Promise(function(resolve, reject) {
+export default function request(method: "GET" | "POST" | "DELETE" | "PUT", path: string, data?: any, heders: {[key: string]: string} = {}) {
+    return new Promise<ApiResult>(function(resolve, reject) {
         uni.request({
             method: method,
             header: {

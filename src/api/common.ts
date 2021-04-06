@@ -15,7 +15,7 @@ export function login(form: { account: string | number, password: string | numbe
  * @param value 用户标识
  */
 export function searchUserType(value: "admin" | "vip" | "normal") {
-    return request("POST", "/Logout", { type: value });
+    return request("POST", "/user/searchType", { type: value });
 }
 
 /** 
