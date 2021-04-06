@@ -13,7 +13,7 @@
 import { Component, Mixins } from "vue-property-decorator";
 import LoadMore from "../mixins/LoadMore";
 import LoadMoreTip from "../components/LoadMoreTip.vue";
-import api from "../api";
+import { getTestList } from "../api/common";
 import { ApiListData } from "../utils/interfaces";
 
 @Component({
@@ -28,7 +28,7 @@ export default class LoadMoreList extends LoadMore {
     }
 
     requestList() {
-        return api.getTestList({
+        return getTestList({
             pageIndex: this.loadMoreData.pageIndex,
             pageSize: this.loadMoreData.pageSize
         })

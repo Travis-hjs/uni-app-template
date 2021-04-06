@@ -24,7 +24,7 @@ export default class TheButton extends Vue {
     textColor!: string;
 
     /** 按钮高度`rpx` */
-    @Prop({ type: Number, default: 100 })
+    @Prop({ type: Number, default: 90 })
     height!: number;
 
     /** 是否圆角按钮 */

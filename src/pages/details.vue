@@ -16,7 +16,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import TheFooter from "../components/TheFooter.vue"
 import store from "../store";
-import apiUser from "../api";
+import { searchUserType } from "../api/common";
 
 @Component({
     components: {
@@ -36,8 +36,9 @@ export default class DetailsPage extends Vue {
     goback() {
         uni.navigateBack({});
     }
-    getData() {
-        apiUser.searchUserType("vip").then(res => {
+    
+    getUserType() {
+        searchUserType("vip").then(res => {
             console.log(res);
             
         })

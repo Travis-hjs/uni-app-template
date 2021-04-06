@@ -1,4 +1,4 @@
-import config from "../modules/Config";
+import config from "./Config";
 import store from "../store";
 import { ApiResult, RequestParams } from "./interfaces";
 
@@ -37,16 +37,16 @@ function getResultInfo(result: { statusCode: number, data: any }) {
  */
 export default function request(
     method: RequestParams["method"],
-    path: RequestParams["path"], 
-    data?: RequestParams["data"], 
-    success?: RequestParams["success"], 
-    fail?: RequestParams["fail"]
+    path: RequestParams["path"],
+    data?: RequestParams["data"],
+    heders: RequestParams["headers"] = {}
 ): Promise<ApiResult> {
     return new Promise(function(resolve, reject) {
         uni.request({
             method: method,
             header: {
-                "Authorization": store.userInfo.token
+                "Authorization": store.userInfo.token,
+                ...heders
             },
             url: config.apiUrl + path,
             data: data,
@@ -54,23 +54,18 @@ export default function request(
             success(res) {
                 // console.log("request.success", res);
                 const info = getResultInfo(res);
-                if (info.code === 1) {
-                    success && success(info);
-                    resolve(info);
-                } else {
+                if (info.code !== 1) {
                     uni.showToast({
                         title: info.msg,
                         position: "bottom",
                         duration: 2400
                     });
-                    fail && fail(info);
-                    resolve(info);
                 }
+                resolve(info);
             },
             fail(err) {
                 const info = getResultInfo({ statusCode: 999, data: null });
                 info.msg = err.errMsg;
-                fail && fail(info);
                 resolve(info);
             }
         })

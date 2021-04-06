@@ -1,4 +1,5 @@
 import ModuleAppOption from "./AppOption";
+import utils from "../utils";
 import { 
     DeepPartial,
     DeepReadonly,
@@ -12,6 +13,7 @@ export class ModuleStore extends ModuleAppOption {
         super();
         this.initUserInfo();
     }
+
     /** 图片对象集 */
     get imageInfo() {
         // 需要用作背景图的可以用`require`引入
@@ -36,7 +38,7 @@ export class ModuleStore extends ModuleAppOption {
      * @param value 
      */
     updateUserInfo(value: DeepPartial<UserInfoType>) {
-        this.modifyData(this.userInfo, value);
+        utils.modifyData(this.userInfo, value);
         uni.setStorageSync(cacheName, JSON.stringify(this.userInfo));
     }
 

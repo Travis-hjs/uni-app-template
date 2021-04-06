@@ -39,6 +39,8 @@ export interface RequestParams {
     path: string
     /** 传参对象 */
     data: any
+    /** 设置请求的 header，header 中不能设置 Referer。 */
+    headers: { [key: string]: string },
     /** 请求成功回调 */
     success?(res: ApiResult): void
     /** 请求失败回调 */
