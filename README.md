@@ -4,6 +4,8 @@
 
 **平台兼容说明** [https://uniapp.dcloud.io/use](https://uniapp.dcloud.io/use "点击跳转")
 
+[demo预览](https://github.com/Hansen-hjs/Reader-Vue)
+
 ### 模板说明：
 1. 基于`cli`创建的轻量化项目模板，只保留`vue`最基础的使用方式，保证打包到多端时不需要作太多判断处理
 
