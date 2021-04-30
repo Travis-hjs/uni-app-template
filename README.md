@@ -25,7 +25,7 @@
 
 > `components` 通用组件目录
 
-> `modules` 基础模块目录
+> `mixins` vue 混入目录，等价于基类
 
 > `pages` 主程序页面目录，需要分包自行新建其他页面目录
 
@@ -37,31 +37,39 @@
 
 > `styles` 不说了...
 
+## 项目初始化
 
-### sass安装失败时配置（window系统）cmd 窗口首先执行命令再初始化
-```
-set sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
-```
-
-## 初始化项目
 ```
 npm install
 ```
+### 开发运行
 
-### 运行项目
 ```
 npm run serve
 ```
 
-### 打包项目，APP项目只能用官方 HBuildX IDE 去打包
+### 打包构建
+
 ```
 npm run build
 ```
 
-### 在 HBuildX 控制台中出现版本更新提示需要手动升级一下项目
+## npm 镜像设置
+
+**sass 安装失败时先执行以下命令再初始化**
+
 ```
-npm update
+set sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/)
+**设置 npm 为淘宝镜像，注意不是设置为 cnpm 使用，依然是使用 npm**
+
+```
+npm config set registry http://registry.npm.taobao.org/
+```
+
+**还原 npm 镜像，要发布自己的 npm 包用**
+
+```
+npm config set registry http://registry.npmjs.org/
+```
