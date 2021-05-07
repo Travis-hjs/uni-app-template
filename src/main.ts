@@ -2,7 +2,8 @@ import Vue from "vue";
 import App from "./App.vue";
 
 // #ifdef H5
-const { version } = require("../package.json");
+import { version } from "../package.json";
+
 window.version = version;
 // #endif
 
