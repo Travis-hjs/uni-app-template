@@ -190,7 +190,6 @@ export default class TheFormItem extends Emitter {
         font-size: 28rpx;
         font-weight: bold;
         color: #555;
-        margin-right: 24rpx;
         height: 80rpx;
         line-height: 80rpx;
         text-align: left;
@@ -198,6 +197,9 @@ export default class TheFormItem extends Emitter {
             color: #f0341b;
             padding-right: 4rpx;
         }
+    }
+    .flex .the-form-label {
+        margin-right: 24rpx;
     }
     .the-form-label-right {
         text-align: right;

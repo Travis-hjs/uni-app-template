@@ -1,6 +1,13 @@
 <template>
     <view class="form-page">
-        <TheForm :model="formData" :rules="formRules" labelWidth="160rpx" labelPosition="left" :border="hasBorder" ref="the-form">
+        <radio-group class="grid-box" @change="onPosition">
+            <label class="flex fvertical" v-for="(item) in positionOptions" :key="item.value">
+                <radio :value="item.value" :checked="item.value === position" />
+                <view>{{ item.label }}</view>
+            </label>
+        </radio-group>
+        <view class="line"></view>
+        <TheForm :model="formData" :rules="formRules" labelWidth="168rpx" :labelPosition="position" :border="hasBorder" ref="the-form">
             <TheFormItem prop="userName" label="用户名">
                 <input class="the-input" type="text" v-model="formData.userName" :placeholder="formRules.userName[0].message">
             </TheFormItem>
@@ -74,6 +81,18 @@ interface FormDataType {
     }
 })
 export default class FormPage extends Vue {
+
+    position = "left";
+
+    positionOptions = [
+        { value: "left", label: "靠左排列" },
+        { value: "right", label: "靠右排列" },
+        { value: "top", label: "靠顶部排列" }
+    ]
+
+    onPosition(res: { detail: { value: string } }) {
+        this.position = res.detail.value;
+    }
 
     hasBorder = true;
 
@@ -152,10 +171,13 @@ export default class FormPage extends Vue {
 
     onSubmit() {
         const form: TheForm = this.$refs["the-form"] as any;
-        
-        form.validate(valid => {
+        form.validate((valid, reuls) => {
             if (valid) {
                 console.log("表单数据 >>", this.formData);
+            } else {
+                const keys = Object.keys(reuls);
+                const firstProp = keys[0];
+                utils.showToast(`${reuls[firstProp][0].message}`);
             }
         })
     }
@@ -200,5 +222,6 @@ export default class FormPage extends Vue {
         grid-gap: 20rpx;
         font-size: 32rpx;
     }
+    .line { width: 100%; padding-top: 40rpx; margin-bottom: 40rpx; border-bottom: solid 1px #eee; }
 }
 </style>
