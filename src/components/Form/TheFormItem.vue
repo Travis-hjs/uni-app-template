@@ -2,7 +2,7 @@
     <view :class="['the-form-item', { 'the-form-item-border': useBorder }]">
         <view :class="[{ 'flex': usePosition !== 'top' }]">
             <view :class="['the-form-label ellipsis', { 'the-form-label-right': usePosition === 'right' }]" :style="{ 'width': useLabelWidth }">
-                <text class="the-form-symbol" v-if="isRequired">*</text>
+                <text class="the-form-symbol" v-if="isRequired()">*</text>
                 <text>{{ label }}</text>
             </view>
             <view :class="['the-form-value-box', { 'f1': usePosition !== 'top' }]">
@@ -61,70 +61,55 @@ export default class TheFormItem extends Emitter {
 
     /** 父组件实例 */
     @Inject("theFormComponent")
-    parentComponent!: TheForm;
+    private parentComponent!: TheForm;
 
     /** 是否验证 */
-    get isRequired() {
-        let value = false;
+    private isRequired() {
+        let result = false;
         const rules = this.parentComponent.rules;
         if (rules && rules[this.prop] && rules[this.prop].length) {
-            value = rules[this.prop].some(item => item.required);
+            result = rules[this.prop].some(item => item.required);
         }
-        return value;
-    }
-
-    // 监听父组件`labelPosition`变动
-    @Watch("parentComponent.labelPosition", { immediate: true })
-    onLabelPosition(val: labelPosition) {
-        this.setUsePosition(val);
+        return result;
     }
 
     /** 视图中使用的定位属性值 */
-    usePosition: labelPosition = "left";
+    private usePosition: labelPosition = "left";
 
-    /** 设置视图中使用的定位属性值 */
-    setUsePosition(val: labelPosition) {
-        let value = this.labelPosition;
-        if (!value) {
-            value = val;
+    // 监听父组件`labelPosition`变动
+    @Watch("parentComponent.labelPosition", { immediate: true })
+    private onLabelPosition(val: labelPosition) {
+        let result = this.labelPosition;
+        if (!result) {
+            result = val;
         }
-        this.usePosition = value;
-    }
-
-    // 监听父组件`labelWidth`变动
-    @Watch("parentComponent.labelWidth", { immediate: true })
-    onLabelWidth(val: string) {
-        this.setUseLabelWidth(val);
+        this.usePosition = result;
     }
 
     /** 视图中使用的`label`宽度值 */
-    useLabelWidth = "";
+    private useLabelWidth = "";
 
-    /** 设置视图中使用的`label`宽度值 */
-    setUseLabelWidth(val: string) {
-        let value = this.labelWidth;
-        if (!value) {
-            value = val;
+    // 监听父组件`labelWidth`变动
+    @Watch("parentComponent.labelWidth", { immediate: true })
+    private onLabelWidth(val: string) {
+        let result = this.labelWidth;
+        if (!result) {
+            result = val;
         }
-        this.useLabelWidth = value;
+        this.useLabelWidth = result;
     }
+
+    /** 视图中使用的`border`值 */
+    private useBorder = false;
 
     // 监听父组件`border`变动
     @Watch("parentComponent.border", { immediate: true })
     onBorder(val: boolean) {
-        this.setUseBorder(val);
-    }
-
-    /** 视图中使用的`border`值 */
-    useBorder = false;
-
-    /** 设置视图中使用的`border`值 */
-    setUseBorder(val: boolean) {
-        let value = this.border;
-        if (utils.checkType(value) !== "boolean") {
-            value = val;
+        let result = this.border;
+        if (utils.checkType(result) !== "boolean") {
+            result = val;
         }
-        this.useBorder = value;
+        this.useBorder = result;
     }
 
     mounted() {
@@ -138,9 +123,9 @@ export default class TheFormItem extends Emitter {
         this.dispatch("TheForm", "theFormRemoveField", [this]);
     }
 
-    validateText = "-";
+    private validateText = "-";
     
-    showValidate = false;
+    private showValidate = false;
 
     /** 重置当前验证提示 */
     resetField() {
@@ -158,7 +143,7 @@ export default class TheFormItem extends Emitter {
         const value = model[this.prop];
         const tip = "校验不通过";
         
-        if (this.prop && rules && rules[this.prop] && this.isRequired) {
+        if (this.prop && rules && rules[this.prop] && this.isRequired()) {
             const rulesItem = rules[this.prop];
             for (let i = 0; i < rulesItem.length; i++) {
                 const item = rulesItem[i];

@@ -51,6 +51,9 @@
             <TheFormItem prop="phone" label="用户手机号">
                 <input class="the-input" type="number" v-model="formData.phone" :placeholder="formRules.phone[0].message">
             </TheFormItem>
+            <TheFormItem prop="avatar" label="用户头像" :border="false">
+                <UploadImage :src="formData.avatar" @change="onUpload" />
+            </TheFormItem>
         </TheForm>
         <button @click="onSubmit()">提交表单</button>
         <button @click="onReset()">重置表单</button>
@@ -63,17 +66,20 @@
 import { Component, Vue } from "vue-property-decorator";
 import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
+import UploadImage from "@/components/UploadImage.vue";
 import utils from "@/utils";
 
 interface FormDataType {
     userName: string,
     phone: "" | number,
+    avatar: string
 }
 
 @Component({
     components: {
         TheForm,
         TheFormItem,
+        UploadImage
     }
 })
 export default class FormPage extends Vue {
@@ -83,6 +89,7 @@ export default class FormPage extends Vue {
     formData: FormDataType = {
         userName: "",
         phone: "",
+        avatar: ""
     }
 
     formRules: TheForm["rules"] = {
@@ -95,13 +102,16 @@ export default class FormPage extends Vue {
         ]
     }
 
-
     multipleOptions = [
         { value: "1", label: "多选一" },
         { value: "2", label: "多选二" },
         { value: "3", label: "多选三" },
         { value: "4", label: "多选四" },
     ]
+
+    onUpload(res: { id: string, src: string }) {
+        this.formData.avatar = res.src;
+    }
 
     onSubmit() {
         const form: TheForm = this.$refs["the-form"] as any;
@@ -135,6 +145,7 @@ export default class FormPage extends Vue {
         const form: TheForm = this.$refs["the-form"] as any;
         form.resetField("phone");
     }
+    
 }
 </script>
 ```
