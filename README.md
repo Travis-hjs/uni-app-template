@@ -1,6 +1,6 @@
 # uni-app 通用模板
 
-**[预览地址](http://huangjingsheng.gitee.io/hjs/uni-app)**
+**demo：[预览地址](http://huangjingsheng.gitee.io/hjs/uni-app)**
 
 **官网地址** [https://uniapp.dcloud.io/](https://uniapp.dcloud.io/ "点击跳转")
 
@@ -18,6 +18,8 @@
 4. 已经配置好在`manifest.json`文件中h5端请求代理，不需要可剔除
 
 5. 预装了`sass`，部分注意事项请看`uni.scss`代码注释
+
+6. 封装了一些项目必用功能：`http`请求、上传图片组件、触底加载更多组件、`iPhone X`系列底部兼容组件（头部刘海导航参照这个即可）、表单组件（使用方式基本和`element-ui`一致）
 
 **注意：`vue.config.js` 中配置的 `css.loaderOptions` 是无法在当前项目生效的，可能是`uni-app`项目设定和标准`vue-cli`项目设定不一样导致的，需要在`uni.scss`文件全局引入即可，具体看代码**
 
