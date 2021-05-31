@@ -26,6 +26,12 @@
                 "navigationBarTextStyle": "white",
                 "enablePullDownRefresh": true
             }
+        },
+        {
+			"path": "pages/form",
+			"style": {
+				"navigationBarTitleText": "表单验证"
+			}
         }
 	],
 	"globalStyle": {

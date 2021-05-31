@@ -4,6 +4,8 @@
         <view>userInfo.token: {{ userInfo.token }}</view>
         <button class="button" @click="setToken">修改`userInfo.token = "123"`</button>
         <div class="line"></div>
+        <TheButton color="#07c160" @click="openForm()">打开表单验证页</TheButton>
+        <div class="line"></div>
         <image class="logo" :src="imageInfo.logo"></image>
         <div class="line"></div>
         <TheButton :loading="loading" @click="setLoading(2)">加载 2 秒</TheButton>
@@ -49,6 +51,12 @@ export default class Home extends Vue {
         // console.log("执行");
         this.loading = true;
         setTimeout(() => this.loading = false, val * 1000);
+    }
+
+    openForm() {
+        uni.navigateTo({
+            url: "/pages/form"
+        })
     }
 }
 </script>

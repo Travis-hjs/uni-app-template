@@ -17,7 +17,7 @@ export type DeepRequired<T> = {
 export type NumberSymbols = "+" | "-"| "*" | "/";
 
 /** JavaScript类型 */
-export type JavaScriptTypes = "string" | "number" | "array" | "object" | "function" | "null" | "undefined";
+export type JavaScriptTypes = "string" | "number" | "array" | "object" | "function" | "null" | "undefined" | "boolean";
 
 export interface ShowConfirmOptions {
     /** 内容 */
@@ -107,3 +107,22 @@ export interface LoadMoreType extends ListParams {
     */
     requestCount: number
 }
+
+/** 表单规则类型 */
+export interface TheFormRulesItem {
+    /** 是否必填项 */
+    required?: boolean
+    /** 提示字段 */
+    message?: string
+    /** 指定类型 */
+    type?: "number" | "array"
+    /** 自定义的校验规则（正则） */
+    reg?: RegExp
+}
+
+/** 表单规则类型 */
+export type TheFormRules = { [key: string]: Array<TheFormRulesItem> };
+
+/** `label`布局位置 */
+export type labelPosition = "left" | "right" | "top";
+
