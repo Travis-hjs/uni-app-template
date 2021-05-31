@@ -7,7 +7,7 @@
             </view>
             <view :class="['the-form-value-box', { 'f1': usePosition !== 'top' }]">
                 <slot></slot>
-                <view class="validate-text flex fvertical">
+                <view class="validate-text">
                     <view :class="['validate-tip ellipsis', { 'validate-tip-show': showValidate }]">{{ validateText }}</view>
                 </view>
             </view>
@@ -221,10 +221,10 @@ export default class TheFormItem extends Emitter {
     //     padding: 0 0 50rpx 0;
     // }
     .validate-text {
-        height: 50rpx;
+        height: 54rpx;
         .validate-tip {
             font-size: 24rpx;
-            line-height: 1;
+            line-height: 50rpx;
             color: #f0341b;
             font-weight: 400;
             transition: 0.24s all;
