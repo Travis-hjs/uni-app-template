@@ -1,5 +1,7 @@
 # from 表单组件
 
+**demo：[预览地址](http://huangjingsheng.gitee.io/hjs/uni-app/#/pages/form)**
+
 这里只实现两个核心组件`<TheForm />`和`<TheFormItem />`；因为移动端样式变化比较灵活，如果把所有表单组件都封装成`element-ui`或者`vant-ui`这类型一体库的话，导致很多无用代码和性能开销，所以这里只提供必需的功能组件，其他表单组件根据实际情况定义，保证高度灵活性。
 
 ## `<TheForm />`
@@ -37,7 +39,6 @@
 | labelWidth | string | 否 | 表单字段宽度，`px`、`rpx`、`%`；优先级高于父组件 |
 | labelPosition | string: `left`,`right`,`top` | 否 | 表单字段排版，默认`left`；优先级高于父组件 |
 | border | boolean | 否 | 是否需要显示底部边框，默认`false`；优先级高于父组件 |
-
 
 ## 使用示例
 
@@ -101,13 +102,6 @@ export default class FormPage extends Vue {
             { reg: /^1[345678]\d{9}$/, message: "手机号不正确" }
         ]
     }
-
-    multipleOptions = [
-        { value: "1", label: "多选一" },
-        { value: "2", label: "多选二" },
-        { value: "3", label: "多选三" },
-        { value: "4", label: "多选四" },
-    ]
 
     onUpload(res: { id: string, src: string }) {
         this.formData.avatar = res.src;
