@@ -79,8 +79,8 @@ $time: 0.3s all;
         transition: $time;
     }
     .loading_icon_hide {
-        // width: 0;
-        // height: 0;
+        width: 0;
+        height: 0;
         margin-right: 0;
         opacity: 0;
         visibility: hidden;
