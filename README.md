@@ -1,5 +1,7 @@
 # uni-app 通用模板
 
+**[预览地址](http://huangjingsheng.gitee.io/hjs/uni-app)**
+
 **官网地址** [https://uniapp.dcloud.io/](https://uniapp.dcloud.io/ "点击跳转")
 
 **平台兼容说明** [https://uniapp.dcloud.io/use](https://uniapp.dcloud.io/use "点击跳转")
