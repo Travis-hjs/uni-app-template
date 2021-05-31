@@ -34,12 +34,12 @@
                 <input class="the-input" v-model="formData.description" :placeholder="formRules.description[0].message">
             </TheFormItem>
             <view class="grid-box">
-                <TheButton class="f1" color="#07c160" @click="onSubmit()">提交表单</TheButton>
-                <TheButton class="f1" color="#eee" textColor="#555" @click="onReset()">重置</TheButton>
-                <TheButton class="f1" color="linear-gradient(45deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%)" @click="validatePhone()">验证手机号码</TheButton>
-                <TheButton class="f1" color="#eee" textColor="#555" @click="resetPhone()">移除手机验证</TheButton>
-                <TheButton class="f1" @click="switchBorder()">表单边框切换</TheButton>
-                <TheButton class="f1" color="#ffba00" @click="switchDesc()">
+                <TheButton color="#07c160" @click="onSubmit()">提交表单</TheButton>
+                <TheButton color="#eee" textColor="#555" @click="onReset()">重置</TheButton>
+                <TheButton color="linear-gradient(45deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%)" @click="validatePhone()">验证手机号码</TheButton>
+                <TheButton color="#eee" textColor="#555" @click="resetPhone()">移除手机验证</TheButton>
+                <TheButton @click="switchBorder()">表单边框切换</TheButton>
+                <TheButton color="#ffba00" @click="switchDesc()">
                     <text class="ellipsis" style="font-size: 28rpx">切换“描述”验证状态</text>
                 </TheButton>
             </view>
