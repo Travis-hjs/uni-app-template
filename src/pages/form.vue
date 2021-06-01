@@ -65,7 +65,7 @@ import UploadImage from "@/components/UploadImage.vue";
 import TheButton from "@/components/TheButton.vue";
 import PickerDate from "@/components/PickerDate.vue";
 import utils from "@/utils";
-import { TheFormRulesItem } from "@/utils/interfaces";
+import { TheFormRulesItem, UniAppChangeEvent } from "@/utils/interfaces";
 
 interface FormDataType {
     userName: string,
@@ -97,8 +97,8 @@ export default class FormPage extends Vue {
         { value: "top", label: "靠顶部排列" }
     ]
 
-    onPosition(res: { detail: { value: string } }) {
-        this.position = res.detail.value;
+    onPosition(e: UniAppChangeEvent<string>) {
+        this.position = e.detail.value;
     }
 
     hasBorder = true;
@@ -164,8 +164,8 @@ export default class FormPage extends Vue {
         this.formRules.description = rules;
     }
 
-    onIsAdmin(res: { detail: { value: boolean } }) {
-        this.formData.isAdmin = res.detail.value;
+    onIsAdmin(e: UniAppChangeEvent<boolean>) {
+        this.formData.isAdmin = e.detail.value;
     }
 
     multipleOptions = [
@@ -176,8 +176,8 @@ export default class FormPage extends Vue {
         { value: "5", label: "多选五" },
     ]
 
-    onMultiple(res: { detail: { value: Array<string> } }) {
-        this.formData.multiple = res.detail.value;
+    onMultiple(e: UniAppChangeEvent<Array<string>>) {
+        this.formData.multiple = e.detail.value;
     }
 
     radioOptions = [
@@ -187,8 +187,8 @@ export default class FormPage extends Vue {
         { value: "4", label: "单选四" },
     ]
 
-    onRadio(res: { detail: { value: string } }) {
-        this.formData.radioValue = res.detail.value;
+    onRadio(e: UniAppChangeEvent<string>) {
+        this.formData.radioValue = e.detail.value;
     }
 
     onUpload(res: { id: string, src: string }) {
