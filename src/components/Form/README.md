@@ -17,7 +17,7 @@
 | border | boolean | 否 | 是否需要显示底部边框，默认`false` |
 
 和`element-ui`差异：
-1. `rules`移除了`validator`，增加了`reg`正则匹配；
+1. `rules`移除了`validator`，增加了`reg`正则匹配：注意：因为微信小程序的一些特殊机制，导致传参类型会把非 number|string|object 这几个基础类型过滤掉，所以这里在写正则的时候，在末尾加上`.toString()`即可；
 2. `rules`移除了`change`触发条件，组件内部做了智能触发机制；
 
 
