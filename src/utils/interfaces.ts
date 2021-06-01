@@ -17,7 +17,7 @@ export type DeepRequired<T> = {
 export type NumberSymbols = "+" | "-"| "*" | "/";
 
 /** JavaScript类型 */
-export type JavaScriptTypes = "string" | "number" | "array" | "object" | "function" | "null" | "undefined" | "boolean";
+export type JavaScriptTypes = "string" | "number" | "array" | "object" | "function" | "null" | "undefined" | "boolean" | "regexp";
 
 export interface ShowConfirmOptions {
     /** 内容 */

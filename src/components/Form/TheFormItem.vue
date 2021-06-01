@@ -162,13 +162,17 @@ export default class TheFormItem extends Emitter {
                     this.showValidate = false;
                 }
                 if (item.reg) {
-                    if (!item.reg.test(value.toString())) {
-                        info = item;
-                        this.validateText = item.message || tip;
-                        this.showValidate = true;
-                        break;
+                    if (utils.checkType(item.reg) === "regexp") {
+                        if (!item.reg.test(value.toString())) {
+                            info = item;
+                            this.validateText = item.message || tip;
+                            this.showValidate = true;
+                            break;
+                        }
+                        this.showValidate = false;
+                    } else {
+                        console.warn("validateField >> ruls 传入的 reg 非正则，已跳过验证");
                     }
-                    this.showValidate = false;
                 }
                 // 最后判断是否为空值
                 if (value === "" || value === null || value === undefined || value.length === 0) {

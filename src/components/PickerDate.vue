@@ -165,7 +165,6 @@ export default class PickerDate extends Vue {
     }
     .picker_content { 
         background-color: #fff;
-        animation: pickerShowSlide 0.24s ease;
         transition: 0.3s all;
         transform: translate3d(0, 100%, 0);
         .picker_view { 
