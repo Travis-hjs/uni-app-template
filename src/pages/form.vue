@@ -160,8 +160,12 @@ export default class FormPage extends Vue {
 
     addFormItem() {
         const key = `add${Date.now()}`;
-        this.formData[key] = "";
-        this.formRules[key] = [{ required: true, message: `请输入 ${key}` }];
+        // 兼容微信小程序写法
+        this.$set(this.formData, key, "");
+        this.$set(this.formRules, key, [{ required: true, message: `请输入 ${key}` }]);
+
+        // this.formData[key] = "";
+        // this.formRules[key] = [{ required: true, message: `请输入 ${key}` }];
         this.addItems.push(key);
     }
 

@@ -147,7 +147,14 @@ export default class TheFormItem extends Emitter {
         const model = this.parentComponent.model;
         const value = model[this.prop];
         const tip = "校验不通过";
+
+        console.log("this.prop >>", this.prop);
+        // console.log("rules >>", rules);
+        // console.log("model >>", model);
+        // console.log("value >>", value);
+        console.log(this.parentComponent);
         
+
         if (this.prop && rules && rules[this.prop] && this.isRequired) {
             const rulesItem = rules[this.prop];
             for (let i = 0; i < rulesItem.length; i++) {
