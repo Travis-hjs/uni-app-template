@@ -108,6 +108,14 @@ export interface LoadMoreType extends ListParams {
     requestCount: number
 }
 
+/** `uni-app`change事件参数 */
+export interface UniAppChangeEvent<T> {
+    detail: {
+        /** `@change`事假触发的值 */
+        value: T
+    }
+}
+
 /** 表单规则类型 */
 export interface TheFormRulesItem {
     /** 是否必填项 */
