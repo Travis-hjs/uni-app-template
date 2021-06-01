@@ -2,7 +2,7 @@
     <view :class="['the-form-item', { 'the-form-item-border': useBorder }]">
         <view :class="[{ 'flex': usePosition !== 'top' }]">
             <view :class="['the-form-label ellipsis', { 'the-form-label-right': usePosition === 'right' }]" :style="{ 'width': useLabelWidth }">
-                <text class="the-form-symbol" v-if="isRequired()">*</text>
+                <text class="the-form-symbol" v-if="isRequired">*</text>
                 <text>{{ label }}</text>
             </view>
             <view :class="['the-form-value-box', { 'f1': usePosition !== 'top' }]">
@@ -64,7 +64,7 @@ export default class TheFormItem extends Emitter {
     private parentComponent!: TheForm;
 
     /** 是否验证 */
-    private isRequired() {
+    private get isRequired() {
         let result = false;
         const rules = this.parentComponent.rules;
         if (rules && rules[this.prop] && rules[this.prop].length) {
@@ -123,8 +123,13 @@ export default class TheFormItem extends Emitter {
         this.dispatch("TheForm", "theFormRemoveField", [this]);
     }
 
+    /**
+     * 验证提示文字
+     * @description 这个值不要给空，因为要撑开元素的高度，为空的话没有结束过渡动画
+    */
     private validateText = "-";
     
+    /** 是否显示验证提示 */
     private showValidate = false;
 
     /** 重置当前验证提示 */
@@ -143,7 +148,7 @@ export default class TheFormItem extends Emitter {
         const value = model[this.prop];
         const tip = "校验不通过";
         
-        if (this.prop && rules && rules[this.prop] && this.isRequired()) {
+        if (this.prop && rules && rules[this.prop] && this.isRequired) {
             const rulesItem = rules[this.prop];
             for (let i = 0; i < rulesItem.length; i++) {
                 const item = rulesItem[i];
@@ -154,7 +159,6 @@ export default class TheFormItem extends Emitter {
                         this.showValidate = true;
                         break;
                     }
-                    // this.validateText = "";
                     this.showValidate = false;
                 }
                 if (item.reg) {
@@ -164,7 +168,6 @@ export default class TheFormItem extends Emitter {
                         this.showValidate = true;
                         break;
                     }
-                    // this.validateText = "";
                     this.showValidate = false;
                 }
                 // 最后判断是否为空值
@@ -174,7 +177,6 @@ export default class TheFormItem extends Emitter {
                     this.showValidate = true;
                     break;
                 }
-                // this.validateText = "";
                 this.showValidate = false;
             }
         }
