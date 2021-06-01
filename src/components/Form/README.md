@@ -16,7 +16,9 @@
 | labelPosition | string: `left`,`right`,`top` | 否 | 表单字段排版，默认`left` |
 | border | boolean | 否 | 是否需要显示底部边框，默认`false` |
 
-`rules`移除了`validator`，增加了`reg`正则匹配；
+和`element-ui`差异：
+1. `rules`移除了`validator`，增加了`reg`正则匹配；
+2. `rules`移除了`change`触发条件，组件内部做了智能触发机制；
 
 
 事件/方法说明：
