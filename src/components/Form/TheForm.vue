@@ -61,6 +61,12 @@ export default class TheForm extends Vue {
     rules!: TheFormRules;
 
     /**
+     * `rules`原始数据，重置时用
+     * @description 非响应式
+     */
+    private beforeRules!: any;
+
+    /**
      * `<TheFromItem>`实例列表
      * @description 非响应式
     */
@@ -68,25 +74,35 @@ export default class TheForm extends Vue {
 
     /**
      * 设置原始数据
-     * @param formData 设置的数据 
+     * @param formData 设置的表单数据
+     * @param formRules 设置的表单规则
      */
-    setBeforeModel<T>(formData: T) {
+    setBeforeData<T>(formData: T, forRules: T) {
         // 先初始化对象
         this.beforeModel = {};
+        this.beforeRules = {};
+
         if (formData) {
-            for (const key in formData) {
-                const value = formData[key];
-                if (utils.checkType(value) === "array") {
-                    this.beforeModel[key] = [...value as any];
-                } else {
-                    this.beforeModel[key] = formData[key];
-                }
-            }
+            // 这里可以直接暴力深拷贝，因为表单字段类型只能是常用那几个
+            this.beforeModel = JSON.parse(JSON.stringify(formData));
+        }
+
+        if (forRules) {
+            this.beforeRules = JSON.parse(JSON.stringify(forRules));
+            // 这里其实也是可以用上面的来深拷贝，考虑到后面可能有 function 或者其他类型，这样处理会比较好
+            // for (const key in forRules) {
+            //     const value = forRules[key];
+            //     if (utils.checkType(value) === "array") {
+            //         this.beforeRules[key] = [...value as any];
+            //     } else {
+            //         this.beforeRules[key] = forRules[key];
+            //     }
+            // }
         }
     }
 
     created() {
-        this.setBeforeModel(this.model);
+        this.setBeforeData(this.model, this.rules || {});
 
         // 初始化清空
         this.fields = [];
@@ -178,23 +194,24 @@ export default class TheForm extends Vue {
     /**
      * 移除所有校验
      * @description 暴露给外部调用的
+     * @param callback 校验回调（同步），携带了原始数据：表单 和 规则
      */
-    resetFields() {
+    resetFields(callback: (formData: any, rules: any) => void) {
         if (!this.model) return console.warn(`表单验证缺少 "model" 对象`);
         // console.log(this.model, this.beforeModel);
         // 清空验证对象，减少`watch`的性能开销
         this.validateInfo = {};
-        
-        // 方式一：
-        // this.$emit("change", this.beforeModel); // 这里依然是单向事件触发父组件更新数据，性能最优
 
-        // 方式二；
-        // 直接修改对象的引用值
-        utils.modifyData(this.model, this.beforeModel);
+        // 方式一：
+        // 直接修改对象的引用值，这种方式在微信小程序里面会失效，原因是微信把所有数据都 JSON 格式化了，导致某些引用终端，而且传参类型也只能是 string | number | object
+        // utils.modifyData(this.model, this.beforeModel);
         
         this.fields.forEach(item => {
             item.resetField();
         })
+
+        // 方式二：单向事件触发父组件更新数据，性能最优
+        callback(JSON.parse(JSON.stringify(this.beforeModel)), JSON.parse(JSON.stringify(this.beforeRules)));
     }
 
     /**

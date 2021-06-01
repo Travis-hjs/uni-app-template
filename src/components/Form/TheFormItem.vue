@@ -48,7 +48,7 @@ export default class TheFormItem extends Emitter {
     /** 是否需要显示底部边框 */
     @Prop({
         type: [Boolean, String],
-        default: ""
+        default: "-", // 微信小程序抽风会把空字符串转成 boolean 所以这里随便给个字符串
     })
     border!: boolean;
 
@@ -162,8 +162,11 @@ export default class TheFormItem extends Emitter {
                     this.showValidate = false;
                 }
                 if (item.reg) {
-                    if (utils.checkType(item.reg) === "regexp") {
-                        if (!item.reg.test(value.toString())) {
+                    // const reg = new RegExp(item.reg.replace(/\//g, ""));
+                    const reg = new RegExp(item.reg.slice(1, item.reg.length - 1));
+
+                    if (utils.checkType(reg) === "regexp") {
+                        if (!reg.test(value.toString())) {
                             info = item;
                             this.validateText = item.message || tip;
                             this.showValidate = true;
@@ -187,6 +190,7 @@ export default class TheFormItem extends Emitter {
 
         callback(this.prop || "", info ? [info] : []);
     }
+
 }
 </script>
 <style lang="scss">
