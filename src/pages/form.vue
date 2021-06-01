@@ -19,7 +19,10 @@
             </TheFormItem>
             <TheFormItem prop="isAdmin" label="是否管理员">
                 <switch :checked="formData.isAdmin" @change="onIsAdmin" />
-                {{ formData.isAdmin ? '是' : '否' }}
+                <text style="font-size: 30rpx">{{ formData.isAdmin ? '是' : '否' }}</text>
+            </TheFormItem>
+            <TheFormItem prop="date" label="日期">
+                <TheButton :round="true" @click="openPickerDate()">{{ formData.date || "请选择日期" }}</TheButton>
             </TheFormItem>
             <TheFormItem prop="multiple" label="多选项">
                 <checkbox-group class="grid-box" @change="onMultiple">
@@ -51,6 +54,7 @@
                 </TheButton>
             </view>
         </TheForm>
+        <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" />
     </view>
 </template>
 <script lang="ts">
@@ -59,6 +63,7 @@ import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import UploadImage from "@/components/UploadImage.vue";
 import TheButton from "@/components/TheButton.vue";
+import PickerDate from "@/components/PickerDate.vue";
 import utils from "@/utils";
 import { TheFormRulesItem } from "@/utils/interfaces";
 
@@ -67,6 +72,7 @@ interface FormDataType {
     phone: "" | number,
     avatar: string,
     isAdmin: boolean,
+    date: string,
     multiple: Array<string>,
     radioValue: string,
     description: string
@@ -77,7 +83,8 @@ interface FormDataType {
         TheForm,
         TheFormItem,
         UploadImage,
-        TheButton
+        TheButton,
+        PickerDate
     }
 })
 export default class FormPage extends Vue {
@@ -105,6 +112,7 @@ export default class FormPage extends Vue {
         phone: "",
         avatar: "",
         isAdmin: false,
+        date: "",
         multiple: [],
         radioValue: "",
         description: ""
@@ -121,6 +129,9 @@ export default class FormPage extends Vue {
         avatar: [
             { required: true, message: "请上传用户头像" }
         ],
+        date: [
+            { required: true, message: "请选择日期" }
+        ],
         multiple: [
             { required: true, message: "至少选择一个选项" }
         ],
@@ -130,6 +141,21 @@ export default class FormPage extends Vue {
         description: [
             { required: false, message: "请输入描述" }
         ]
+    }
+
+    showPickerDate = false;
+
+    openPickerDate() {
+        this.showPickerDate = true;
+    }
+
+    closePickerDate() {
+        this.showPickerDate = false;
+    }
+
+    onPickerDate(val: string) {
+        this.formData.date = val;
+        this.closePickerDate();
     }
 
     switchDesc() {

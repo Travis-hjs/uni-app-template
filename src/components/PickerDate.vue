@@ -1,5 +1,5 @@
 <template>
-    <view class="picker_date flex" v-show="show">
+    <view :class="['picker_date flex', { 'picker_date_show': show }]">
         <view class="f1" @click="clickCancel()"></view>
         <view class="picker_content">
             <!-- 操作栏 -->
@@ -24,19 +24,13 @@
     </view>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { UniAppChangeEvent } from "@/utils/interfaces";
 
 /** 当前时间 */
 const now = new Date();
 // /** 一天的毫秒数 */
 // const oneDayMillisecond = 86400000
-
-interface DateChangeType {
-    detail: {
-        /** 选择器索引列表 */
-        value: Array<number>
-    }
-}
 
 /**
  * 日期选择组件
@@ -106,23 +100,12 @@ export default class PickerDate extends Vue {
     // /** 选择器显示 */
     // pickerContentShow = false;
 
-    // @Watch("show")
-    // onShowChange(value: boolean) {
-    //     if (value) {
-    //         this.$nextTick(() => {
-    //             this.pickerContentShow = true;
-    //         })
-    //     } else {
-    //         this.pickerContentShow = false;
-    //     }
-    // }
-
     created() {
         // 创建的时候要首次设置一下
         this.dayList = this.getDayList();
     }
     
-    pickerChange(e: DateChangeType) {
+    pickerChange(e: UniAppChangeEvent<Array<number>>) {
         const list = e.detail.value;
         this.selectYear = this.yearList[list[0]];
         if (list.length > 1) {
@@ -153,26 +136,53 @@ export default class PickerDate extends Vue {
 </script>
 <style lang="scss">
 .picker_date {
-    width: 100%; height: 100%; position: fixed; top: 0; left: 0; background-color: rgba(0,0,0,.45); z-index: 999; overflow: hidden; flex-direction: column; -webkit-flex-direction: column; animation: fadeShow 0.3s ease;
+    width: 100%; 
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0; 
+    background-color: rgba(0,0,0,.45); 
+    z-index: 999; 
+    overflow: hidden; 
+    flex-direction: column; 
+    -webkit-flex-direction: column; 
+    transition: 0.3s all;
+    opacity: 0;
+    visibility: hidden;
     .picker_option { 
-        width: 100%; padding: 12rpx 0;
-        .btn { font-size: 30rpx; width: 160rpx; line-height: 80rpx; color: #999; text-align: center; }
-        .confirm { color: #F37131; }
+        width: 100%; 
+        padding: 12rpx 0;
+        .btn {
+            font-size: 30rpx;
+            width: 160rpx;
+            line-height: 80rpx;
+            color: #999;
+            text-align: center;
+        }
+        .confirm {
+            color: #F37131;
+        }
     }
     .picker_content { 
-        background-color: #ffffff; animation: pickerShowSlide 0.24s ease; 
+        background-color: #fff;
+        animation: pickerShowSlide 0.24s ease;
+        transition: 0.3s all;
+        transform: translate3d(0, 100%, 0);
         .picker_view { 
-            width: 100%; height: 236px; 
-            .picker_item { text-align: center; line-height: 36px; }
+            width: 100%;
+            height: 236px; 
+            .picker_item {
+                text-align: center;
+                line-height: 36px;
+            }
         }
     }
 }
-@keyframes fadeShow {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
-@keyframes pickerShowSlide {
-    0%{ transform: translate3d(0, 100%, 0); }
-    100%{ transform: translate3d(0, 0%, 0); }
+.picker_date_show {
+    opacity: 1;
+    visibility: visible;
+    .picker_content {
+        transform: translate3d(0, 0%, 0);
+    }
 }
 </style>
