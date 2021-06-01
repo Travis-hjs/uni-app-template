@@ -47,8 +47,11 @@ export default class TheForm extends Vue {
     })
     model!: any;
 
-    /** `model`原始数据，重置时用到 */
-    private beforeModel!: any
+    /**
+     * `model`原始数据，重置时用到
+     * @description 非响应式
+    */
+    private beforeModel!: any;
 
     /** 表单校验规则 */
     @Prop({
@@ -57,8 +60,11 @@ export default class TheForm extends Vue {
     })
     rules!: TheFormRules;
 
-    /** `<TheFromItem>`实例列表 */
-    private fields: Array<TheFormItem> = [];
+    /**
+     * `<TheFromItem>`实例列表
+     * @description 非响应式
+    */
+    private fields!: Array<TheFormItem>;
 
     /**
      * 设置原始数据
@@ -81,6 +87,9 @@ export default class TheForm extends Vue {
 
     created() {
         this.setBeforeModel(this.model);
+
+        // 初始化清空
+        this.fields = [];
 
         // 监听`<TheFromItem>`创建传进来的自身组件
         this.$on("theFormAddField", (field: TheFormItem) => {
