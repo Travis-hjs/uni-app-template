@@ -1,3 +1,4 @@
+import utils from "@/utils";
 import { Component, Vue } from "vue-property-decorator";
 
 /** 自定义事件派发 */
@@ -10,7 +11,7 @@ export default class Emitter extends Vue {
      * @param eventName 事件名
      * @param params 派发的参数
      */
-    dispatch(componentName: string, eventName: string, params: Array<Vue>) {
+    protected dispatch(componentName: string, eventName: string, params: Array<Vue>) {
         let parent = this.$parent || this.$root;
         let name = parent.$options.name;
 
@@ -23,5 +24,35 @@ export default class Emitter extends Vue {
         if (parent) {
             parent.$emit.apply(parent, [eventName].concat(params as any) as any);
         }
+    }
+
+    /**
+     * 获取一些深层`key`的对象值
+     * @param target 目标对象
+     * @param key
+     * @example 
+     * ```js
+     * const info = {
+     *     list: [
+     *         { value: "hjs" }
+     *     ]
+     * }
+     * getKeyValue(info, "list.0.value");
+     * ```
+     */
+    protected getKeyValue(target: any, key: string) {
+        const keys = key.split(".");
+        let result;
+        for (let i = 0; i < keys.length; i++) {
+            const prop = keys[i];
+            result = target[prop];
+            const type = utils.checkType(result);
+            if (type !== "object" && type !== "array") {
+                break;
+            } else {
+                target = target[prop];
+            }
+        }
+        return result;
     }
 }

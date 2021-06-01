@@ -4,9 +4,10 @@
     </view>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
+import Emitter from "@/mixins/Emitter";
 import TheFormItem from "./TheFormItem.vue";
-import utils from "@/utils";
+// import utils from "@/utils";
 import { TheFormRules, labelPosition, TheFormRulesItem } from "@/utils/interfaces";
 
 @Component({
@@ -17,7 +18,7 @@ import { TheFormRules, labelPosition, TheFormRulesItem } from "@/utils/interface
         }
     }
 })
-export default class TheForm extends Vue {
+export default class TheForm extends Emitter {
 
     /** 表单字段宽度，这里使用字符串，因为可能是`px`或者`rpx` */
     @Prop({
@@ -129,10 +130,10 @@ export default class TheForm extends Vue {
     })
     onModelChange(res: any) {
         const keys = Object.keys(this.validateInfo);
-        if (keys.length && this.rules) {
+        if (keys.length) {
             for (let i = 0; i < keys.length; i++) {
                 const key = keys[i];
-                const value = res[key];
+                const value = this.getKeyValue(res, key);
                 if (value !== "" && value !== null && value !== undefined && value.length !== 0) {
                     this.validateField(key, isValid => {
                         if (isValid) {
@@ -177,7 +178,7 @@ export default class TheForm extends Vue {
         let adopt = true;
         for (let i = 0; i < this.fields.length; i++) {
             const item = this.fields[i];
-            if (this.rules && this.rules[prop] && item.prop === prop) {
+            if (((this.rules && this.rules[prop]) || (item.rules && item.rules.length)) && item.prop === prop) {
                 item.validateField((prop, rule) => {
                     if (prop && rule.length > 0) {
                         rules![prop] = rule;

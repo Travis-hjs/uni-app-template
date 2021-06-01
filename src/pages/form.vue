@@ -43,13 +43,6 @@
             <TheFormItem prop="description" label="描述">
                 <input class="the-input" v-model="formData.description" :placeholder="formRules.description[0].message">
             </TheFormItem>
-
-            <!-- 动态表单 -->
-            <TheFormItem :prop="item" :label="'新增' + item" v-for="(item, index) in addItems" :key="index">
-                <input class="the-input" v-model="formData[item]" :placeholder="formRules[item][0].message">
-                <TheButton @click="removeFormItem(index)" color="#f44336">删除当前动态表单</TheButton>
-            </TheFormItem>
-
             <view class="grid-box">
                 <TheButton color="#07c160" @click="onSubmit()">提交表单</TheButton>
                 <TheButton color="#eee" textColor="#555" @click="onReset()">重置</TheButton>
@@ -59,8 +52,8 @@
                 <TheButton color="#ffba00" @click="switchDesc()">
                     <text class="ellipsis" style="font-size: 28rpx">切换“描述”验证状态</text>
                 </TheButton>
-                <TheButton @click="addFormItem()">添加动态表单</TheButton>
             </view>
+            <TheButton color="#24292e" textColor="#fff" @click="openDynamic()">跳转动态表单</TheButton>
         </TheForm>
         <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" />
     </view>
@@ -84,10 +77,6 @@ interface FormDataType {
     multiple: Array<string>,
     radioValue: string,
     description: string
-}
-
-interface FormDataDynamic extends FormDataType {
-    [key: string]: string | Array<string> | number | boolean
 }
 
 @Component({
@@ -119,7 +108,7 @@ export default class FormPage extends Vue {
         this.hasBorder = !this.hasBorder;
     }
 
-    formData: FormDataDynamic = {
+    formData: FormDataType = {
         userName: "",
         phone: "",
         avatar: "",
@@ -153,27 +142,6 @@ export default class FormPage extends Vue {
         description: [
             { required: false, message: "请输入描述" }
         ]
-    }
-
-    /** 动态表单添加列表 */
-    addItems: Array<string> = [];
-
-    addFormItem() {
-        const key = `add${Date.now()}`;
-        // 兼容微信小程序写法
-        this.$set(this.formData, key, "");
-        this.$set(this.formRules, key, [{ required: true, message: `请输入 ${key}` }]);
-
-        // this.formData[key] = "";
-        // this.formRules[key] = [{ required: true, message: `请输入 ${key}` }];
-        this.addItems.push(key);
-    }
-
-    removeFormItem(index: number) {
-        const key = this.addItems[index];
-        delete this.formData[key];
-        delete this.formRules[key];
-        this.addItems.splice(index, 1);
     }
 
     showPickerDate = false;
@@ -243,10 +211,8 @@ export default class FormPage extends Vue {
 
     onReset() {
         const form: TheForm = this.$refs["the-form"] as any;
-        form.resetFields((formData, formRules) => {
+        form.resetFields(formData => {
             this.formData = formData;
-            this.formRules = formRules; // 这里因为有动态添加的表单规则，所以需要重置，默认不用
-            this.addItems = [];
         });
     }
 
@@ -267,6 +233,13 @@ export default class FormPage extends Vue {
         const form: TheForm = this.$refs["the-form"] as any;
         form.resetField("phone");
     }
+
+    openDynamic() {
+        uni.navigateTo({
+            url: "/pages/form-dynamic"
+        })
+    }
+
 }
 </script>
 <style lang="scss">
@@ -284,6 +257,7 @@ export default class FormPage extends Vue {
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 20rpx;
         font-size: 32rpx;
+        margin-bottom: 20rpx;
     }
     .line { width: 100%; padding-top: 40rpx; margin-bottom: 40rpx; border-bottom: solid 1px #eee; }
 }

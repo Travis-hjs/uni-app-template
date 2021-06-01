@@ -59,6 +59,13 @@ export default class TheFormItem extends Emitter {
     })
     labelPosition!: labelPosition;
 
+    /** 表单规则 */
+    @Prop({
+        type: Array,
+        default: () => []
+    })
+    rules!: Array<TheFormRulesItem>;
+
     /** 父组件实例 */
     @Inject("theFormComponent")
     private parentComponent!: TheForm;
@@ -66,9 +73,14 @@ export default class TheFormItem extends Emitter {
     /** 是否验证 */
     private get isRequired() {
         let result = false;
+        // 父组件的规则
         const rules = this.parentComponent.rules;
         if (rules && rules[this.prop] && rules[this.prop].length) {
             result = rules[this.prop].some(item => item.required);
+        }
+        // 自身组件的规则
+        if (this.rules && this.rules.length > 0) {
+            result = this.rules.some(item => item.required);
         }
         return result;
     }
@@ -143,21 +155,34 @@ export default class TheFormItem extends Emitter {
     */
     validateField(callback: (prop: string, rules: Array<TheFormRulesItem>) => void) {
         let info = null;
-        const rules = this.parentComponent.rules;
+        /** 父组件的规则列表 */
+        const parentRules = this.parentComponent.rules;
         const model = this.parentComponent.model;
-        const value = model[this.prop];
+        const value = this.getKeyValue(model, this.prop);
         const tip = "校验不通过";
 
         // console.log("this.prop >>", this.prop);
-        // console.log("rules >>", rules);
+        // console.log("parentRules >>", parentRules);
         // console.log("model >>", model);
         // console.log("value >>", value);
         // console.log(this.parentComponent);
 
-        if (this.prop && rules && rules[this.prop] && this.isRequired) {
-            const rulesItem = rules[this.prop];
-            for (let i = 0; i < rulesItem.length; i++) {
-                const item = rulesItem[i];
+        if (this.isRequired && this.prop) {
+            /** 自身规则列表 */
+            const selfRules = this.rules;
+            /** 要校验的规则列表 */
+            const rulesList = [];
+            // 先判断父组件有没有校验规则
+            if (parentRules && parentRules[this.prop]) {
+                rulesList.push(...parentRules[this.prop]);
+            }
+            // 然后把自身的规则列表加进去
+            if (selfRules && selfRules.length > 0) {
+                rulesList.push(...selfRules);
+            }
+            // 最后遍历检测
+            for (let i = 0; i < rulesList.length; i++) {
+                const item = rulesList[i];
                 if (item.type) {
                     if (utils.checkType(value) !== item.type) {
                         info = item;
@@ -200,14 +225,16 @@ export default class TheFormItem extends Emitter {
 }
 </script>
 <style lang="scss">
+$height: 80rpx;
+
 .the-form-item {
     width: 100%;
     .the-form-label {
         font-size: 28rpx;
         font-weight: bold;
         color: #555;
-        height: 80rpx;
-        line-height: 80rpx;
+        height: $height;
+        line-height: $height;
         text-align: left;
         .the-form-symbol {
             color: #f0341b;
@@ -220,9 +247,10 @@ export default class TheFormItem extends Emitter {
     .the-form-label-right {
         text-align: right;
     }
-    // .the-form-value-box {
-    //     padding: 0 0 50rpx 0;
-    // }
+    .the-form-value-box {
+        min-height: $height;
+        // padding: 0 0 50rpx 0;
+    }
     .validate-text {
         height: 54rpx;
         .validate-tip {

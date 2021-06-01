@@ -36,8 +36,9 @@
 
 | props |  类型 | 是否必选 | 说明 |
 | --- | --- | --- | --- | 
-| label | string | 否 | 表单展示字段 |
 | prop | string | 否 | 表单对象`key`字段 |
+| rules | array | 否 | 这里是上面`rules`对象里面的数组，类型一致；优先级高于父组件 |
+| label | string | 否 | 表单展示字段 |
 | labelWidth | string | 否 | 表单字段宽度，`px`、`rpx`、`%`；优先级高于父组件 |
 | labelPosition | string: `left`,`right`,`top` | 否 | 表单字段排版，默认`left`；优先级高于父组件 |
 | border | boolean | 否 | 是否需要显示底部边框，默认`false`；优先级高于父组件 |
