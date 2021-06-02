@@ -8,7 +8,7 @@ import { Component, Prop, Watch } from "vue-property-decorator";
 import Emitter from "@/mixins/Emitter";
 import TheFormItem from "./TheFormItem.vue";
 // import utils from "@/utils";
-import { TheFormRules, labelPosition, TheFormRulesItem } from "@/utils/interfaces";
+import { TheFormRules, labelPosition, TheFormValidateCallback } from "@/utils/interfaces";
 
 @Component({
     name: "TheForm",
@@ -19,6 +19,13 @@ import { TheFormRules, labelPosition, TheFormRulesItem } from "@/utils/interface
     }
 })
 export default class TheForm extends Emitter {
+
+    /** 是否需要验证时滚动到对应位置 */
+    @Prop({
+        type: Boolean,
+        default: true
+    })
+    validateScroll!: boolean;
 
     /** 表单字段宽度，这里使用字符串，因为可能是`px`或者`rpx` */
     @Prop({
@@ -128,7 +135,7 @@ export default class TheForm extends Emitter {
     @Watch("model", {
         deep: true
     })
-    onModelChange(res: any) {
+    private onModelChange(res: any) {
         const keys = Object.keys(this.validateInfo);
         if (keys.length) {
             for (let i = 0; i < keys.length; i++) {
@@ -139,10 +146,39 @@ export default class TheForm extends Emitter {
                         if (isValid) {
                             delete this.validateInfo[key];
                         }
-                    })
+                    }, true);
                 }
             }
         }
+    }
+
+    /**
+     * 滚动到指定`item`位置
+     * @param item `item`实例
+    */
+    private scrollToItem(item: TheFormItem) {
+        // #ifdef H5
+        const top = (item.$el as HTMLElement).offsetTop;
+        uni.pageScrollTo({
+            scrollTop: top - 50, // 这里 50 是顶部导航高度
+            duration: 100
+        });
+        // #endif
+
+        // #ifndef H5
+        let scrollTop = 0;
+        uni.createSelectorQuery().in(item).selectViewport().scrollOffset(res => {
+            // console.log(res);
+            scrollTop = res.scrollTop;
+        }).select('.the-form-item').boundingClientRect(res => {
+            // console.log(res);
+            const top = scrollTop + res.top;
+            uni.pageScrollTo({
+                scrollTop: top - 50, // 这里 50 是顶部导航高度
+                duration: 100
+            });
+        }).exec();
+        // #endif
     }
 
     /**
@@ -150,44 +186,55 @@ export default class TheForm extends Emitter {
      * @description 暴露给外部调用的
      * @param callback 验证回调操作
     */
-    validate(callback: (isValid: boolean, rules: { [key: string]: Array<TheFormRulesItem> }) => void) {
+    validate(callback?: TheFormValidateCallback) {
         if (!this.model) return console.warn(`表单验证缺少 "model" 对象`);
         if (!this.rules) return console.warn(`表单验证缺少 "rules" 对象，无法验证`);
         let rules: TheFormRules = {};
+        let failItems: Array<TheFormItem> = [];
         let adopt = true;
         this.fields.forEach(item => {
             item.validateField((prop, rule) => {
                 if (prop && rule.length > 0) {
-                    rules![prop] = rule;
+                    rules[prop] = rule;
                     adopt = false;
+                    failItems.push(item);
                     this.validateInfo[prop] = true;
                 }
             })
-        })
-        callback(adopt, rules);
+        });
+        if (this.validateScroll && failItems.length > 0) {
+            this.scrollToItem(failItems[0]);
+        }
+        callback && callback(adopt, rules);
     }
 
     /** 
      * 指定验证某个值
      * @param prop 要验证的字段
+     * @param isWatch 是否内部 `watch` 方法调用
      */
-    validateField(prop: string, callback?: (isValid: boolean, rules: { [key: string]: Array<TheFormRulesItem> }) => void) {
+    validateField(prop: string, callback?: TheFormValidateCallback, isWatch = false) {
         if (!this.model) return console.warn(`表单验证缺少 "model" 对象`);
         if (!this.rules) return console.warn(`表单验证缺少 "rules" 对象，无法验证`);
         let rules: TheFormRules = {};
+        let failItems: Array<TheFormItem> = [];
         let adopt = true;
         for (let i = 0; i < this.fields.length; i++) {
             const item = this.fields[i];
             if (((this.rules && this.rules[prop]) || (item.rules && item.rules.length)) && item.prop === prop) {
                 item.validateField((prop, rule) => {
                     if (prop && rule.length > 0) {
-                        rules![prop] = rule;
+                        rules[prop] = rule;
                         adopt = false;
+                        failItems.push(item);
                         this.validateInfo[prop] = true;
                     }
-                })
+                });
                 break;
             }
+        }
+        if (this.validateScroll && !isWatch && failItems.length > 0) {
+            this.scrollToItem(failItems[0]);
         }
         callback && callback(adopt, rules);
     }

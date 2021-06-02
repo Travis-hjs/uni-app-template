@@ -137,3 +137,13 @@ export type TheFormRules = { [key: string]: Array<TheFormRulesItem> };
 /** `label`布局位置 */
 export type labelPosition = "left" | "right" | "top";
 
+/** 表单验证回调类型 */
+export interface TheFormValidateCallback {
+    (   
+        /** 是否验证通过 */
+        isValid: boolean,
+        /** 验证不通过的规则列表 */
+        rules: { [key: string]: Array<TheFormRulesItem> }
+    ): void
+}
+
