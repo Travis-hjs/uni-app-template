@@ -214,6 +214,36 @@ class ModuleUtils extends ModuleControl {
             return params;
         }
     }
+
+    /**
+     * 获取一些深层`key`的对象值
+     * @param target 目标对象
+     * @param key `key`字段
+     * @example 
+     * ```js
+     * const info = {
+     *     list: [
+     *         { value: "hjs" }
+     *     ]
+     * }
+     * getDeepLevelValue(info, "list.0.value"); // => "hjs"
+     * ```
+     */
+    getDeepLevelValue(target: any, key: string) {
+        const keys = key.split(".");
+        let result;
+        for (let i = 0; i < keys.length; i++) {
+            const prop = keys[i];
+            result = target[prop];
+            const type = this.checkType(result);
+            if (type !== "object" && type !== "array") {
+                break;
+            } else {
+                target = target[prop];
+            }
+        }
+        return result;
+    }
 }
 
 /** 工具类模块 */

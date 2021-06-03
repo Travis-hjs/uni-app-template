@@ -158,7 +158,7 @@ export default class TheFormItem extends Emitter {
         /** 父组件的规则列表 */
         const parentRules = this.parentComponent.rules;
         const model = this.parentComponent.model;
-        const value = this.getKeyValue(model, this.prop);
+        const value = utils.getDeepLevelValue(model, this.prop);
         const tip = "校验不通过";
 
         // console.log("this.prop >>", this.prop);

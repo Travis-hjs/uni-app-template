@@ -9,6 +9,7 @@ import Emitter from "@/mixins/Emitter";
 import TheFormItem from "./TheFormItem.vue";
 // import utils from "@/utils";
 import { TheFormRules, labelPosition, TheFormValidateCallback } from "@/utils/interfaces";
+import utils from "@/utils";
 
 @Component({
     name: "TheForm",
@@ -140,7 +141,7 @@ export default class TheForm extends Emitter {
         if (keys.length) {
             for (let i = 0; i < keys.length; i++) {
                 const key = keys[i];
-                const value = this.getKeyValue(res, key);
+                const value = utils.getDeepLevelValue(res, key);
                 if (value !== "" && value !== null && value !== undefined && value.length !== 0) {
                     this.validateField(key, isValid => {
                         if (isValid) {
