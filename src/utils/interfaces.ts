@@ -111,7 +111,7 @@ export interface LoadMoreType extends ListParams {
 /** `uni-app`change事件参数 */
 export interface UniAppChangeEvent<T> {
     detail: {
-        /** `@change`事假触发的值 */
+        /** `@change`事件触发的值 */
         value: T
     }
 }
