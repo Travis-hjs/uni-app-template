@@ -62,9 +62,9 @@
 import { Component, Vue } from "vue-property-decorator";
 import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
-import UploadImage from "@/components/UploadImage.vue";
+import UploadImage from "@/components/Upload/Image.vue";
 import TheButton from "@/components/TheButton.vue";
-import PickerDate from "@/components/PickerDate.vue";
+import PickerDate from "@/components/Picker/Date.vue";
 import utils from "@/utils";
 import { TheFormRulesItem, UniAppChangeEvent } from "@/utils/interfaces";
 

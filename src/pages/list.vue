@@ -10,11 +10,11 @@
     </view>
 </template>
 <script lang="ts">
-import { Component, Mixins } from "vue-property-decorator";
-import LoadMore from "../mixins/LoadMore";
-import LoadMoreTip from "../components/LoadMoreTip.vue";
-import { getTestList } from "../api/common";
-import { ApiListData } from "../utils/interfaces";
+import { Component } from "vue-property-decorator";
+import LoadMore from "@/mixins/LoadMore";
+import LoadMoreTip from "@/components/LoadMore/Tip.vue";
+import { getTestList } from "@/api/common";
+import { ApiListData } from "@/utils/interfaces";
 
 @Component({
     components: {

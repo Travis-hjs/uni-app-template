@@ -20,7 +20,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import utils from "../utils";
+import utils from "@/utils";
 
 @Component({})
 export default class UploadImage extends Vue {

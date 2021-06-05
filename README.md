@@ -51,7 +51,7 @@ npm install
 ## 开发运行
 
 ```bash
-npm run serve
+npm run dev
 ```
 
 ## 打包构建

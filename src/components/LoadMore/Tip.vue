@@ -30,12 +30,11 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { LoadMoreType } from "../utils/interfaces";
-import store from "../store";
+import { LoadMoreType } from "@/utils/interfaces";
+import store from "@/store";
 
 @Component({})
 export default class LoadMoreTip extends Vue {
-    readonly imageInfo = store.imageInfo
 
     @Prop({
         type: Object,
@@ -66,6 +65,8 @@ export default class LoadMoreTip extends Vue {
         default: ""
     })
     paddingBottom!: string | number
+
+    readonly imageInfo = store.imageInfo
 
 }
 </script>

@@ -71,7 +71,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
-import UploadImage from "@/components/UploadImage.vue";
+import UploadImage from "@/components/Upload/Image.vue";
 import utils from "@/utils";
 
 interface FormDataType {
