@@ -24,6 +24,9 @@
             <TheFormItem prop="date" label="日期">
                 <TheButton :round="true" @click="openPickerDate()">{{ formData.date || "请选择日期" }}</TheButton>
             </TheFormItem>
+            <TheFormItem prop="address" label="地址">
+                <TheButton :round="true" @click="openPickerAddress()">{{ addressLabel || "请选择地址" }}</TheButton>
+            </TheFormItem>
             <TheFormItem prop="multiple" label="多选项">
                 <checkbox-group class="grid-box" @change="onMultiple">
                     <label class="flex fvertical" v-for="item in multipleOptions" :key="item.value">
@@ -56,6 +59,7 @@
             <TheButton color="#24292e" textColor="#fff" @click="openDynamic()">跳转动态表单</TheButton>
         </TheForm>
         <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" />
+        <ThePicker :show="showPickerAddress" @cancel="closePickerAddress" @confirm="onPickerAddress" :list="addressList" />
     </view>
 </template>
 <script lang="ts">
@@ -65,8 +69,10 @@ import TheFormItem from "@/components/Form/TheFormItem.vue";
 import UploadImage from "@/components/Upload/Image.vue";
 import TheButton from "@/components/TheButton.vue";
 import PickerDate from "@/components/Picker/Date.vue";
+import ThePicker from "@/components/Picker/index.vue";
 import utils from "@/utils";
-import { TheFormRulesItem, UniAppChangeEvent } from "@/utils/interfaces";
+import { PickerSelectItem, TheFormRulesItem, UniAppChangeEvent } from "@/utils/interfaces";
+import { createCityData } from "./hooks";
 
 interface FormDataType {
     userName: string,
@@ -76,7 +82,8 @@ interface FormDataType {
     date: string,
     multiple: Array<string>,
     radioValue: string,
-    description: string
+    description: string,
+    address: Array<number>
 }
 
 @Component({
@@ -85,7 +92,8 @@ interface FormDataType {
         TheFormItem,
         UploadImage,
         TheButton,
-        PickerDate
+        PickerDate,
+        ThePicker
     }
 })
 export default class FormPage extends Vue {
@@ -116,7 +124,8 @@ export default class FormPage extends Vue {
         date: "",
         multiple: [],
         radioValue: "",
-        description: ""
+        description: "",
+        address: []
     }
 
     formRules: TheForm["rules"] = {
@@ -141,6 +150,9 @@ export default class FormPage extends Vue {
         ],
         description: [
             { required: false, message: "请输入描述" }
+        ],
+        address: [
+            { required: true, message: "请选择地址" }
         ]
     }
 
@@ -157,6 +169,27 @@ export default class FormPage extends Vue {
     onPickerDate(val: string) {
         this.formData.date = val;
         this.closePickerDate();
+    }
+
+    addressList = createCityData();
+
+    showPickerAddress = false;
+
+    /** 展示的值 */
+    addressLabel = "";
+
+    openPickerAddress() {
+        this.showPickerAddress = true;
+    }
+
+    closePickerAddress() {
+        this.showPickerAddress = false;
+    }
+
+    onPickerAddress(res: { id: string, value: Array<PickerSelectItem<number>>}) {
+        this.formData.address = res.value.map(item => item.value);
+        this.addressLabel = res.value.map(item => item.label).join("-");
+        this.closePickerAddress();
     }
 
     switchDesc() {
