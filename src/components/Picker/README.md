@@ -116,6 +116,8 @@ import PickerDate from "@/components/Picker/Date.vue";
 })
 export default class Demo extends Vue {
 
+    selectLabel = "";
+    
     showPickerDate = false;
 
     openPickerDate() {
@@ -127,7 +129,7 @@ export default class Demo extends Vue {
     }
 
     onPickerDate(val: string) {
-        this.formData.date = val;
+        this.selectLabel = val;
         this.closePickerDate();
     }
 
