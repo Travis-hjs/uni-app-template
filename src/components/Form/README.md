@@ -18,8 +18,8 @@
 | validateScroll | boolean | 否 | 是否需要在验证时，滚动到不通过的位置，默认`true`，短表单时建议关闭，长表单开启 |
 
 和`element-ui`差异：
-1. `rules`移除了`validator`，增加了`reg`正则匹配：注意：因为微信小程序的一些特殊机制，导致传参类型会把非 number|string|object 这几个基础类型过滤掉，所以这里在写正则的时候，在末尾加上`.toString()`即可；
-2. `rules`移除了`change`触发条件，组件内部做了智能触发机制；
+- `props.rules`移除了`validator`，增加了`reg`正则匹配：注意：因为微信小程序的一些特殊机制，导致传参类型会把非 `number|string|object` 的类型过滤掉，所以这里在写正则的时候，在末尾加上`.toString()`即可；
+- `props.rules`移除了`change`触发条件，组件内部做了智能触发机制；
 
 
 事件/方法说明：
@@ -29,7 +29,7 @@
 | validate(callback(...)) | callback(isValid, rules) | 有两个回调参数，和`element-ui`一致 | 表单验证 |
 | validateField(prop, callback(...)) | `prop`是指定验证的键值，`callback`和上面一致 | 有两个回调参数，和`element-ui`一致 | 指定验证某个字段 |
 | resetFields() | - | - | 移除所有校验 |
-| resetField(prop) | `prop`是指定移除验证的键值 | - | 移除所有校验 |
+| resetField(prop) | `prop`是指定移除验证的键值 | - | 移除指定校验 |
 
 ## `<TheFormItem />`
 

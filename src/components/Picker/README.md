@@ -5,7 +5,7 @@
 | props |  类型 | 是否必选 | 说明 |
 | --- | --- | --- | --- | 
 | show | boolean | 是 | 是否显示弹出选择器 |
-| list | Array<PickerSelectItem> | 是 | 选择器数据，最多显示三层 |
+| list | `Array<PickerSelectItem>` | 是 | 选择器数据，最多显示三层 |
 | pickerId | string,number | 否 | `change`事件携带的`id`，一个页面有多个组件的时候用来区分用 |
 
 `PickerSelectItem`说明：
