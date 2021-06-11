@@ -5,11 +5,11 @@
             <!-- 操作栏 -->
             <view class="picker_option flex fvertical">
                 <view class="btn" @click="clickCancel()">取消</view>
-                <view class="f1"></view>
+                <view class="f1 picker_title">{{ title }}</view>
                 <view class="btn confirm" @click="clickConfirm()">确定</view>
             </view>
 
-            <picker-view class="picker_view" indicator-style="height: 36px;" @change="pickerChange">
+            <picker-view class="picker_view" indicator-style="height: 36px;" @change="pickerChange" :value="selectIndexs">
                 <picker-view-column v-if="type === 'Y-M-D' || type === 'Y-M' || type === 'Y'">
                     <view class="picker_item ellipsis_1" v-for="(item, index) in yearList" :key="index">{{item}}</view>
                 </picker-view-column>
@@ -26,9 +26,31 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { UniAppChangeEvent } from "@/utils/interfaces";
+import utils from "@/utils";
 
 /** 当前时间 */
 const now = new Date();
+
+/**
+ * 格式化日期成列表
+ * @param val
+ */
+function formatDateToList(val: string) {
+    return val.split('-').map(item => Number(item));
+}
+
+/**
+ * 获取格式化列表数据
+ * @param start
+ * @param total
+ */
+function getFormatList(start: number, total: number) {
+    const list = [];
+    for (let i = start; i <= total; i++) {
+        list.push(('0' + i).slice(-2));
+    }
+    return list;
+}
 
 /**
  * 日期选择组件
@@ -39,7 +61,14 @@ export default class PickerDate extends Vue {
         type: Boolean,
         default: false
     })
-    show!: boolean
+    show!: boolean;
+
+    /** 选择器标题 */
+    @Prop({
+        type: String,
+        default: ""
+    })
+    title!: string;
 
     /** 选择类型 */
     @Prop({
@@ -48,69 +77,100 @@ export default class PickerDate extends Vue {
     })
     type!: "Y-M-D" | "Y-M" | "Y"
 
-    /** 开始年份 */
+    /** 开始日期（Y-M-D） */
     @Prop({
-        type: Number,
-        default: now.getFullYear() - 10
+        type: String,
+        default: `${now.getFullYear() - 10}-01-01`
     })
-    startYear!: number
+    startDate!: string;
 
-    /** 结束年份 */
+    /** 结束日期（Y-M-D） */
     @Prop({
-        type: Number,
-        default: now.getFullYear()
+        type: String,
+        default: `${now.getFullYear()}-12-${new Date(now.getFullYear(), 12, 0).getDate()}`
     })
-    endYear!: number
+    endDate!: string;
 
-    /** 月份列表 */
-    readonly monthList = new Array(12).fill(0).map((_, index) => ("0" + (index + 1)).slice(-2));
+    /** 绑定的值 */
+    @Prop({
+        type: String,
+        default: ""
+    })
+    value!: string;
+
     /** 年份列表 */
-    get yearList() {
-        const list = [];
-        for (let i = this.startYear; i <= this.endYear; i++) {
-            list.push(i);
-        }
-        return list;
-    }
+    yearList: Array<number> = [];
+    /** 月份列表 */
+    monthList: Array<string> = [];
     /** 天数列表 */
     dayList: Array<string> = [];
+    /** 选中索引 */
+    selectIndexs: Array<number> = [0, 0, 0];
 
-    /** 获取天数列表（这里计算属性不会监听变动，所以需要手动设置） */
-    getDayList() {
-        const list: Array<string> = [];
-        const year = this.selectYear || this.startYear;
-        const month = this.selectMonth || this.monthList[0];
-        const dayTotal = new Date(year, Number(month), 0).getDate();
-        // console.log("dayTotal >>", dayTotal);
-        for (let i = 1; i <= dayTotal; i++) {
-            list.push(("0" + i).slice(-2));
+    /** 使用的索引值 */
+    getUseIndexs() {
+        let indexs = [this.yearList.length - 1, 0, 0];
+        if (this.value && this.value.split("-").length) {
+            const list = this.value.split("-");
+            const index = utils.findIndex(this.yearList, item => item === Number(list[0]));
+            indexs[0] = index > -1 ? index : 0;
+            if (list[1]) {
+                const second = Number(list[1]) - 1;
+                indexs[1] = second !== NaN ? second : 0;
+                if (list[2]) {
+                    const third = Number(list[2]) - 1;
+                    indexs[2] = third !== NaN ? third : 0;
+                }
+            }
         }
-        return list;
+        return indexs;
     }
 
-    /** 选中的年份 */
-    selectYear!: number;
-    /** 选中的月份 */
-    selectMonth!: string;
-    /** 选中的天数 */
-    selectDay!: string;
+    /** 更新日期数据 */
+    update() {
+        const years = [];
+        const startList = formatDateToList(this.startDate);
+        const endList = formatDateToList(this.endDate);
+        for (let i = startList[0]; i <= endList[0]; i++) {
+            years.push(i);
+        }
+        this.yearList = years;
+        
+        if (this.type === "Y-M-D" || this.type === "Y-M") {
+            let start = 1;
+            let total = 12;
+            const selectYear = this.yearList[this.selectIndexs[0]];
+            if (selectYear === startList[0]) {
+                start = startList[1];
+            }
+            if (selectYear === endList[0]) {
+                total = endList[1]
+            }
+            this.monthList = getFormatList(start, total);
+        }
 
-    created() {
-        // 创建的时候要首次设置一下
-        this.dayList = this.getDayList();
+        if (this.type === "Y-M-D") {
+            const selectYear = this.yearList[this.selectIndexs[0]];
+            const selectMonth = Number(this.monthList[this.selectIndexs[1]]);
+            let start = 1;
+            let total = new Date(selectYear, selectMonth, 0).getDate();
+            if (selectYear === startList[0] && selectMonth === startList[1]) {
+                start = startList[2];
+            }
+            if (selectYear === endList[0] && selectMonth === endList[1]) {
+                total = endList[2];
+            }
+            this.dayList = getFormatList(start, total);
+        }
     }
-    
+
     pickerChange(e: UniAppChangeEvent<Array<number>>) {
         const list = e.detail.value;
-        this.selectYear = this.yearList[list[0]];
-        if (list.length > 1) {
-            this.selectMonth = this.monthList[list[1]];
-        }
-        // 这里要手动更新一下天数列表
-        this.dayList = this.getDayList();
-        if (list.length > 2) {
-            this.selectDay = this.dayList[list[2]];
-        }
+        const val1 = utils.checkType(list[0]) === "number" ? list[0] : 0;
+        const val2 = utils.checkType(list[1]) === "number" ? list[1] : 0;
+        const val3 = utils.checkType(list[2]) === "number" ? list[2] : 0;
+        this.selectIndexs = [val1, val2, val3];
+        this.update();
     }
 
     clickCancel() {
@@ -118,14 +178,20 @@ export default class PickerDate extends Vue {
     }
 
     clickConfirm() {
-        let result = (this.selectYear || this.startYear).toString();
+        let result = this.yearList[this.selectIndexs[0]].toString();
         if (this.type === "Y-M-D" || this.type === "Y-M") {
-            result = `${result}-${this.selectMonth || this.monthList[0]}`
+            result = `${result}-${this.monthList[this.selectIndexs[1]]}`;
         }
         if (this.type === "Y-M-D") {
-            result = `${result}-${this.selectDay || this.dayList[0]}`;
+            result = `${result}-${this.dayList[this.selectIndexs[2]]}`;
         }
         this.$emit("confirm", result);
+    }
+
+    created() {
+        this.update();
+        this.selectIndexs = this.getUseIndexs();
+        this.update();
     }
 }
 </script>

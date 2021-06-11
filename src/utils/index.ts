@@ -244,6 +244,22 @@ class ModuleUtils extends ModuleControl {
         }
         return result;
     }
+
+    /**
+     * ES5 兼容 ES6 `Array.findIndex`
+     * @param array 
+     * @param compare 对比函数
+     */
+    findIndex<T>(array: Array<T>, compare: (value: T, index: number) => boolean) {
+        var result = -1;
+        for (var i = 0; i < array.length; i++) {
+            if (compare(array[i], i)) {
+                result = i;
+                break;
+            }
+        }
+        return result;
+    }
 }
 
 /** 工具类模块 */

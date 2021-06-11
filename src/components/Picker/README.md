@@ -5,6 +5,7 @@
 | props |  类型 | 是否必选 | 说明 |
 | --- | --- | --- | --- | 
 | show | boolean | 是 | 是否显示弹出选择器 |
+| title | string,number | 否 | 选择器标题 |
 | list | `Array<PickerSelectItem>` | 是 | 选择器数据，最多显示三层 |
 | pickerId | string,number | 否 | `change`事件携带的`id`，一个页面有多个组件的时候用来区分用 |
 
@@ -89,7 +90,16 @@ export default class Demo extends Vue {
 
 ## 日期选择组件
 
-细心看过`index.vue`的可以发现，其实可以二次封装一下日期数据就可以复用上面的组件，我单独抽出来的理由是：因为上面的组件需要依赖固定的上下级数据，如果日期选择两个年份差较大的话，会导致庞大的日期数据，所以这里单独抽出来性能会好很多。
+| props |  类型 | 是否必选 | 说明 |
+| --- | --- | --- | --- | 
+| show | boolean | 是 | 是否显示弹出选择器 |
+| title | string,number | 否 | 选择器标题 |
+| type | string: `Y-M-D`,`Y-M`,`Y` | 否，默认`Y-M-D` | 分别对应年月日 |
+| value | string | 否 | 初始化选中值，格式和`type`对应 |
+| startDate | string | 否 | 开始日期，格式和`type`对应 |
+| endDate | string | 否 | 结束日期，格式和`type`对应 |
+
+细心看过`index.vue`的可以发现，其实可以二次封装一下日期数据就可以复用上面的组件，这里我单独抽出来的理由是：因为上面的组件需要依赖固定的上下级数据，如果日期选择两个年份差较大的话，会导致庞大的日期数据；另外日期的范围逻辑也跟其他的选项数据不太一样，所以这里单独抽出来性能会好很多。
 
 **使用示例**
 
@@ -101,8 +111,8 @@ export default class Demo extends Vue {
         <!-- 默认使用方式 -->
         <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" />
 
-        <!-- 设置范围 -->
-        <!-- <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" :startYear="1999" :endYear="2025" /> -->
+        <!-- 设置范围和初始值 -->
+        <!-- <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" value="2020-06-08" startDate="2019-03-12" endDate="2021-02-04" /> -->
     </view>
 </template>
 <script lang="ts">

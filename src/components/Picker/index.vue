@@ -5,7 +5,7 @@
             <!-- 操作栏 -->
             <view class="picker_option flex fvertical">
                 <view class="btn" @click="clickCancel()">取消</view>
-                <view class="f1"></view>
+                <view class="f1 picker_title">{{ title }}</view>
                 <view class="btn confirm" @click="clickConfirm()">确定</view>
             </view>
             <!-- 选择栏 -->
@@ -39,6 +39,13 @@ export default class ThePicker extends Vue {
         default: false
     })
     show!: boolean
+
+    /** 选择器标题 */
+    @Prop({
+        type: String,
+        default: ""
+    })
+    title!: string;
 
     /** `change`事件携带的`id` */
     @Prop({

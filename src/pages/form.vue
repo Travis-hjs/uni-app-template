@@ -58,8 +58,8 @@
             </view>
             <TheButton color="#24292e" textColor="#fff" @click="openDynamic()">跳转动态表单</TheButton>
         </TheForm>
-        <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" />
-        <ThePicker :show="showPickerAddress" @cancel="closePickerAddress" @confirm="onPickerAddress" :list="addressList" />
+        <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" :value="formData.date" startDate="2019-03-12" endDate="2021-06-04" title="请选择日期" />
+        <ThePicker :show="showPickerAddress" @cancel="closePickerAddress" @confirm="onPickerAddress" :list="addressList" title="动态层级变动" />
     </view>
 </template>
 <script lang="ts">
@@ -121,7 +121,7 @@ export default class FormPage extends Vue {
         phone: "",
         avatar: "",
         isAdmin: false,
-        date: "",
+        date: "2020-06-18",
         multiple: [],
         radioValue: "",
         description: "",
