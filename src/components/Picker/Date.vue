@@ -24,7 +24,7 @@
     </view>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { UniAppChangeEvent } from "@/utils/interfaces";
 import utils from "@/utils";
 
@@ -36,7 +36,7 @@ const now = new Date();
  * @param val
  */
 function formatDateToList(val: string) {
-    return val.split('-').map(item => Number(item));
+    return val.split("-").map(item => Number(item));
 }
 
 /**
@@ -47,7 +47,7 @@ function formatDateToList(val: string) {
 function getFormatList(start: number, total: number) {
     const list = [];
     for (let i = start; i <= total; i++) {
-        list.push(('0' + i).slice(-2));
+        list.push(("0" + i).slice(-2));
     }
     return list;
 }
@@ -97,6 +97,13 @@ export default class PickerDate extends Vue {
         default: ""
     })
     value!: string;
+
+    /** 是否要实时监听`value`的变动 */
+    @Prop({
+        type: Boolean,
+        default: false
+    })
+    watchValue!: boolean;
 
     /** 年份列表 */
     yearList: Array<number> = [];
@@ -186,6 +193,14 @@ export default class PickerDate extends Vue {
             result = `${result}-${this.dayList[this.selectIndexs[2]]}`;
         }
         this.$emit("confirm", result);
+    }
+
+    @Watch("value")
+    onValue(val: string) {
+        if (val) {
+            this.selectIndexs = this.getUseIndexs();
+            this.update();
+        }
     }
 
     created() {
