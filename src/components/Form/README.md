@@ -87,7 +87,7 @@ interface FormDataType {
         UploadImage
     }
 })
-export default class FormPage extends Vue {
+export default class Demo extends Vue {
 
     hasBorder = true;
 
@@ -111,9 +111,12 @@ export default class FormPage extends Vue {
         this.formData.avatar = res.src;
     }
 
+    $refs!: {
+        "the-form": TheForm
+    }
+
     onSubmit() {
-        const form: TheForm = this.$refs["the-form"] as any;
-        form.validate(valid => {  
+        this.$refs["the-form"].validate(valid => {  
             if (valid) {
                 console.log("表单数据 >>", this.formData);
             } else {
@@ -125,14 +128,12 @@ export default class FormPage extends Vue {
     }
 
     onReset() {
-        const form: TheForm = this.$refs["the-form"] as any;
-        form.resetFields();
+        this.$refs["the-form"].resetFields();
     }
 
     /** 验证手机号码 */
     validatePhone() {
-        const form: TheForm = this.$refs["the-form"] as any;
-        form.validateField("phone", (valid, rules) => {
+        this.$refs["the-form"].validateField("phone", (valid, rules) => {
             if (valid) {
                 utils.showToast("手机验证通过");
             } else {
@@ -143,8 +144,7 @@ export default class FormPage extends Vue {
 
     /** 移除验证手机号 */
     resetPhone() {
-        const form: TheForm = this.$refs["the-form"] as any;
-        form.resetField("phone");
+        this.$refs["the-form"].resetField("phone");
     }
     
 }

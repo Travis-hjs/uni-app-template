@@ -205,8 +205,19 @@ export default class PickerDate extends Vue {
 
     created() {
         this.update();
+        
+        // #ifndef MP
         this.selectIndexs = this.getUseIndexs();
         this.update();
+        // #endif
+
+        // #ifdef MP
+        // 微信小程序需要在下一帧设置索引值
+        this.$nextTick(() => {
+            this.selectIndexs = this.getUseIndexs();
+            this.update();
+        })
+        // #endif
     }
 }
 </script>

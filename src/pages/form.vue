@@ -229,9 +229,12 @@ export default class FormPage extends Vue {
         this.formData.avatar = res.src;
     }
 
+    $refs!: {
+        "the-form": TheForm
+    }
+
     onSubmit() {
-        const form: TheForm = this.$refs["the-form"] as any;
-        form.validate((valid, reuls) => {
+        this.$refs["the-form"].validate((valid, reuls) => {
             if (valid) {
                 console.log("表单数据 >>", this.formData);
             } else {
@@ -243,16 +246,14 @@ export default class FormPage extends Vue {
     }
 
     onReset() {
-        const form: TheForm = this.$refs["the-form"] as any;
-        form.resetFields(formData => {
+        this.$refs["the-form"].resetFields(formData => {
             this.formData = formData;
         });
     }
 
     /** 验证手机号码 */
     validatePhone() {
-        const form: TheForm = this.$refs["the-form"] as any;
-        form.validateField("phone", (valid, rules) => {
+        this.$refs["the-form"].validateField("phone", (valid, rules) => {
             if (valid) {
                 utils.showToast("手机验证通过");
             } else {
@@ -263,8 +264,7 @@ export default class FormPage extends Vue {
 
     /** 移除验证手机号 */
     resetPhone() {
-        const form: TheForm = this.$refs["the-form"] as any;
-        form.resetField("phone");
+        this.$refs["the-form"].resetField("phone");
     }
 
     openDynamic() {

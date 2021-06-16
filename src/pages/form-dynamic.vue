@@ -87,9 +87,12 @@ export default class FormDynamic extends Vue {
         return rules;
     }
 
+    $refs!: {
+        "the-form": TheForm
+    }
+
     onSubmit() {
-        const form: TheForm = this.$refs["the-form"] as any;
-        form.validate((valid, reuls) => {
+        this.$refs["the-form"].validate((valid, reuls) => {
             if (valid) {
                 console.log("表单数据 >>", this.formData);
             } else {
@@ -101,8 +104,7 @@ export default class FormDynamic extends Vue {
     }
 
     onReset() {
-        const form: TheForm = this.$refs["the-form"] as any;
-        form.resetFields((formData, formRules) => {
+        this.$refs["the-form"].resetFields((formData, formRules) => {
             this.formData = formData;
             this.formRules = formRules; // 这里因为有动态添加的表单规则，所以需要重置，默认不用
             this.addItems = [];
