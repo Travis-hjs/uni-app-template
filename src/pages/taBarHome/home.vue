@@ -7,6 +7,11 @@
         <TheButton color="#07c160" @click="openForm()">打开表单验证页</TheButton>
         <view class="line"></view>
         <image class="logo" :src="imageInfo.logo"></image>
+        <!-- 这样写不能兼容小程序端（ios） -->
+        <view class="bg flex fcenter fvertical" :style="{ 'background-image': `url(${imageInfo.logo})` }">背景图测试</view>
+        <!-- 这样配合 css 设置背景图可以兼容任何环境 -->
+        <!-- <view class="bg flex fcenter fvertical">背景图测试</view> -->
+        <view class="line"></view>
         <view class="line"></view>
         <TheButton :loading="loading" @click="setLoading(2)">加载 2 秒</TheButton>
         <view class="line"></view>
@@ -66,6 +71,16 @@ export default class Home extends Vue {
     padding: 30rpx 30rpx 40rpx; 
     .logo{ width: 100px; height: 100px; margin: 0 auto; display: block; }
     .line { width: 100%; padding-top: 40rpx; margin-bottom: 40rpx; border-bottom: solid 1px #eee; }
+    .bg {
+        width: 140px;
+        height: 100px;
+        background-size: cover;
+        margin: 0 auto;
+        font-size: 32rpx;
+        color: $pink;
+        background-position: center center;
+        // background-image: url('/static/logo.png'); // 这样写可以兼容小程序端
+    }
 }
 
 </style>
