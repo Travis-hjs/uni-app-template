@@ -90,7 +90,7 @@ export default class ThePicker extends Vue {
         const hasSecond = list.length > 0 && list[indexs[0]] && list[indexs[0]].children && list[indexs[0]].children!.length > 0;
 
         if (column >= 2) {
-            this.secondList = hasSecond ? list[indexs[0]].children! : [{ label: '-', value: null }];
+            this.secondList = hasSecond ? list[indexs[0]].children! : [{ label: "-", value: null }];
         } else if (column === 0) {
             this.secondList = hasSecond ? list[indexs[0]].children! : [];
         }
@@ -99,7 +99,7 @@ export default class ThePicker extends Vue {
         const hasThird = second.length > 0 && second[indexs[1]] && second[indexs[1]].children && second[indexs[1]].children!.length > 0;
 
         if (column >= 3) {
-            this.thirdList = hasThird ? second[indexs[1]].children! : [{ label: '-', value: null }];
+            this.thirdList = hasThird ? second[indexs[1]].children! : [{ label: "-", value: null }];
         } else if (column === 0) {
             this.thirdList = hasThird ? second[indexs[1]].children! : [];
         }
