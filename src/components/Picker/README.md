@@ -6,9 +6,11 @@
 | --- | --- | --- | --- | 
 | show | boolean | 是 | 是否显示弹出选择器 |
 | title | string,number | 否 | 选择器标题 |
-| list | `Array<PickerSelectItem>` | 是 | 选择器数据，最多显示三层，注意：小程序端无法多列动态自适应，需要使用`column`指定列数 |
+| list | `Array<PickerSelectItem>` | 是 | 选择器数据，最多显示三层 |
 | column | 列数：0-3 | 否 | 指定选择器列数（优先级最高），默认是`0`，即自动根据`list`的层级动态生成 |
 | pickerId | string,number | 否 | `change`事件携带的`id`，一个页面有多个组件的时候用来区分用 |
+
+`list`注意事项说明：小程序端无法多列动态自适应，需要使用`column`指定列数；原因是组件用了`v-show`在小程序端有`bug`，改用`v-if`可以实现动态层级，不过会有些展示上的行为小瑕疵，可以自行修改测试看具体效果就知道了，这里推荐使用`v-show`+指定列数`column`在小程序端的使用。
 
 `PickerSelectItem`说明：
 
