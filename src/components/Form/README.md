@@ -103,7 +103,7 @@ export default class Demo extends Vue {
         ],
         phone: [
             { required: true, message: "请输入用户手机号" },
-            { reg: /^1[345678]\d{9}$/, message: "手机号不正确" }
+            { reg: /^1[345678]\d{9}$/.toString(), message: "手机号不正确" }
         ]
     }
 
