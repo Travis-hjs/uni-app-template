@@ -7,11 +7,11 @@
         <TheButton color="#07c160" @click="openForm()">打开表单验证页</TheButton>
         <view class="line"></view>
         <image class="logo" :src="imageInfo.logo"></image>
+        <view class="line"></view>
         <!-- 这样写：/static/xxx.png 不能兼容小程序端（ios不行，Android可以）和生产环境（开发环境可以，应该是环境路径问题），必需require(`@/static/xxx.png`) -->
         <!-- <view class="bg flex fcenter fvertical" :style="{ 'background-image': `url(${imageInfo.logo})` }">背景图测试</view> -->
         <!-- 这样配合 css 设置背景图可以兼容任何环境 -->
         <view class="bg flex fcenter fvertical">背景图测试</view>
-        <view class="line"></view>
         <view class="line"></view>
         <TheButton :loading="loading" @click="setLoading(2)">加载 2 秒</TheButton>
         <view class="line"></view>
