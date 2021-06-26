@@ -118,6 +118,10 @@ export function createCityData(): Array<PickerSelectItem> {
                     value: 1,
                 }
             ]
+        },
+        {
+            label: '浙江省',
+            value: 12,
         }
     ]
 }

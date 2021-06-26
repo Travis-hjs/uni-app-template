@@ -61,6 +61,13 @@ export default class ThePicker extends Vue {
     })
     list!: Array<PickerSelectItem>
 
+    /** 列数，`0-3`，0 为自动 */
+    @Prop({
+        type: Number,
+        default: 0
+    })
+    column!: 0|1|2|3;
+
     /** 选中的索引列表 */
     private selectIndexs = [0, 0, 0];
 
@@ -78,19 +85,23 @@ export default class ThePicker extends Vue {
     private update() {
         const list = this.list;
         const indexs = this.selectIndexs;
+        const column = this.column;
 
-        if (list.length > 0 && list[indexs[0]] && list[indexs[0]].children && list[indexs[0]].children!.length > 0) {
-            this.secondList = list[indexs[0]].children!;
-        } else {
-            this.secondList = [];
+        const hasSecond = list.length > 0 && list[indexs[0]] && list[indexs[0]].children && list[indexs[0]].children!.length > 0;
+
+        if (column >= 2) {
+            this.secondList = hasSecond ? list[indexs[0]].children! : [{ label: '-', value: null }];
+        } else if (column === 0) {
+            this.secondList = hasSecond ? list[indexs[0]].children! : [];
         }
 
         const second = this.secondList;
+        const hasThird = second.length > 0 && second[indexs[1]] && second[indexs[1]].children && second[indexs[1]].children!.length > 0;
 
-        if (second.length > 0 && second[indexs[1]] && second[indexs[1]].children && second[indexs[1]].children!.length > 0) {
-            this.thirdList = second[indexs[1]].children!;
-        } else {
-            this.thirdList = [];
+        if (column >= 3) {
+            this.thirdList = hasThird ? second[indexs[1]].children! : [{ label: '-', value: null }];
+        } else if (column === 0) {
+            this.thirdList = hasThird ? second[indexs[1]].children! : [];
         }
     }
     
@@ -120,7 +131,7 @@ export default class ThePicker extends Vue {
         }
         this.$emit("confirm", {
             id: this.pickerId,
-            value: result
+            value: result.filter(item => item.value !== null)
         });
     }
 }

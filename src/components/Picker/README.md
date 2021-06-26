@@ -6,7 +6,8 @@
 | --- | --- | --- | --- | 
 | show | boolean | 是 | 是否显示弹出选择器 |
 | title | string,number | 否 | 选择器标题 |
-| list | `Array<PickerSelectItem>` | 是 | 选择器数据，最多显示三层 |
+| list | `Array<PickerSelectItem>` | 是 | 选择器数据，最多显示三层，注意：小程序端无法多列动态自适应，需要使用`column`指定列数 |
+| column | 列数：0-3 | 否 | 指定选择器列数（优先级最高），默认是`0`，即自动根据`list`的层级动态生成 |
 | pickerId | string,number | 否 | `change`事件携带的`id`，一个页面有多个组件的时候用来区分用 |
 
 `PickerSelectItem`说明：
