@@ -31,7 +31,7 @@ export default class TheFormItem extends Emitter {
     })
     label!: string;
 
-    /** <TheFormItem prop="xxx" > */
+    /** `<TheFormItem prop="表单数据的键值" >` */
     @Prop({
         type: String,
         default: ""
@@ -126,19 +126,19 @@ export default class TheFormItem extends Emitter {
 
     mounted() {
         if (this.prop) {
-            this.dispatch("TheForm", "theFormAddField", [this]);
+            this.dispatch("TheForm", "addTheFormItem", [this]);
         }
         // console.log(this.parentComponent.labelPosition);
     }
 
     beforeDestroy() {
-        this.dispatch("TheForm", "theFormRemoveField", [this]);
+        this.dispatch("TheForm", "removeTheFormItem", [this]);
     }
 
     /**
      * 验证提示文字
      * @description 这个值不要给空，因为要撑开元素的高度，为空的话没有结束过渡动画
-    */
+     */
     private validateText = "-";
     
     /** 是否显示验证提示 */

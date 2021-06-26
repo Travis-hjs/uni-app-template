@@ -1,4 +1,3 @@
-import utils from "@/utils";
 import { Component, Vue } from "vue-property-decorator";
 
 /** 自定义事件派发 */

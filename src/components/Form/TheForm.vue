@@ -79,7 +79,7 @@ export default class TheForm extends Emitter {
      * `<TheFromItem>`实例列表
      * @description 非响应式
     */
-    private fields!: Array<TheFormItem>;
+    private items!: Array<TheFormItem>;
 
     /**
      * 设置原始数据
@@ -113,19 +113,19 @@ export default class TheForm extends Emitter {
     created() {
         this.setBeforeData(this.model, this.rules || {});
 
-        // 初始化清空
-        this.fields = [];
+        // 初始化设置值
+        this.items = [];
 
         // 监听`<TheFromItem>`创建传进来的自身组件
-        this.$on("theFormAddField", (field: TheFormItem) => {
-            // console.log("addField >>", field);
-            this.fields.push(field);
+        this.$on("addTheFormItem", (item: TheFormItem) => {
+            // console.log("addField >>", item);
+            this.items.push(item);
         })
 
         // 监听对应的`<TheFromItem>`移除操作
-        this.$on("theFormRemoveField", (field: TheFormItem) => {
-            // console.log("removeField >>", field);
-            field.prop && this.fields.splice(this.fields.indexOf(field), 1);
+        this.$on("removeTheFormItem", (item: TheFormItem) => {
+            // console.log("removeField >>", item);
+            item.prop && this.items.splice(this.items.indexOf(item), 1);
         })
     }
 
@@ -193,7 +193,7 @@ export default class TheForm extends Emitter {
         let rules: TheFormRules = {};
         let failItems: Array<TheFormItem> = [];
         let adopt = true;
-        this.fields.forEach(item => {
+        this.items.forEach(item => {
             item.validateField((prop, rule) => {
                 if (prop && rule.length > 0) {
                     rules[prop] = rule;
@@ -220,8 +220,8 @@ export default class TheForm extends Emitter {
         let rules: TheFormRules = {};
         let failItems: Array<TheFormItem> = [];
         let adopt = true;
-        for (let i = 0; i < this.fields.length; i++) {
-            const item = this.fields[i];
+        for (let i = 0; i < this.items.length; i++) {
+            const item = this.items[i];
             if (((this.rules && this.rules[prop]) || (item.rules && item.rules.length)) && item.prop === prop) {
                 item.validateField((prop, rule) => {
                     if (prop && rule.length > 0) {
@@ -255,7 +255,7 @@ export default class TheForm extends Emitter {
         // 直接修改对象的引用值，这种方式在微信小程序里面会失效，原因是微信把所有数据都 JSON 格式化了，导致某些引用终端，而且传参类型也只能是 string | number | object
         // utils.modifyData(this.model, this.beforeModel);
         
-        this.fields.forEach(item => {
+        this.items.forEach(item => {
             item.resetField();
         })
 
@@ -268,8 +268,8 @@ export default class TheForm extends Emitter {
      * @param prop 指定值
      */
     resetField(prop: string) {
-        for (let i = 0; i < this.fields.length; i++) {
-            const item = this.fields[i];
+        for (let i = 0; i < this.items.length; i++) {
+            const item = this.items[i];
             if (item.prop === prop) {
                 if (Object.prototype.hasOwnProperty.call(this.validateInfo, prop)) {
                     delete this.validateInfo[prop];
