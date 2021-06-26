@@ -236,7 +236,8 @@ export default class FormPage extends Vue {
     onSubmit() {
         this.$refs["the-form"].validate((valid, reuls) => {
             if (valid) {
-                console.log("表单数据 >>", this.formData);
+                utils.showToast("验证通过，在控制台可以查看表单数据");
+                console.log("表单数据 >>", JSON.stringify(this.formData, null, "\t"));
             } else {
                 const keys = Object.keys(reuls);
                 const firstProp = keys[0];
