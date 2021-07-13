@@ -38,6 +38,12 @@
 			"style": {
 				"navigationBarTitleText": "表单验证（动态）"
 			}
+        },
+        {
+			"path": "pages/button",
+			"style": {
+				"navigationBarTitleText": "ui-button"
+			}
         }
 	],
 	"globalStyle": {

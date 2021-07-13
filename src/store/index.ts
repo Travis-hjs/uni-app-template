@@ -23,6 +23,7 @@ export class ModuleStore extends ModuleAppOption {
             logo: "/static/logo.png",
             defaultHead: "/static/default_head.png",
             noneData: "/static/none_data.png",
+            iconArrowRight: "/static/arrow-right.png"
         }
     }
 
