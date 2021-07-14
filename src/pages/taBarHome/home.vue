@@ -35,6 +35,7 @@ export default class Home extends Vue {
         { label: "ui-按钮组件", path: "/pages/button" },
         { label: "form-表单组件", path: "/pages/form" },
         { label: "加载更多列表", path: "/pages/list" },
+        { label: "cavans-生成海报", path: "/pages/cavans-creater" }
     ]
 
     count = 0

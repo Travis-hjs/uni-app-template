@@ -44,6 +44,12 @@
 			"style": {
 				"navigationBarTitleText": "ui-button"
 			}
+        },
+        {
+            "path": "pages/cavans-creater",
+            "style": {
+				"navigationBarTitleText": "cavans-生成海报图"
+			}
         }
 	],
 	"globalStyle": {
