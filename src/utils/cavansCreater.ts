@@ -59,6 +59,10 @@ interface CavansCreaterParams {
     height: number
     /** 生成的内容列表 */
     list: Array<CavansImg | CavansBox | CavansText>
+    /** 成功回调 */
+    success?: () => void
+    /** 图片加载失败回调 */
+    fail?: (error: any, info: CavansImg) => void
 }
 
 /**
@@ -72,6 +76,27 @@ export default function cavansCreater(params: CavansCreaterParams) {
     // console.log("list >>", list);
 
     /**
+     * 计算定位参数
+     * @param item 
+     */
+    function computedPosition(item: CavansImg | CavansBox) {
+        let left = utils.checkType(item.left) === "number" ? item.left! : 0;
+        let top = utils.checkType(item.top) === "number" ? item.top! : 0;
+        // 判断并计算设置右边值
+        if (utils.checkType(item.right) === "number") {
+            left = params.width - item.width - item.right!;
+        }
+        // 判断并计算设置底部值
+        if (utils.checkType(item.bottom) === "number") {
+            top = params.height - item.height - item.bottom!;
+        }
+        return {
+            left,
+            top
+        }
+    }
+
+    /**
      * 绘制图片
      * @param item 
      */
@@ -81,12 +106,22 @@ export default function cavansCreater(params: CavansCreaterParams) {
             success(res) {
                 // console.log("getImageInfo >>", res);
                 // console.log("item >>", item);
-                let left = utils.checkType(item.left) === "number" ? item.left : 0;
-                let top = utils.checkType(item.top) === "number" ? item.top : 0;
+                const { left, top } = computedPosition(item);
                 context.save();
-                context.drawImage(res.path, left, top, item.width, item.height);
-                context.restore();
+
+                context.translate(left, top);
+                // drawRoundRectPath(context, item.width, item.height, item.borderRadius);
+                context.drawImage(res.path, 0, 0, item.width, item.height);
+                // context.clip();
+                
+                
+                // drawRoundRectImg(context, res.path, left, top, item.width, item.height, item.borderRadius);
+
+
+                // context.restore();
                 context.draw(true);
+                // 还原偏移位置，不然下一次会基于上一次的偏移计算
+                context.translate(-left, -top);
                 success();
             },
             fail
@@ -98,17 +133,7 @@ export default function cavansCreater(params: CavansCreaterParams) {
      * @param item 
      */
     function drawBox(item: CavansBox) {
-        let left = utils.checkType(item.left) === "number" ? item.left! : 0;
-        let top = utils.checkType(item.top) === "number" ? item.top! : 0;
-        // 判断并计算设置右边值
-        if (utils.checkType(item.right) === "number") {
-            left = params.width - item.width - item.right!;
-        }
-        // 判断并计算设置底部值
-        if (utils.checkType(item.bottom) === "number") {
-            top = params.height - item.height - item.bottom!;
-        }
-
+        const { left, top } = computedPosition(item);
         context.save();
         context.translate(left, top);
         drawRoundRectPath(context, item.width, item.height, item.borderRadius);
@@ -119,7 +144,6 @@ export default function cavansCreater(params: CavansCreaterParams) {
         context.strokeStyle = item.borderColor || "rgba(0,0,0,0)";
         context.stroke();
         context.fill();
-
         // context.restore();
         context.draw(true);
         // 还原偏移位置，不然下一次会基于上一次的偏移计算
@@ -152,14 +176,14 @@ export default function cavansCreater(params: CavansCreaterParams) {
         const item = list[index];
         function success() {
             if (index === list.length - 1) {
-
+                params.success && params.success();
             } else {
                 index++;
                 start();
             }
         }
         function fail(err: any) {
-            
+            params.fail && params.fail(err, item as CavansImg);
         }
         switch (item.type) {
             case "box":
@@ -187,6 +211,22 @@ export default function cavansCreater(params: CavansCreaterParams) {
 }
 
 /**
+ * 计算获取使用半径
+ * @param width 宽度
+ * @param height 高度
+ * @param borderRadius 设置的圆角值
+ */
+function computedRadius(width: number, height: number, borderRadius?: number) {
+    borderRadius = utils.checkType(borderRadius) === "number" ? borderRadius! : 0;
+    /** 最小圆角值 */
+    const minRadius = Math.min(width, height) / 2;
+    /** 半径 */
+    const radius = minRadius < borderRadius ? minRadius : borderRadius;
+    // console.log(radius, radius, borderRadius);
+    return radius;
+}
+
+/**
  * 绘制圆角路径
  * @param ctx uni-app`canvas`上下文，部分`api`与`web`中的`canvas`有出入，注意看代码提示
  * @param width 宽度
@@ -194,14 +234,10 @@ export default function cavansCreater(params: CavansCreaterParams) {
  * @param borderRadius 设置的圆角值
  */
 function drawRoundRectPath(ctx: UniApp.CanvasContext, width: number, height: number, borderRadius?: number) {
-    borderRadius = utils.checkType(borderRadius) === "number" ? borderRadius! : 0;
+    /** 半径 */
+    const radius = computedRadius(width, height, borderRadius);
     // 路径开始 相当于 <div>
     ctx.beginPath();
-    /** 最小圆角值 */
-    const minRadius = Math.min(width, height) / 2;
-    /** 半径 */
-    const radius = minRadius < borderRadius ? minRadius : borderRadius;
-    // console.log(radius, radius, borderRadius);
     // 从右下角顺时针绘制，弧度从0到1/2PI  
     ctx.arc(width - radius, height - radius, radius, 0, Math.PI / 2);
     // 矩形下边线  
@@ -220,4 +256,31 @@ function drawRoundRectPath(ctx: UniApp.CanvasContext, width: number, height: num
     ctx.lineTo(width, height - radius);
     // 路径结束 相当于 </div>
     ctx.closePath();
+}
+
+/**
+ * 绘制圆角图片
+ * @param ctx 
+ * @param img 
+ * @param left 
+ * @param top 
+ * @param width 
+ * @param height 
+ * @param borderRadius 设置的圆角值
+ */
+function drawRoundRectImg(ctx: UniApp.CanvasContext, img: string, left: number, top: number, width: number, height: number, borderRadius?: number) {
+    borderRadius = utils.checkType(borderRadius) === "number" ? borderRadius! : 0;
+    /** 最小圆角值 */
+    const minRadius = Math.min(width, height) / 2;
+    /** 半径 */
+    const radius = minRadius < borderRadius ? minRadius : borderRadius;
+    ctx.beginPath();
+    ctx.moveTo(left + radius, top);
+    ctx.arcTo(left + width, top, left + width, top + height, radius);
+    ctx.arcTo(left + width, top + height, left, top + height, radius);
+    ctx.arcTo(left, top + height, left, top, radius);
+    ctx.arcTo(left, top, left + width, top, radius);
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(img, left, top, width, height);
 }

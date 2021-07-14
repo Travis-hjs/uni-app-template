@@ -9,6 +9,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import TheButton from "@/components/TheButton.vue";
 import cavansCreater from "@/utils/cavansCreater";
+import utils from "@/utils";
 
 @Component({
     components: {
@@ -27,6 +28,7 @@ export default class PageCavansCreater extends Vue {
     }
 
     createBanner() {
+        utils.showLoading("生成中...");
         cavansCreater({
             el: uni.createCanvasContext(`the-cavans`),
             ...this.cavansSize,
@@ -91,8 +93,35 @@ export default class PageCavansCreater extends Vue {
                     src: "https://muse-ui.org/img/img3.6e264e66.png",
                     width: 300,
                     height: 217,
+                },
+                {
+                    type: "img",
+                    src: "https://game.gtimg.cn/images/lol/act/img/champion/Talon.png",
+                    width: 60,
+                    height: 60,
+                    borderRadius: 20,
+                    bottom: 40,
+                    left: 100
+                },
+                {
+                    type: "img",
+                    src: "https://game.gtimg.cn/images/lol/act/img/champion/Zed.png",
+                    // src: "../static/logo.png",
+                    width: 60,
+                    height: 60,
+                    borderRadius: 20,
+                    bottom: 40,
+                    left: 40
                 }
-            ]
+            ],
+            success() {
+                uni.hideLoading();
+            },
+            fail(err, info) {
+                console.log("图片加载失败 >>", err, info);
+                uni.hideLoading();
+                utils.showAlert(`图片加载失败`);
+            }
         })
     }
 }
