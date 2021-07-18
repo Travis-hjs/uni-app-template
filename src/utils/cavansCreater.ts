@@ -49,15 +49,22 @@ type CavansText = {
     text: string
     /** 字体大小 */
     fontSize: number
-    /** 承载字体的最大宽度，超过则自动换行 */
-    width?: number
-    /** 与`css`的`font-family`行为一致 */
-    fontFamily?: string
-    /** 与`css`的`text-align`行为一致 */
+    /** 字体颜色 */
+    color: string
+    // /** 指定字体的宽度，超过会被挤压 */
+    // width?: number
+    // /** 与`css`的`font-family`行为一致 */
+    // fontFamily?: string
+    /**
+     * 与`css`的`text-align`行为一致
+     * - 默认`"left"`
+     * [参考](https://uniapp.dcloud.io/api/canvas/CanvasContext?id=canvascontextsettextalign)
+     */
     textAlign?: "left"|"center"|"right"
     /**
-     * 用于设置文字的水平对齐，默认：`normal`
-     * [参考](https://uniapp.dcloud.io/api/canvas/CanvasContext?id=canvascontextsettextbaseline)
+     * 用于设置文字的水平对齐
+     * - 默认：`normal`
+     * - [参考](https://uniapp.dcloud.io/api/canvas/CanvasContext?id=canvascontextsettextbaseline)
      */
     textBaseline?:  "top" | "bottom" | "middle" | "normal"
 } & CavansPosition;
@@ -104,7 +111,7 @@ function computedRadius(width: number, height: number, borderRadius?: number) {
  * @param item 
  * @param wrap 
  */
-function computedPosition(item: CavansImg | CavansBox, wrap: CavansCreaterParams) {
+function computedPosition(item: CavansPosition & CavansRect, wrap: CavansCreaterParams) {
     let left = utils.checkType(item.left) === "number" ? item.left! : 0;
     let top = utils.checkType(item.top) === "number" ? item.top! : 0;
     // 判断并计算设置右边值
@@ -166,30 +173,6 @@ function drawRoundRectPath(ctx: UniApp.CanvasContext, left: number, top: number,
 }
 
 /**
- * 绘制圆角图片
- * @param ctx 
- * @param img 
- * @param left 
- * @param top 
- * @param width 
- * @param height 
- * @param borderRadius 设置的圆角值
- */
-function drawRoundRectImg(ctx: UniApp.CanvasContext, img: string, left: number, top: number, width: number, height: number, borderRadius?: number) {
-    const radius = computedRadius(width, height, borderRadius);
-    ctx.beginPath();
-    // ctx.setFillStyle("transparent"); // 抗锯齿，貌似没用
-    ctx.moveTo(left + radius, top);
-    ctx.arcTo(left + width, top, left + width, top + height, radius);
-    ctx.arcTo(left + width, top + height, left, top + height, radius);
-    ctx.arcTo(left, top + height, left, top, radius);
-    ctx.arcTo(left, top, left + width, top, radius);
-    ctx.closePath();
-    ctx.clip();
-    ctx.drawImage(img, left, top, width, height);
-}
-
-/**
  * `cavans`生成器
  * @param params 
  */
@@ -246,7 +229,20 @@ export default function cavansCreater(params: CavansCreaterParams) {
     }
 
     function drawText(item: CavansText) {
-        
+        // const height = item.width ? Math.ceil(item.fontSize * item.text.length / item.width) * item.fontSize : item.fontSize;
+        const height = item.fontSize;
+        const width = item.fontSize * item.text.length;
+        const { left, top } = computedPosition({ ...item, width, height }, params);
+        const _left = item.textAlign === "right" ? left + width : left;
+        context.save();
+        context.setFontSize(item.fontSize);
+        context.setTextAlign(item.textAlign || "left");
+        context.setTextBaseline(item.textBaseline || "normal");
+        context.setFillStyle(item.color);
+        context.fillText(item.text, _left, top);
+        context.fill();
+        context.restore();
+        context.draw(true);
     }
 
     /** 绘制的索引 */
@@ -276,7 +272,8 @@ export default function cavansCreater(params: CavansCreaterParams) {
                 break;
 
             case "text":
-                
+                drawText(item);
+                success();
                 break;
         }   
     }

@@ -115,6 +115,26 @@ export default class PageCavansCreater extends Vue {
                     bottom: 50,
                     right: 50,
                     // zIndex: 12
+                },
+                {
+                    type: "text",
+                    text: "向右对齐的文字",
+                    color: "green",
+                    textAlign: "right",
+                    fontSize: 16,
+                    top: this.cavansSize.height / 2,
+                    right: 10,
+                    zIndex: 20,
+                },
+                {
+                    type: "text",
+                    text: "底部居中文字",
+                    fontSize: 16,
+                    color: "orange",
+                    textAlign: "center",
+                    textBaseline: "middle",
+                    bottom: 20,
+                    left: this.cavansSize.width / 2
                 }
             ],
             success() {
