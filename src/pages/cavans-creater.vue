@@ -1,8 +1,14 @@
 <template>
     <view class="cavans-creater">
-        <canvas class="banner-box" id="the-cavans" canvas-id="the-cavans" :width="cavansSize.width" :height="cavansSize.width"></canvas>
+        <canvas class="banner-box" id="the-cavans" canvas-id="the-cavans" :width="cavansSize.width" :height="cavansSize.height"></canvas>
         <view class="line"></view>
         <TheButton color="#07c160" @click="createBanner()">生成 cavans 海报图</TheButton>
+        <view :class="['img-mask flex', { 'img-mask-hide': !showMask }]">
+            <view class="img-content">
+                <img class="img" :src="canvasUrl" :style="{ width: cavansSize.width + 'px', height: cavansSize.height + 'px' }">
+                <TheButton @click="closeMask()">关闭</TheButton>
+            </view>
+        </view>
     </view>
 </template>
 <script lang="ts">
@@ -31,6 +37,7 @@ export default class PageCavansCreater extends Vue {
         utils.showLoading("生成中...");
         cavansCreater({
             cavansId: "the-cavans",
+            // fileType: "jpg",
             ...this.cavansSize,
             list: [
                 {
@@ -137,15 +144,42 @@ export default class PageCavansCreater extends Vue {
                     left: this.cavansSize.width / 2
                 }
             ],
-            success() {
+            success: (res) => {
                 uni.hideLoading();
+                console.log("生成的图片信息 >>", res);
+                // #ifdef H5
+                this.canvasUrl = res.tempFilePath;
+                this.openMask();
+                // #endif
+
+                // #ifndef H5
+                uni.saveImageToPhotosAlbum({
+                    filePath: res.tempFilePath,
+                    success() {
+                        utils.showToast("图片已下载至【图库】，请打开【图库】查看");
+                    }
+                });
+                // #endif
             },
-            fail(err, info) {
-                console.log("图片加载失败 >>", err, info);
+            fail(err) {
+                console.log("错误信息 >>", err);
                 uni.hideLoading();
-                utils.showAlert(`图片加载失败`);
+                utils.showAlert(err.type === "load" ? `图片加载失败` : `canvas导出图片失败`);
             }
         })
+    }
+
+    /** `canvas`生成的图片地址 */
+    canvasUrl = "";
+
+    showMask = false;
+
+    closeMask() {
+        this.showMask = false;
+    }
+
+    openMask() {
+        this.showMask = true;
     }
 }
 </script>
@@ -160,6 +194,28 @@ export default class PageCavansCreater extends Vue {
         // display: none;
         margin: 0 auto;
         border: solid 1px #eee;
+    }
+    .img-mask {
+        position: fixed;
+        left: 0;
+        top: 0;
+        background-color: rgba(0,0,0,0.45);
+        width: 100%;
+        height: 100%;
+        transition: 0.3s all;
+        opacity: 1;
+        .img-content {
+            margin: auto;
+            width: 320px;
+            padding: 10px;
+            .img {
+                margin: 0 auto 20rpx;
+            }
+        }
+    }
+    .img-mask-hide {
+        visibility: hidden;
+        opacity: 0;
     }
 }
 </style>

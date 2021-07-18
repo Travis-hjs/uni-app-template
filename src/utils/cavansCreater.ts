@@ -69,6 +69,19 @@ type CavansText = {
     textBaseline?:  "top" | "bottom" | "middle" | "normal"
 } & CavansPosition;
 
+interface CavansFail {
+    /** 错误信息 */
+    errMsg: string
+    /**
+     * 错误类型
+     * - `export`canvas导出图片路径错误
+     * - `load`图片加载失败错误
+     */
+    type: "export" | "load"
+    /** 图片加载失败时携带的对象 */
+    info?: CavansImg
+}
+
 interface CavansCreaterParams {
     /**
      * `cavans`节点`id`
@@ -84,10 +97,15 @@ interface CavansCreaterParams {
     height: number
     /** 生成的内容列表 */
     list: Array<CavansImg | CavansBox | CavansText>
+    /**
+     * 生成的图片类型
+     * - 默认`"png"`
+     */
+    fileType?: "jpg"|"png"
     /** 成功回调 */
-    success?: () => void
+    success?: (res: UniApp.CanvasToTempFilePathRes) => void
     /** 图片加载失败回调 */
-    fail?: (error: any, info: CavansImg) => void
+    fail?: (error: CavansFail) => void
 }
 
 /**
@@ -182,6 +200,8 @@ export default function cavansCreater(params: CavansCreaterParams) {
     // console.log("context >>", context);
     const list = params.list.sort((a, b) => (a.zIndex || 0) - (b.zIndex || 0));
     // console.log("list >>", list);
+    /** 绘制的索引 */
+    let index = 0;
 
     /**
      * 绘制图片
@@ -245,21 +265,36 @@ export default function cavansCreater(params: CavansCreaterParams) {
         context.draw(true);
     }
 
-    /** 绘制的索引 */
-    let index = 0;
-
     function start() {
         const item = list[index];
         function success() {
             if (index === list.length - 1) {
-                params.success && params.success();
+                // context.draw(true);
+                uni.canvasToTempFilePath({
+                    fileType: params.fileType,
+                    canvasId: params.cavansId,
+                    quality: 1,
+                    success: params.success,
+                    fail(err) {
+                        params.fail && params.fail({
+                            ...err,
+                            type: "export"
+                        })
+                    }
+                })
+                // setTimeout(function() {
+                // }, 500);
             } else {
                 index++;
                 start();
             }
         }
         function fail(err: any) {
-            params.fail && params.fail(err, item as CavansImg);
+            params.fail && params.fail({
+                ...err,
+                info: item,
+                type: "load"
+            });
         }
         switch (item.type) {
             case "box":
@@ -281,6 +316,7 @@ export default function cavansCreater(params: CavansCreaterParams) {
         // 先清空再绘制
         // context.clearRect(0, 0, params.width, params.height);
         context.draw(false);
+        index = 0;
         start();
     } else {
         console.warn("cavansCreater >> 没有可生成的列表数据");
