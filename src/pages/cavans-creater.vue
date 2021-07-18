@@ -100,7 +100,7 @@ export default class PageCavansCreater extends Vue {
                     src: "https://game.gtimg.cn/images/lol/act/img/champion/Talon.png",
                     width: 60,
                     height: 60,
-                    borderRadius: 50,
+                    borderRadius: 10,
                     bottom: 50,
                     left: 50,
                     // zIndex: 12

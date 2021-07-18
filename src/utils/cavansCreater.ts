@@ -45,6 +45,8 @@ type CavansBox = {
 
 type CavansText = {
     type: "text"
+    /** 文字内容 */
+    text: string
     /** 字体大小 */
     fontSize: number
     /** 承载字体的最大宽度，超过则自动换行 */
@@ -122,34 +124,44 @@ function computedPosition(item: CavansImg | CavansBox, wrap: CavansCreaterParams
 /**
  * 绘制圆角路径
  * @param ctx uni-app`canvas`上下文，部分`api`与`web`中的`canvas`有出入，注意看代码提示
+ * @param left `x`坐标
+ * @param top `y`坐标
  * @param width 宽度
  * @param height 高度
  * @param borderRadius 设置的圆角值
  */
-function drawRoundRectPath(ctx: UniApp.CanvasContext, width: number, height: number, borderRadius?: number) {
+function drawRoundRectPath(ctx: UniApp.CanvasContext, left: number, top: number, width: number, height: number, borderRadius?: number) {
     /** 半径 */
     const radius = computedRadius(width, height, borderRadius);
-    // 路径开始 相当于 <div>
+    // // 路径开始 相当于 <div>
+    // ctx.beginPath();
+    // // // 因为边缘描边存在锯齿，最好指定使用 transparent 填充 这里是使用 fill 还是 stroke都可以，二选一即可
+    // // ctx.setFillStyle("transparent"); // 貌似没用
+    // // 从右下角顺时针绘制，弧度从0到1/2PI  
+    // ctx.arc(width - radius, height - radius, radius, 0, Math.PI / 2);
+    // // 矩形下边线  
+    // ctx.lineTo(radius, height);
+    // // 左下角圆弧，弧度从1/2PI到PI  
+    // ctx.arc(radius, height - radius, radius, Math.PI / 2, Math.PI);
+    // //矩形左边线  
+    // ctx.lineTo(0, radius);
+    // // 左上角圆弧，弧度从PI到3/2PI  
+    // ctx.arc(radius, radius, radius, Math.PI, Math.PI * 3 / 2);
+    // // 上边线
+    // ctx.lineTo(width - radius, 0);
+    // // 右上角圆弧 
+    // ctx.arc(width - radius, radius, radius, Math.PI * 3 / 2, Math.PI * 2);
+    // // 右边线
+    // ctx.lineTo(width, height - radius);
+    // // 路径结束 相当于 </div>
+    // ctx.closePath();
+
     ctx.beginPath();
-    // // 因为边缘描边存在锯齿，最好指定使用 transparent 填充 这里是使用 fill 还是 stroke都可以，二选一即可
-    // ctx.setFillStyle("transparent"); // 貌似没用
-    // 从右下角顺时针绘制，弧度从0到1/2PI  
-    ctx.arc(width - radius, height - radius, radius, 0, Math.PI / 2);
-    // 矩形下边线  
-    ctx.lineTo(radius, height);
-    // 左下角圆弧，弧度从1/2PI到PI  
-    ctx.arc(radius, height - radius, radius, Math.PI / 2, Math.PI);
-    //矩形左边线  
-    ctx.lineTo(0, radius);
-    // 左上角圆弧，弧度从PI到3/2PI  
-    ctx.arc(radius, radius, radius, Math.PI, Math.PI * 3 / 2);
-    // 上边线
-    ctx.lineTo(width - radius, 0);
-    // 右上角圆弧 
-    ctx.arc(width - radius, radius, radius, Math.PI * 3 / 2, Math.PI * 2);
-    // 右边线
-    ctx.lineTo(width, height - radius);
-    // 路径结束 相当于 </div>
+    ctx.moveTo(left + radius, top);
+    ctx.arcTo(left + width, top, left + width, top + height, radius);
+    ctx.arcTo(left + width, top + height, left, top + height, radius);
+    ctx.arcTo(left, top + height, left, top, radius);
+    ctx.arcTo(left, top, left + width, top, radius);
     ctx.closePath();
 }
 
@@ -201,20 +213,14 @@ export default function cavansCreater(params: CavansCreaterParams) {
                 const { left, top } = computedPosition(item, params);
 
                 context.save();
-                context.translate(left, top);
-                // drawRoundRectPath(context, item.width, item.height, item.borderRadius);
-                // context.clip();
-                context.drawImage(res.path, 0, 0, item.width, item.height);
-                // context.restore();
+                if (item.borderRadius) {
+                    context.fill(); // 关键，这里必须要`fill`一下，不然下面`clip`会无效
+                    drawRoundRectPath(context, left, top, item.width, item.height, item.borderRadius);
+                    context.clip();
+                }
+                context.drawImage(res.path, left, top, item.width, item.height);
+                context.restore();
                 context.draw(true);
-                // 还原偏移位置，不然下一次会基于上一次的偏移计算
-                context.translate(-left, -top);
-                
-                // context.save();
-                // // context.clearRect(0,0,params.width,params.height);
-                // drawRoundRectImg(context, res.path, left, top, item.width, item.height, item.borderRadius);
-                // context.restore();
-                // context.draw(true);
 
                 success();
             },
@@ -229,38 +235,18 @@ export default function cavansCreater(params: CavansCreaterParams) {
     function drawBox(item: CavansBox) {
         const { left, top } = computedPosition(item, params);
         context.save();
-        context.translate(left, top);
-        drawRoundRectPath(context, item.width, item.height, item.borderRadius);
-        // 填充颜色
-        context.fillStyle = item.backgroundColor;
-        // 设置边框
-        context.lineWidth = item.borderWidth || 0;
-        context.strokeStyle = item.borderColor || "rgba(0,0,0,0)";
+        drawRoundRectPath(context, left, top, item.width, item.height, item.borderRadius);
+        context.setFillStyle(item.backgroundColor);
+        context.setLineWidth(item.borderWidth || 0);
+        context.setStrokeStyle(item.borderColor || "rgba(0,0,0,0)");
         context.stroke();
         context.fill();
-        // context.restore();
+        context.restore();
         context.draw(true);
-        // 还原偏移位置，不然下一次会基于上一次的偏移计算
-        context.translate(-left, -top);
     }
 
     function drawText(item: CavansText) {
-        // context.setStrokeStyle("#00ff00")
-        // context.setLineWidth(5)
-        // context.rect(0, 0, 200, 200)
-        // context.stroke()
-        // context.setStrokeStyle("#ff0000")
-        // context.setLineWidth(2)
-        // context.moveTo(160, 100)
-        // context.arc(100, 100, 60, 0, 2 * Math.PI, true)
-        // context.moveTo(140, 100)
-        // context.arc(100, 100, 40, 0, Math.PI, false)
-        // context.moveTo(85, 80)
-        // context.arc(80, 80, 5, 0, 2 * Math.PI, true)
-        // context.moveTo(125, 80)
-        // context.arc(120, 80, 5, 0, 2 * Math.PI, true)
-        // context.stroke()
-        // context.draw()
+        
     }
 
     /** 绘制的索引 */
