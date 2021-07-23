@@ -254,13 +254,13 @@ export default class TheFormItem extends Emitter {
 
     /**
      * 设置验证提示
-     * @description 暴露给外部调用的方法
-     * @param options
+     * @description 暴露给外部调用的方法，与`resetField`是相反的功能
+     * @param message 要显示验证的内容，不传则用原来的提示文字
      */
-    setValidateField(options: { show: boolean, message?: string }) {
-        this.validateText = options.message || "-";
-        this.showValidate = options.show;
-        options.show && this.scrollIntoView();
+    showValidateField(message?: string) {
+        message && (this.validateText = message);
+        this.showValidate = true;
+        this.parentComponent.validateScroll && this.scrollIntoView();
     }
 }
 </script>
