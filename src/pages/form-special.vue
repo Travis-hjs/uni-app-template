@@ -63,10 +63,7 @@ export default class SpecialForm extends Vue {
             if (valid) {
                 // 一些特殊情况需要处理两个值不能为相同时处理
                 if (this.formData.nickname && this.formData.userName === this.formData.nickname) {
-                    this.$refs["item-nickname"].setValidateField({
-                        show: true,
-                        message: "“用户名” 与 “昵称” 不能相同"
-                    })
+                    this.$refs["item-nickname"].showValidateField("“用户名” 与 “昵称” 不能相同");
                     this.checkNickname = true;
                     return;
                 }
