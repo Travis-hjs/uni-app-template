@@ -154,35 +154,6 @@ export default class TheForm extends Emitter {
     }
 
     /**
-     * 滚动到指定`item`位置
-     * @param item `item`实例
-    */
-    private scrollToItem(item: TheFormItem) {
-        // #ifdef H5
-        const top = (item.$el as HTMLElement).offsetTop;
-        uni.pageScrollTo({
-            scrollTop: top - 50, // 这里 50 是顶部导航高度
-            duration: 100
-        });
-        // #endif
-
-        // #ifndef H5
-        let scrollTop = 0;
-        uni.createSelectorQuery().in(item).selectViewport().scrollOffset(res => {
-            // console.log(res);
-            scrollTop = res.scrollTop;
-        }).select('.the-form-item').boundingClientRect(res => {
-            // console.log(res);
-            const top = scrollTop + res.top;
-            uni.pageScrollTo({
-                scrollTop: top - 50, // 这里 50 是顶部导航高度
-                duration: 100
-            });
-        }).exec();
-        // #endif
-    }
-
-    /**
      * 表单验证
      * @description 暴露给外部调用的
      * @param callback 验证回调操作
@@ -204,7 +175,7 @@ export default class TheForm extends Emitter {
             })
         });
         if (this.validateScroll && failItems.length > 0) {
-            this.scrollToItem(failItems[0]);
+            failItems[0].scrollIntoView();
         }
         callback && callback(adopt, rules);
     }
@@ -235,7 +206,7 @@ export default class TheForm extends Emitter {
             }
         }
         if (this.validateScroll && !isWatch && failItems.length > 0) {
-            this.scrollToItem(failItems[0]);
+            failItems[0].scrollIntoView();
         }
         callback && callback(adopt, rules);
     }

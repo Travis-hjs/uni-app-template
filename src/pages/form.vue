@@ -56,7 +56,6 @@
                     <text class="ellipsis" style="font-size: 28rpx">切换“描述”验证状态</text>
                 </TheButton>
             </view>
-            <TheButton color="#24292e" textColor="#fff" @click="openDynamic()">跳转动态表单</TheButton>
         </TheForm>
         <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" :value="formData.date" startDate="2019-03-12" endDate="2021-06-04" title="请选择日期" />
         <ThePicker :show="showPickerAddress" @cancel="closePickerAddress" @confirm="onPickerAddress" :list="addressList" title="动态层级变动" />
@@ -266,12 +265,6 @@ export default class FormPage extends Vue {
     /** 移除验证手机号 */
     resetPhone() {
         this.$refs["the-form"].resetField("phone");
-    }
-
-    openDynamic() {
-        uni.navigateTo({
-            url: "/pages/form-dynamic"
-        })
     }
 
 }
