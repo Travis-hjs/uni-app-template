@@ -15,7 +15,7 @@
         <view class="cell">
             <view class="cell-item" v-for="(item, index) in menuList" :key="index" @click="openMenu(item.path)">
                 <view class="f1">{{ item.label }}</view>
-                <img class="cell-icon" :src="imageInfo.iconArrowRight">
+                <image class="cell-icon" :src="imageInfo.iconArrowRight"></image>
             </view>
         </view>
     </view>    
