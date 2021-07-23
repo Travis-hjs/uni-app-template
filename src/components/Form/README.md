@@ -116,7 +116,7 @@ export default class Demo extends Vue {
     }
 
     onSubmit() {
-        this.$refs["the-form"].validate(valid => {  
+        this.$refs["the-form"].validate((valid, reuls) => {  
             if (valid) {
                 console.log("表单数据 >>", this.formData);
             } else {
