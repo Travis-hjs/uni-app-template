@@ -1,16 +1,16 @@
 {
-	"pages": [
+    "pages": [
         {
-			"path": "pages/taBarHome/home",
-			"style": {
-				"navigationBarTitleText": "首页"
-			}
+            "path": "pages/taBarHome/home",
+            "style": {
+                "navigationBarTitleText": "首页"
+            }
         },
         {
-			"path": "pages/taBarHome/personal",
-			"style": {
-				"navigationBarTitleText": "个人页"
-			}
+            "path": "pages/taBarHome/personal",
+            "style": {
+                "navigationBarTitleText": "个人页"
+            }
         },
         {
             "path": "pages/details",
@@ -28,16 +28,22 @@
             }
         },
         {
-			"path": "pages/form",
-			"style": {
-				"navigationBarTitleText": "表单验证"
-			}
+            "path": "pages/form",
+            "style": {
+                "navigationBarTitleText": "表单验证"
+            }
         },
         {
-			"path": "pages/form-dynamic",
-			"style": {
-				"navigationBarTitleText": "表单验证（动态）"
-			}
+            "path": "pages/form-dynamic",
+            "style": {
+                "navigationBarTitleText": "表单验证（动态）"
+            }
+        },
+        {
+            "path": "pages/form-special",
+            "style": {
+                "navigationBarTitleText": "表单验证（特殊/边缘操作）"
+            }
         },
         {
 			"path": "pages/button",
@@ -51,12 +57,12 @@
 				"navigationBarTitleText": "cavans-生成海报图"
 			}
         }
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "uni-app",
+        "navigationBarBackgroundColor": "#F8F8F8",
+        "backgroundColor": "#F8F8F8"
     },
     "tabBar": {
         "color": "#7A7E83",

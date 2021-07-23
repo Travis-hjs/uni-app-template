@@ -150,7 +150,8 @@ export default class TheFormItem extends Emitter {
     }
 
     /**
-     * 暴露给外部验证当前`item`
+     * 验证当前`item`
+     * @description 暴露给外部调用的方法
      * @param callback 校验回调
     */
     validateField(callback: (prop: string, rules: Array<TheFormRulesItem>) => void) {
@@ -222,6 +223,45 @@ export default class TheFormItem extends Emitter {
         callback(this.prop || "", info ? [info] : []);
     }
 
+    /**
+     * 滚动到视图可见位置
+     * @description 暴露给外部调用的方法
+     */
+    scrollIntoView() {
+        // #ifdef H5
+        const top = (this.$el as HTMLElement).offsetTop;
+        uni.pageScrollTo({
+            scrollTop: top - 50, // 这里 50 是顶部导航高度
+            duration: 100
+        });
+        // #endif
+
+        // #ifndef H5
+        let scrollTop = 0;
+        uni.createSelectorQuery().in(this).selectViewport().scrollOffset(res => {
+            // console.log(res);
+            scrollTop = res.scrollTop;
+        }).select(".the-form-item").boundingClientRect(res => {
+            // console.log(res);
+            const top = scrollTop + res.top;
+            uni.pageScrollTo({
+                scrollTop: top - 50, // 这里 50 是顶部导航高度
+                duration: 100
+            });
+        }).exec();
+        // #endif
+    }
+
+    /**
+     * 设置验证提示
+     * @description 暴露给外部调用的方法
+     * @param options
+     */
+    setValidateField(options: { show: boolean, message?: string }) {
+        this.validateText = options.message || "-";
+        this.showValidate = options.show;
+        options.show && this.scrollIntoView();
+    }
 }
 </script>
 <style lang="scss">

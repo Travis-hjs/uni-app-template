@@ -34,6 +34,8 @@ export default class Home extends Vue {
     menuList = [
         { label: "ui-按钮组件", path: "/pages/button" },
         { label: "form-表单组件", path: "/pages/form" },
+        { label: "form-表单组件（动态表单）", path: "/pages/form-dynamic" },
+        { label: "form-表单组件（特殊/边缘处理）", path: "/pages/form-special" },
         { label: "加载更多列表", path: "/pages/list" },
         { label: "cavans-生成海报", path: "/pages/cavans-creater" }
     ]
