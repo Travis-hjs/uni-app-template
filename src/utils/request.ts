@@ -15,6 +15,7 @@ function getResultInfo(result: { statusCode: number, data: any }) {
             break;
         case 400:
             info.msg = "接口传参不正确";
+            break;
         case 403:
             info.msg = "登录已过期";
             store.updateUserInfo({ token: "" });
@@ -36,7 +37,7 @@ function getResultInfo(result: { statusCode: number, data: any }) {
  * @param method 请求方法
  * @param path 请求路径
  * @param data 请求参数
- * @param heders 设置请求的 header，header 中不能设置 Referer。
+ * @param options 其他配置参数
  */
 export default function request(method: "GET" | "POST" | "DELETE" | "PUT", path: string, data?: any, options: Partial<RequestOptions> = {}) {
     const headers = options.header || {};
@@ -58,6 +59,7 @@ export default function request(method: "GET" | "POST" | "DELETE" | "PUT", path:
                     uni.showToast({
                         title: info.msg,
                         position: "bottom",
+                        icon: "none",
                         duration: 2400
                     });
                 }
