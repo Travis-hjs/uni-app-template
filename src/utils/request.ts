@@ -58,6 +58,7 @@ export default function request(method: "GET" | "POST" | "DELETE" | "PUT", path:
                     uni.showToast({
                         title: info.msg,
                         position: "bottom",
+                        icon: "none",
                         duration: 2400
                     });
                 }
