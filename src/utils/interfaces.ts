@@ -32,19 +32,10 @@ export interface ShowConfirmOptions {
     text?: string
 }
 
-export interface RequestParams {
-    /** 请求方法 */
-    method: "GET"|"POST"|"DELETE"|"PUT"
-    /** 接口路径 */
-    path: string
-    /** 传参对象 */
-    data: any
-    /** 设置请求的 header，header 中不能设置 Referer。 */
-    headers: { [key: string]: string },
-    /** 请求成功回调 */
-    success?(res: ApiResult): void
-    /** 请求失败回调 */
-    fail?(res: ApiResult): void
+/** 请求配置项类型，第四个参数 */
+export interface RequestOptions extends UniApp.RequestOptions {
+    /** 是否显示错误提示，默认`true` */
+    showTip: boolean
 }
 
 /** 上传图片返回结果 */
