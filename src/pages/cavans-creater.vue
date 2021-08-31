@@ -14,7 +14,7 @@
                 </view>
                 <!-- #endif -->
                 <!-- #ifdef H5 -->
-                <TheButton :round="true" @click="closeMask()">关闭（长摁保存图片）</TheButton>
+                <TheButton :round="true" @click="closeMask()">关闭（长摁图片保存）</TheButton>
                 <!-- #endif -->
             </view>
         </view>
