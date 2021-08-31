@@ -33,7 +33,13 @@ type CavansRect = {
 
 type CavansImg = {
     type: "img"
-    /** 生成图片的路径 */
+    /**
+     * 生成图片的路径
+     * 
+     * - 网络图片地址，前提是这个图片可以跨域请求，微信小程序端需要配置`request`域名白名单
+     * - （仅限H5端生效）本地相对路径地址
+     * - （仅限H5端生效）`base64`图片编码，例如：data:image/jpge;base64,xxxxxxxx
+     */
     src: string
 } & Pick<CavansRect, "width"|"height"|"borderRadius"> & CavansPosition;
 
@@ -191,6 +197,59 @@ function drawRoundRectPath(ctx: UniApp.CanvasContext, left: number, top: number,
 }
 
 /**
+ * 加载图片
+ * @param url 
+ * @param callback 加载成功回调
+ * @param fail 加载失败
+ */
+function loadImage(url: string, callback: (val: string) => void, fail: (error: any) => void) {
+    // 判断是否为`base64`
+    if (url.includes(";base64,")) {
+        return callback(url);
+    }
+    
+    /**
+     * 处理成图片显示的`base64`数据
+     * @param val 
+     */
+    const handlePath = (val: string) => `data:image/${url.includes(".png") ? "png" : "jpeg"};base64,${val}`;
+
+    // #ifdef MP-WEIXIN
+    // 微信端不能直接加载`base64`的图片数据，必需要转为本地路径
+    wx.getImageInfo({
+        src: url,
+        success(res) {
+            callback(res.path);
+            // wx.getFileSystemManager().readFileSync(url, "base64");
+            // wx.getFileSystemManager().readFile({
+            //     filePath: res.path,
+            //     encoding: "base64",
+            //     success(result) {
+            //         const base64 = result.data as string;
+            //         callback(handlePath(base64));
+            //     },
+            //     fail
+            // })
+        },
+        fail
+    });
+    // #endif
+
+    // #ifndef MP-WEIXIN
+    uni.request({
+        url: url,
+        method: "GET",
+        responseType: "arraybuffer",
+        success(res) {
+            const base64 = uni.arrayBufferToBase64(res.data as ArrayBuffer);
+            callback(handlePath(base64));
+        },
+        fail
+    });
+    // #endif
+}
+
+/**
  * `cavans`生成器
  * @param params 
  */
@@ -208,27 +267,23 @@ export default function cavansCreater(params: CavansCreaterParams) {
      * @param item 
      */
     function drawImage(item: CavansImg, success: () => void, fail: (error: any) => void) {
-        uni.getImageInfo({
-            src: item.src,
-            success(res) {
-                // console.log("getImageInfo >>", res);
-                // console.log("item >>", item);
-                const { left, top } = computedPosition(item, params);
+        loadImage(item.src, res => {
+            // console.log("getImageInfo >>", res);
+            // console.log("item >>", item);
+            const { left, top } = computedPosition(item, params);
 
-                context.save();
-                if (item.borderRadius) {
-                    context.fill(); // 关键，这里必须要`fill`一下，不然下面`clip`会无效
-                    drawRoundRectPath(context, left, top, item.width, item.height, item.borderRadius);
-                    context.clip();
-                }
-                context.drawImage(res.path, left, top, item.width, item.height);
-                context.restore();
-                context.draw(true);
+            context.save();
+            if (item.borderRadius) {
+                context.fill(); // 关键，这里必须要`fill`一下，不然下面`clip`会无效
+                drawRoundRectPath(context, left, top, item.width, item.height, item.borderRadius);
+                context.clip();
+            }
+            context.drawImage(res, left, top, item.width, item.height);
+            context.restore();
+            context.draw(true);
 
-                success();
-            },
-            fail
-        });
+            success();
+        }, fail);
     }
 
     /**
@@ -270,20 +325,21 @@ export default function cavansCreater(params: CavansCreaterParams) {
         function success() {
             if (index === list.length - 1) {
                 // context.draw(true);
-                uni.canvasToTempFilePath({
-                    fileType: params.fileType,
-                    canvasId: params.cavansId,
-                    quality: 1,
-                    success: params.success,
-                    fail(err) {
-                        params.fail && params.fail({
-                            ...err,
-                            type: "export"
-                        })
-                    }
-                })
-                // setTimeout(function() {
-                // }, 500);
+                // 这里必需要加个延迟，不然会有图片缺失的情况，估计canvas渲染的问题
+                setTimeout(function() {
+                    uni.canvasToTempFilePath({
+                        fileType: params.fileType,
+                        canvasId: params.cavansId,
+                        quality: 1,
+                        success: params.success,
+                        fail(err) {
+                            params.fail && params.fail({
+                                ...err,
+                                type: "export"
+                            })
+                        }
+                    })
+                }, 500);
             } else {
                 index++;
                 start();

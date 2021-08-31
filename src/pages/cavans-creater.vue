@@ -6,7 +6,16 @@
         <view :class="['img-mask flex', { 'img-mask-hide': !showMask }]">
             <view class="img-content">
                 <img class="img" :src="canvasUrl" :style="{ width: cavansSize.width + 'px', height: cavansSize.height + 'px' }">
-                <TheButton @click="closeMask()">关闭</TheButton>
+                <!-- #ifndef H5 -->
+                <view class="flex">
+                    <TheButton :round="true" class="f1" @click="closeMask()">关闭</TheButton>
+                    <view style="width: 10px"></view>
+                    <TheButton :round="true" color="#07c160" class="f1" @click="download()">保存图片</TheButton>
+                </view>
+                <!-- #endif -->
+                <!-- #ifdef H5 -->
+                <TheButton :round="true" @click="closeMask()">关闭（长摁保存图片）</TheButton>
+                <!-- #endif -->
             </view>
         </view>
     </view>
@@ -23,10 +32,6 @@ import utils from "@/utils";
     }
 })
 export default class PageCavansCreater extends Vue {
-
-    onLoad() {
-
-    }
 
     cavansSize = {
         width: 300,
@@ -98,6 +103,7 @@ export default class PageCavansCreater extends Vue {
                 {
                     type: "img",
                     src: "https://muse-ui.org/img/img3.6e264e66.png",
+                    // src: "../static/logo.png",
                     width: 300,
                     height: 217,
                     // borderRadius: 100
@@ -105,6 +111,7 @@ export default class PageCavansCreater extends Vue {
                 {
                     type: "img",
                     src: "https://game.gtimg.cn/images/lol/act/img/champion/Talon.png",
+                    // src: "../static/logo.png",
                     width: 60,
                     height: 60,
                     borderRadius: 10,
@@ -147,19 +154,8 @@ export default class PageCavansCreater extends Vue {
             success: (res) => {
                 uni.hideLoading();
                 console.log("生成的图片信息 >>", res);
-                // #ifdef H5
                 this.canvasUrl = res.tempFilePath;
                 this.openMask();
-                // #endif
-
-                // #ifndef H5
-                uni.saveImageToPhotosAlbum({
-                    filePath: res.tempFilePath,
-                    success() {
-                        utils.showToast("图片已下载至【图库】，请打开【图库】查看");
-                    }
-                });
-                // #endif
             },
             fail(err) {
                 console.log("错误信息 >>", err);
@@ -181,6 +177,15 @@ export default class PageCavansCreater extends Vue {
     openMask() {
         this.showMask = true;
     }
+
+    download() {
+        uni.saveImageToPhotosAlbum({
+            filePath: this.canvasUrl,
+            success() {
+                utils.showToast("图片已下载至【图库】，请打开【图库】查看");
+            }
+        });
+    }
 }
 </script>
 <style lang="scss">
@@ -194,6 +199,9 @@ export default class PageCavansCreater extends Vue {
         // display: none;
         margin: 0 auto;
         border: solid 1px #eee;
+        // #ifdef MP-WEIXIN
+        transform: translateY(-200%);
+        // #endif
     }
     .img-mask {
         position: fixed;
@@ -208,6 +216,8 @@ export default class PageCavansCreater extends Vue {
             margin: auto;
             width: 320px;
             padding: 10px;
+            transition: 0.3s all;
+            transform: translate3d(0, 0%, 0);
             .img {
                 margin: 0 auto 20rpx;
             }
@@ -216,6 +226,9 @@ export default class PageCavansCreater extends Vue {
     .img-mask-hide {
         visibility: hidden;
         opacity: 0;
+        .img-content {
+            transform: translate3d(0, 100%, 0);
+        }
     }
 }
 </style>
