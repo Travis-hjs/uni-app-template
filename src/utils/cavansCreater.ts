@@ -328,7 +328,7 @@ export default function cavansCreater(params: CavansCreaterParams) {
                 // 这里必需要加个延迟，不然会有图片缺失的情况，估计canvas渲染的问题
                 setTimeout(function() {
                     uni.canvasToTempFilePath({
-                        fileType: params.fileType,
+                        fileType: params.fileType || "png",
                         canvasId: params.cavansId,
                         quality: 1,
                         success: params.success,
