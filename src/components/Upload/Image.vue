@@ -1,6 +1,14 @@
 <template>
     <view class="upload_image card">
+        <!-- H5 中 widthFix 不生效，要用下面的方式 -->
+        <!-- #ifdef H5 -->
+        <img style="width: 100%; display: block" :src="src" v-if="src">
+        <!-- #endif -->
+
+        <!-- #ifndef H5 -->
         <image mode="widthFix" :src="src" v-if="src" />
+        <!-- #endif -->
+
         <view class="close" v-if="src" @click="removeImage"></view>
         <view class="upload_icon" @click="uploadImage" v-if="!src && !loading" :style="{ 'min-height': minHeight }"></view>
         <view class="flex fvertical fcenter" v-if="!src && loading" :style="{ 'min-height': minHeight }">
