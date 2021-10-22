@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "experimentalDecorators": true,
         "target": "esnext",
         "module": "esnext",
         "strict": true,
@@ -9,21 +8,22 @@
         "moduleResolution": "node",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
         "sourceMap": true,
         "skipLibCheck": true,
         "resolveJsonModule": true,
         "baseUrl": ".",
-        "paths": {
-            "@/*": [
-                "src/*"
-            ]
-        },
         "types": [
             "webpack-env",
             "@dcloudio/types",
             "miniprogram-api-typings",
             "mini-types"
         ],
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ]
+        },
         "lib": [
             "esnext",
             "dom",

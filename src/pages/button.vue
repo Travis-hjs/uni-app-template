@@ -6,7 +6,7 @@
             :round="true"
             :height="120"
             color="linear-gradient(45deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%)"
-            style="width: 70%"
+            style="width: 70%; margin: 0 auto"
             :loading="loading"
             @click="setLoading(3)"
         >圆角按钮 加载 3 秒</TheButton>

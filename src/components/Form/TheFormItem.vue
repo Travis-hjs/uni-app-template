@@ -240,10 +240,10 @@ export default class TheFormItem extends Emitter {
         let scrollTop = 0;
         uni.createSelectorQuery().in(this).selectViewport().scrollOffset(res => {
             // console.log(res);
-            scrollTop = res.scrollTop;
+            scrollTop = res.scrollTop!;
         }).select(".the-form-item").boundingClientRect(res => {
             // console.log(res);
-            const top = scrollTop + res.top;
+            const top = scrollTop + res.top!;
             uni.pageScrollTo({
                 scrollTop: top - 50, // 这里 50 是顶部导航高度
                 duration: 100

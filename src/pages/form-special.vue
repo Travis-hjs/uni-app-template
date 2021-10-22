@@ -7,7 +7,7 @@
                 <input class="the-input" type="text" v-model="formData.userName" :placeholder="formRules.userName[0].message">
             </TheFormItem>
             <TheFormItem prop="nickname" label="昵称" ref="item-nickname">
-                <input class="the-input" type="number" v-model="formData.nickname" :placeholder="formRules.nickname[0].message">
+                <input class="the-input" type="text" v-model="formData.nickname" :placeholder="formRules.nickname[0].message">
             </TheFormItem>
         </TheForm>
         <TheButton color="#07c160" @click="onSubmit()">提交表单</TheButton>
