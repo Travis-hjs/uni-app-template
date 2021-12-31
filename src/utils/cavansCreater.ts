@@ -1,7 +1,7 @@
 import utils from "./index";
 
 /** `cavans`位置类型 */
-type CavansPosition = {
+interface CavansPosition {
     /** 距离顶部偏移值 */
     top?: number
     /** 距离底部偏移值，会覆盖`top` */
@@ -15,14 +15,14 @@ type CavansPosition = {
 }
 
 /** `cavans`矩阵尺寸类型 */
-type CavansRect = {
+interface CavansRect {
     /** 生成的图片宽度 */
     width: number
     /** 生成的图片高度 */
     height: number
     /**
      * 边框圆角
-     * @description 当`width===height`时，设置`borderRadius = width/2`或者`borderRadius = height/2`就变成一个圆形
+     * - 当`width === height`，`borderRadius = width / 2`或者`borderRadius = height / 2`就会变成一个圆形
      */
     borderRadius?: number
     /** 边框厚度 */
@@ -31,25 +31,25 @@ type CavansRect = {
     borderColor?: string
 }
 
-type CavansImg = {
+interface CavansImg extends CavansPosition, Omit<CavansRect, "borderWidth" | "borderColor"> {
     type: "img"
     /**
      * 生成图片的路径
      * 
      * - 网络图片地址，前提是这个图片可以跨域请求，微信小程序端需要配置`request`域名白名单
      * - （仅限H5端生效）本地相对路径地址
-     * - （仅限H5端生效）`base64`图片编码，例如：data:image/jpge;base64,xxxxxxxx
+     * - （仅限H5端生效）`base64`图片编码，例如：`data:image/jpge;base64,xxxxxxxx`
      */
     src: string
-} & Pick<CavansRect, "width"|"height"|"borderRadius"> & CavansPosition;
+}
 
-type CavansBox = {
+interface CavansBox extends CavansRect, CavansPosition {
     type: "box"
     /** 容器背景颜色 */
     backgroundColor: string
-} & CavansRect & CavansPosition;
+}
 
-type CavansText = {
+interface CavansText extends CavansPosition {
     type: "text"
     /** 文字内容 */
     text: string
@@ -63,25 +63,25 @@ type CavansText = {
     // fontFamily?: string
     /**
      * 与`css`的`text-align`行为一致
-     * - 默认`"left"`
      * [参考](https://uniapp.dcloud.io/api/canvas/CanvasContext?id=canvascontextsettextalign)
+     * - 默认`"left"`
      */
-    textAlign?: "left"|"center"|"right"
+    textAlign?: "left" | "center" | "right"
     /**
      * 用于设置文字的水平对齐
+     * [参考](https://uniapp.dcloud.io/api/canvas/CanvasContext?id=canvascontextsettextbaseline)
      * - 默认：`normal`
-     * - [参考](https://uniapp.dcloud.io/api/canvas/CanvasContext?id=canvascontextsettextbaseline)
      */
     textBaseline?:  "top" | "bottom" | "middle" | "normal"
-} & CavansPosition;
+}
 
 interface CavansFail {
     /** 错误信息 */
     errMsg: string
     /**
      * 错误类型
-     * - `export`canvas导出图片路径错误
-     * - `load`图片加载失败错误
+     * - `export`: canvas导出图片路径错误
+     * - `load`: 图片加载失败错误
      */
     type: "export" | "load"
     /** 图片加载失败时携带的对象 */
@@ -107,7 +107,7 @@ interface CavansCreaterParams {
      * 生成的图片类型
      * - 默认`"png"`
      */
-    fileType?: "jpg"|"png"
+    fileType?: "jpg" | "png"
     /** 成功回调 */
     success?: (res: UniApp.CanvasToTempFilePathRes) => void
     /** 图片加载失败回调 */
@@ -251,7 +251,7 @@ function loadImage(url: string, callback: (val: string) => void, fail: (error: a
 
 /**
  * `cavans`生成器
- * @param params 
+ * @param params 传参配置
  */
 export default function cavansCreater(params: CavansCreaterParams) {
     /** `canvas`绘图上下文 */
@@ -325,7 +325,7 @@ export default function cavansCreater(params: CavansCreaterParams) {
         function success() {
             if (index === list.length - 1) {
                 // context.draw(true);
-                // 这里必需要加个延迟，不然会有图片缺失的情况，估计canvas渲染的问题
+                // 这里必需要加个延迟，不然在小程序端会有图片缺失的情况，估计是平台 canvas 渲染机制的问题
                 setTimeout(function() {
                     uni.canvasToTempFilePath({
                         fileType: params.fileType || "png",
