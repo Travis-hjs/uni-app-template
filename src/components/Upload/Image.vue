@@ -11,7 +11,7 @@
 
         <view class="close" v-if="src" @click="removeImage"></view>
         <view class="upload_icon" @click="uploadImage" v-if="!src && !loading" :style="{ 'min-height': minHeight }"></view>
-        <view class="flex fvertical fcenter" v-if="!src && loading" :style="{ 'min-height': minHeight }">
+        <view class="fvc" v-if="!src && loading" :style="{ 'min-height': minHeight }">
             <view class="preloader">
                 <view class="preloader-inner">
                     <view class="preloader-inner-gap"></view>

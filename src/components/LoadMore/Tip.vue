@@ -1,5 +1,5 @@
 <template>
-    <view class="load_more_tip flex fcenter fvertical">
+    <view class="load_more_tip fvc">
         <view class="preloader" v-show="info.state === 'loading'">
             <view class="preloader-inner">
                 <view class="preloader-inner-gap"></view>

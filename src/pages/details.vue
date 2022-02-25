@@ -5,7 +5,7 @@
             <view>页面参数{{ pageParam }}</view>
         </view>
         <TheFooter background="#222">
-            <view class="button_dark footer flex fvertical fcenter">
+            <view class="button_dark footer fvc">
                 <view>footer</view>
             </view>
         </TheFooter>

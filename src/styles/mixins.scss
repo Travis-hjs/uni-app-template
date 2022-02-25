@@ -1,13 +1,5 @@
 @import "./variable.scss";
 
-@mixin flex {display: flex; flex-wrap: wrap; }
-/** 垂直居中 */
-@mixin fvertical { align-items: center; }
-// 水平居中
-@mixin fcenter { justify-content: center; }
-// 右对齐
-@mixin fright{ flex-direction: row; justify-content: flex-end; }
-
 // 溢出...显示
 @mixin ellipsis($number) {
     display: -webkit-box;
@@ -25,9 +17,9 @@
     background-color: #eee; 
     color: $dark;
     line-height: 1;
-    @include flex();
-    @include fvertical();
-    @include fcenter();
+    display: flex;
+    align-items: center;
+    justify-content: center;
     &:active{
         opacity: 0.85;
     }

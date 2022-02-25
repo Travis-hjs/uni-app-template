@@ -3,7 +3,7 @@
         <view class="f1" @click="clickCancel()"></view>
         <view class="picker_content">
             <!-- 操作栏 -->
-            <view class="picker_option flex fvertical">
+            <view class="picker_option fvertical">
                 <view class="btn" @click="clickCancel()">取消</view>
                 <view class="f1 picker_title">{{ title }}</view>
                 <view class="btn confirm" @click="clickConfirm()">确定</view>

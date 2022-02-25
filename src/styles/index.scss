@@ -14,16 +14,23 @@ uni-page-body{ min-height: auto !important; }
 /* #endif */
 
 /* flex布局 */
-.flex { @include flex(); }
+.flex { display: flex; flex-wrap: nowrap; }
+.fwrap { display: flex; flex-wrap: wrap; }
 .f1 { flex: 1; }
 .f2 { flex: 2; }
 .f3 { flex: 3; }
 /* 垂直居中 */
-.fvertical { @include fvertical(); }
+.fvertical { display: flex; align-items: center; }
 /* 水平居中 */
-.fcenter { @include fcenter(); }
+.fcenter { display: flex; justify-content: center; }
+/* 水平+垂直居中 */
+.fvc { display: flex; align-items: center; justify-content: center; }
 /* 右对齐 */
-.fright { @include fright(); }
+.fright { display: flex; justify-content: flex-end; }
+/* 两端对齐 */
+.fbetween { display: flex; justify-content: space-between; }
+/* 靠底部对齐 */
+.fbottom { display: flex; align-items: flex-end; }
 
 /* 溢出...显示 当前节点生效 */
 .ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
