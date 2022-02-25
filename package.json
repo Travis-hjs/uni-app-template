@@ -1,7 +1,7 @@
 {
   "name": "uni-app-template",
-  "version": "1.0.1",
-  "private": true,
+  "version": "1.0.2",
+  "private": false,
   "scripts": {
     "dev": "npm run dev:h5",
     "build": "npm run build:h5",
