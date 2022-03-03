@@ -10,14 +10,17 @@ export type DeepReadonly<T> = {
 
 /** 深层递归所有属性为必选选（貌似不生效） */
 export type DeepRequired<T> = {
-    [P in keyof T]-?: T[P] extends object ? Required<T[P]> : T[P]
+    [P in keyof T]-?: T[P] extends object ? Required<T[P]> : T[P];
 }
 
 /** 运算符号 */
 export type NumberSymbols = "+" | "-"| "*" | "/";
 
-/** JavaScript类型 */
-export type JavaScriptTypes = "string" | "number" | "array" | "object" | "function" | "null" | "undefined" | "boolean" | "regexp";
+/**
+ * `JavaScript`类型
+ * - 这里只枚举一些常见类型，后续根据使用场景自行添加即可
+ */
+export type JavaScriptTypes = "string" | "number" | "array" | "object" | "boolean" | "function" | "null" | "undefined" | "regexp" | "promise" | "formdata";
 
 export interface ShowConfirmOptions {
     /** 内容 */
@@ -34,8 +37,8 @@ export interface ShowConfirmOptions {
 
 /** 请求配置项类型，第四个参数 */
 export interface RequestOptions extends UniApp.RequestOptions {
-    /** 是否显示错误提示，默认`true` */
-    showTip: boolean
+    /** 是否在`res.code !== 1`的时候显示提示，默认`false`，传入`true`则用`res.msg`作为提示，也可以传入字符串作为提示内容 */
+    showTip: boolean | string
 }
 
 /** 上传图片返回结果 */
@@ -46,18 +49,9 @@ export interface UploadImageRes {
     src: string
 }
 
-export interface UserInfoType {
-    /** 登录凭据 */
-    token: string
-    /** 用户手机号 */
-    phone: number | "",
-    /** 用户`id` */
-    id: number | ""
-}
-
 /** 接口请求基础响应数据 */
 export interface ApiResult {
-    /** 接口状态（1为成功） */
+    /** 接口状态；`res.code === 1`为成功） */
     code: number
     /** 接口响应数据 */
     data: any

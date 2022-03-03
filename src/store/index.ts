@@ -1,10 +1,7 @@
 import ModuleAppOption from "./AppOption";
 import utils from "../utils";
-import { 
-    DeepPartial,
-    DeepReadonly,
-    UserInfoType 
-} from "../utils/interfaces";
+import { DeepPartial, DeepReadonly } from "../types";
+import { UserInfo } from "../types/user";
 
 const cacheName = "user-info";
 
@@ -28,7 +25,7 @@ export class ModuleStore extends ModuleAppOption {
     }
 
     /** 用户信息 */
-    readonly userInfo: DeepReadonly<UserInfoType> = {
+    readonly userInfo: DeepReadonly<UserInfo> = {
         id: "",
         token: "",
         phone: ""
@@ -38,7 +35,7 @@ export class ModuleStore extends ModuleAppOption {
      * 更新用户信息字段
      * @param value 
      */
-    updateUserInfo(value: DeepPartial<UserInfoType>) {
+    updateUserInfo(value: DeepPartial<UserInfo>) {
         utils.modifyData(this.userInfo, value);
         uni.setStorageSync(cacheName, JSON.stringify(this.userInfo));
     }

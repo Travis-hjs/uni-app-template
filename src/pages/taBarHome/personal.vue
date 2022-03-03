@@ -16,7 +16,7 @@ import { Component, Vue } from "vue-property-decorator";
 import utils from "@/utils";
 import store from '@/store';
 import UploadImage from "@/components/Upload/Image.vue";
-import { UploadImageRes } from "@/utils/interfaces";
+import { UploadImageRes } from "@/types";
 
 @Component({
     components: {

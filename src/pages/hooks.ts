@@ -1,4 +1,4 @@
-import { PickerSelectItem } from "@/utils/interfaces";
+import { PickerSelectItem } from "@/types";
 
 /** 创建城市数据 */
 export function createCityData(): Array<PickerSelectItem> {

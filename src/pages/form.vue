@@ -70,7 +70,7 @@ import TheButton from "@/components/TheButton.vue";
 import PickerDate from "@/components/Picker/Date.vue";
 import ThePicker from "@/components/Picker/index.vue";
 import utils from "@/utils";
-import { PickerSelectItem, TheFormRulesItem, UniAppChangeEvent } from "@/utils/interfaces";
+import { PickerSelectItem, TheFormRulesItem, UniAppChangeEvent } from "@/types";
 import { createCityData } from "./hooks";
 
 interface FormDataType {

@@ -1,4 +1,4 @@
-import { ApiListData, ListParams } from "../utils/interfaces";
+import { ApiListData, ListParams } from "../types";
 import request from "../utils/request";
 import utils from "../utils";
 

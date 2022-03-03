@@ -1,5 +1,5 @@
 import { Component, Vue } from "vue-property-decorator";
-import { ApiListData, LoadMoreType } from "../utils/interfaces";
+import { ApiListData, LoadMoreType } from "../types";
 import utils from "../utils";
 
 function createLoadMoreData(): LoadMoreType {

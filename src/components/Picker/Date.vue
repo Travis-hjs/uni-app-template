@@ -25,7 +25,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { UniAppChangeEvent } from "@/utils/interfaces";
+import { UniAppChangeEvent } from "@/types";
 import utils from "@/utils";
 
 /** 当前时间 */

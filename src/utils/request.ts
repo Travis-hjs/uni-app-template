@@ -1,6 +1,6 @@
 import config from "./Config";
 import store from "../store";
-import { ApiResult, RequestOptions } from "./interfaces";
+import { ApiResult, RequestOptions } from "../types";
 
 function getResultInfo(result: { statusCode: number, data: any }) {
     const info: ApiResult = { code: -1, msg: "", data: null }
@@ -41,7 +41,6 @@ function getResultInfo(result: { statusCode: number, data: any }) {
  */
 export default function request(method: "GET" | "POST" | "DELETE" | "PUT", path: string, data?: any, options: Partial<RequestOptions> = {}) {
     const headers = options.header || {};
-    const showTip = typeof options.showTip === "boolean" ? options.showTip : true;
     return new Promise<ApiResult>(function(resolve, reject) {
         uni.request({
             method: method,
@@ -55,9 +54,9 @@ export default function request(method: "GET" | "POST" | "DELETE" | "PUT", path:
             success(res) {
                 // console.log("request.success", res);
                 const info = getResultInfo(res);
-                if (info.code !== 1 && showTip) {
+                if (info.code !== 1 && options.showTip) {
                     uni.showToast({
-                        title: info.msg,
+                        title: typeof options.showTip === 'boolean' ? (info.msg || "操作失败") : options.showTip,
                         position: "bottom",
                         icon: "none",
                         duration: 2400

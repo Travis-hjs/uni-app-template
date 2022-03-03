@@ -1,6 +1,6 @@
 import { 
     ShowConfirmOptions 
-} from "./interfaces";
+} from "../types";
 
 /** 控件模块 */
 export default class ModuleControl {

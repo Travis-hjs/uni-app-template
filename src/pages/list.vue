@@ -14,7 +14,7 @@ import { Component } from "vue-property-decorator";
 import LoadMore from "@/mixins/LoadMore";
 import LoadMoreTip from "@/components/LoadMore/Tip.vue";
 import { getTestList } from "@/api/common";
-import { ApiListData } from "@/utils/interfaces";
+import { ApiListData } from "@/types";
 
 @Component({
     components: {

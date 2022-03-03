@@ -2,7 +2,7 @@ import ModuleControl from "./Control";
 import { 
     JavaScriptTypes, 
     NumberSymbols
-} from "./interfaces";
+} from "../types";
 
 class ModuleUtils extends ModuleControl {
     

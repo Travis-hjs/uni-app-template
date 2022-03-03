@@ -8,7 +8,7 @@ import { Component, Prop, Watch } from "vue-property-decorator";
 import Emitter from "@/mixins/Emitter";
 import TheFormItem from "./TheFormItem.vue";
 // import utils from "@/utils";
-import { TheFormRules, labelPosition, TheFormValidateCallback } from "@/utils/interfaces";
+import { TheFormRules, labelPosition, TheFormValidateCallback } from "@/types";
 import utils from "@/utils";
 
 @Component({

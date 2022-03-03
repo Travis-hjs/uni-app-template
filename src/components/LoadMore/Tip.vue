@@ -30,7 +30,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { LoadMoreType } from "@/utils/interfaces";
+import { LoadMoreType } from "@/types";
 import store from "@/store";
 
 @Component({})

@@ -19,7 +19,7 @@ import { Component, Prop, Inject, Watch } from "vue-property-decorator";
 import TheForm from "./TheForm.vue";
 import Emitter from "@/mixins/Emitter";
 import utils from "@/utils";
-import { TheFormRulesItem, labelPosition } from "@/utils/interfaces";
+import { TheFormRulesItem, labelPosition } from "@/types";
 
 @Component({
     name: "TheFormItem"
