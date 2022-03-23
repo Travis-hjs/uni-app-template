@@ -22,18 +22,6 @@ export type NumberSymbols = "+" | "-"| "*" | "/";
  */
 export type JavaScriptTypes = "string" | "number" | "array" | "object" | "boolean" | "function" | "null" | "undefined" | "regexp" | "promise" | "formdata";
 
-export interface ShowConfirmOptions {
-    /** 内容 */
-    content: string 
-    /** 标题 */
-    title?: string
-    /** 确认回调 */
-    callback?(): void
-    /** 取消回调 */
-    cancel?(): void 
-    /** 确认按钮文字 */
-    text?: string
-}
 
 /** 请求配置项类型，第四个参数 */
 export interface RequestOptions extends UniApp.RequestOptions {

@@ -1,6 +1,32 @@
-import { 
-    ShowConfirmOptions 
-} from "../types";
+import Vue from "vue";
+
+interface ShowConfirmOptions {
+    /** 内容 */
+    content: string 
+    /** 标题 */
+    title?: string
+    /** 确认回调 */
+    callback?(): void
+    /** 取消回调 */
+    cancel?(): void 
+    /** 确认按钮文字 */
+    text?: string
+}
+
+interface ScrollviewOption {
+    /** 当前实例 */
+    ctx: Vue
+    /** 要滚动的目标节点`id` */
+    id: string
+    /** `<scrollview>`的宽度，默认是屏幕宽度 */
+    wrapWidth: number
+    /** 点击事件 */
+    event: Event
+    /** 是否首次设置偏移到中心位置，设置为`true`时，只需要传入`id`即可 */
+    first: boolean
+    /** 回调 */
+    callback(left: number, node: UniApp.NodeInfo): void
+}
 
 /** 控件模块 */
 export default class ModuleControl {
@@ -10,7 +36,7 @@ export default class ModuleControl {
      * @param name 应用名
      * @param callback 错误回调
      */
-    openApp(name: "qq"|"wx"|"zfb"|"sina"|"taobao", callback?: (result: any) => void) {
+    openApp(name: "qq" | "wx" | "zfb" | "sina" | "taobao", callback?: (result: any) => void) {
         // #ifdef APP-PLUS
         // learn: https://ask.dcloud.net.cn/article/35621
         const data = {
@@ -23,7 +49,7 @@ export default class ModuleControl {
         plus.runtime.openURL(data[name], callback);
         // #endif
     }
-    
+
     /**
      * 显示加载提示
      * @param text 提示文字
@@ -34,7 +60,7 @@ export default class ModuleControl {
             mask: true
         });
     }
-    
+
     /**
      * 显示提示条
      * @param tip 提示文字
@@ -122,12 +148,76 @@ export default class ModuleControl {
         clipboard.setSelectionRange(0, clipboard.value.length);
         const state = document.execCommand("copy");
         if (state) {
-          this.showToast("复制成功");
-          success && success();
+            this.showToast("复制成功");
+            success && success();
         } else {
-          this.showToast("复制失败");
+            this.showToast("复制失败");
         }
         // #endif
     }
-    
+
+    /**
+     * 监听`<scrollview>`组件指定元素滚动到视图中心的偏移值
+     * ## 使用示例
+     * 
+     * **template**部分
+     * 
+     * ```html
+     * <scroll-view scroll-x scroll-with-animation :scroll-left="tabSlideLeft">
+     *      <view @click="onClick(item, $event)" v-for="item in list" :id="'scroll-' + item.id" :key="item.id">
+     *          <text>{{ item.label }}</text>
+     *      </view>
+     * </scroll-view>
+     * ```
+     * 
+     * **js部分**
+     * 
+     * ```ts
+     * import { Component, Vue } from "vue-property-decorator";
+     * import utils from "@/utils";
+     * 
+     * @Component({})
+     * export default class Demo extends Vue {
+     *      list: Array<{ id: number, label: string }> = [];
+     *      
+     *      tabSlideLeft = 0;
+     * 
+     *      onClick(item: { id: number }, e: Event) {
+     *          utils.onScrollviewCenter({
+     *              ctx: this,
+     *              event: e,
+     *              id: 'scroll-' + item.id,
+     *              callback: left => this.tabSlideLeft = left
+     *          })
+     *      }
+     * }
+     * 
+     * ```
+     */
+    onScrollviewCenter(option: ScrollviewOption) {
+        if (option.first) {
+            const el = document.getElementById(option.id);
+            if (el) {
+                el.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                    inline: "center"
+                });
+            }
+        } else {
+            const width = option.wrapWidth || uni.getSystemInfoSync().windowWidth;
+            option.ctx.$nextTick(function () {
+                const query = uni.createSelectorQuery().in(option.ctx).select(`#${option.id}`);
+                const left = option.event ? (option.event.currentTarget as HTMLElement).offsetLeft : 0;
+                query.boundingClientRect(function (node) {
+                    let result = 0;
+                    if (node) {
+                        result = left + node.width / 2 - width / 2;
+                    }
+                    typeof option.callback === "function" && option.callback(result, node);
+                }).exec();
+            });
+        }
+    }
+
 }
