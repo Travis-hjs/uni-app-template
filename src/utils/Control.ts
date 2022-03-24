@@ -157,13 +157,13 @@ export default class ModuleControl {
     }
 
     /**
-     * 监听`<scrollview>`组件指定元素滚动到视图中心的偏移值
+     * 监听或设置`<scrollview>`组件指定元素滚动到视图中心的偏移值
      * ## 使用示例
      * 
      * **template**部分
      * 
      * ```html
-     * <scroll-view scroll-x scroll-with-animation :scroll-left="tabSlideLeft">
+     * <scroll-view scroll-x scroll-with-animation :scroll-left="scrollLeft">
      *      <view @click="onClick(item, $event)" v-for="item in list" :id="'scroll-' + item.id" :key="item.id">
      *          <text>{{ item.label }}</text>
      *      </view>
@@ -173,21 +173,18 @@ export default class ModuleControl {
      * **js部分**
      * 
      * ```ts
-     * import { Component, Vue } from "vue-property-decorator";
-     * import utils from "@/utils";
-     * 
-     * @Component({})
+     * // ...省略前置代码
      * export default class Demo extends Vue {
      *      list: Array<{ id: number, label: string }> = [];
      *      
-     *      tabSlideLeft = 0;
+     *      scrollLeft = 0;
      * 
      *      onClick(item: { id: number }, e: Event) {
      *          utils.onScrollviewCenter({
      *              ctx: this,
      *              event: e,
      *              id: 'scroll-' + item.id,
-     *              callback: left => this.tabSlideLeft = left
+     *              callback: left => this.scrollLeft = left
      *          })
      *      }
      * }
@@ -207,14 +204,14 @@ export default class ModuleControl {
         } else {
             const width = option.wrapWidth || uni.getSystemInfoSync().windowWidth;
             option.ctx.$nextTick(function () {
-                const query = uni.createSelectorQuery().in(option.ctx).select(`#${option.id}`);
+                const node = uni.createSelectorQuery().in(option.ctx).select(`#${option.id}`);
                 const left = option.event ? (option.event.currentTarget as HTMLElement).offsetLeft : 0;
-                query.boundingClientRect(function (node) {
+                node.boundingClientRect(function (nodeInfo) {
                     let result = 0;
-                    if (node) {
-                        result = left + node.width / 2 - width / 2;
+                    if (nodeInfo) {
+                        result = left + nodeInfo.width / 2 - width / 2;
                     }
-                    typeof option.callback === "function" && option.callback(result, node);
+                    typeof option.callback === "function" && option.callback(result, nodeInfo);
                 }).exec();
             });
         }
