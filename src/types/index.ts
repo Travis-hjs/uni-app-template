@@ -1,3 +1,11 @@
+/** 上传图片返回结果 */
+export interface UploadImageRes {
+    /** 和当前上传组件绑定的`id` */
+    id: string | number
+    /** 图片路径 */
+    src: string
+}
+
 /** 表单规则类型 */
 export interface TheFormRulesItem {
     /** 是否必填项 */

@@ -2,7 +2,7 @@
     <view class="personal">
         <button class="button_pink" @click="openDetail()">跳转详情页并传参</button>
         <view>userInfo.token: {{ userInfo.token }}</view>
-        <button class="button" @click="clearToken">修改`userInfo.token = ""`</button>
+        <button class="button" @click="clearUserInfo()">清空用户信息</button>
         <view style="padding: 10px 0">
             <UploadImage :uploadId="uploadInfo.index" :src="uploadInfo.path" @change="setContentImage" />
         </view>
@@ -25,7 +25,7 @@ import { UploadImageRes } from "@/types";
 })
 export default class Personal extends Vue {
     
-    readonly userInfo = store.userInfo;
+    readonly userInfo = store.user.info;
 
     uploadInfo = {
         index: 13,
@@ -44,8 +44,8 @@ export default class Personal extends Vue {
         })
     }
 
-    clearToken() {
-        store.updateUserInfo({ token: "" });
+    clearUserInfo() {
+        store.user.reset();
     }
 
     setContentImage(res: UploadImageRes) {
@@ -56,9 +56,9 @@ export default class Personal extends Vue {
 </script>
 
 <style lang="scss">
-.personal{ 
+.personal { 
     padding: 30rpx 30rpx 40rpx; 
-    .test_include{ 
+    .test_include { 
         @include button();
         margin-bottom: 16px;
     }

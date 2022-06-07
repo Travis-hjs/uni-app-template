@@ -1,13 +1,9 @@
 import ModuleAppOption from "./AppOption";
-import { modifyData } from "@/utils";
-import { UserInfo } from "@/types/user";
-
-const cacheName = "user-info";
+import ModuleUser from "./User";
 
 export class ModuleStore extends ModuleAppOption {
     constructor() {
         super();
-        this.initUserInfo();
     }
 
     /** 图片对象集 */
@@ -23,29 +19,8 @@ export class ModuleStore extends ModuleAppOption {
         }
     }
 
-    /** 用户信息 */
-    readonly userInfo: DeepReadonly<UserInfo> = {
-        id: "",
-        token: "",
-        phone: ""
-    }
-
-    /**
-     * 更新用户信息字段
-     * @param value 
-     */
-    updateUserInfo(value: DeepPartial<UserInfo>) {
-        modifyData(this.userInfo, value);
-        uni.setStorageSync(cacheName, JSON.stringify(this.userInfo));
-    }
-
-    /** 初始化用户数据（从本地获取） */
-    private initUserInfo() {
-        const data = uni.getStorageSync(cacheName);
-        if (data) {
-            this.updateUserInfo(JSON.parse(data));
-        }
-    }
+    /** 用户状态 */
+    user = new ModuleUser();
 
 }
 

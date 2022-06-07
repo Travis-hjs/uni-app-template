@@ -29,7 +29,7 @@ import store from "@/store";
 export default class Home extends Vue {
     imageInfo = store.imageInfo;
 
-    readonly userInfo = store.userInfo;
+    readonly userInfo = store.user.info;
 
     menuList = [
         { label: "ui-按钮组件", path: "/pages/button" },
@@ -47,7 +47,7 @@ export default class Home extends Vue {
     }
 
     setToken() {
-        store.updateUserInfo({ token: "123" });
+        store.user.update({ token: "123" });
     }
 
     addCount() {
