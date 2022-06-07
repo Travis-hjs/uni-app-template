@@ -75,6 +75,14 @@ interface PageInfo {
     totalCount?: number
 }
 
+/** `uni-app`change事件参数 */
+interface UniAppChangeEvent<T> {
+    detail: {
+        /** `@change`事件触发的值 */
+        value: T
+    }
+}
+
 interface Window {
     /**
      * 当前版本，方便在控制台查看调试用

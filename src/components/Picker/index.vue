@@ -25,8 +25,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { PickerSelectItem, UniAppChangeEvent } from "@/types";
 import { checkType } from "@/utils";
+import { PickerSelectItem } from "@/types";
 
 /**
  * 弹出选择组件

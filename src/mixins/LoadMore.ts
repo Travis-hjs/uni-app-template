@@ -62,7 +62,7 @@ export default class LoadMore extends Vue {
     /**
      * 开始请求获取列表数据
      * @param callback 加载结束回调
-    */
+     */
     getListData(callback?: () => void) {
         const { state, list } = this.loadMoreData;
         if (state === "nomore" || state === "loading") return;
@@ -77,7 +77,7 @@ export default class LoadMore extends Vue {
                 if (result.data.list.length < this.loadMoreData.pageSize) {
                     this.loadMoreData.state = "nomore";
                 } else {
-                    this.loadMoreData.pageIndex++;
+                    this.loadMoreData.currentPage++;
                 }
                 this.getListCallback && this.getListCallback(result);
             } else {
@@ -94,9 +94,9 @@ export default class LoadMore extends Vue {
     /**
      * 刷新数据
      * @param callback 加载结束回调
-    */
+     */
     refreshData(callback?: () => void) {
-        this.loadMoreData.pageIndex = 0;
+        this.loadMoreData.currentPage = 1;
         this.loadMoreData.list = [];
         this.loadMoreData.state = "wait";
         this.getListData(callback);

@@ -25,7 +25,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import { UniAppChangeEvent } from "@/types";
 import { checkType, findIndex } from "@/utils";
 
 
