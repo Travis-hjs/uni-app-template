@@ -22,8 +22,8 @@ import { getTestList } from "@/api/common";
 })
 export default class LoadMoreList extends LoadMore {
 
-    getListCallback(res: ApiResultList) {
-        console.log("获取数据之后的回调", res);
+    getListCallback(res: ApiResult<ApiResultList>) {
+        console.log("获取数据之后的回调", res.data);
     }
 
     requestList() {

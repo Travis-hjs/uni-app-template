@@ -40,7 +40,7 @@ const testList = new Array(52).fill(0).map((_, index) => {
 export function getTestList(params: PageInfo & { id: number }) {
     const delay = ranInt(200, 2000);
 
-    const result: ApiResultList = {
+    const result: ApiResult<ApiResultList> = {
         code: -1,
         data: {
             currentPage: params.currentPage,
@@ -51,7 +51,7 @@ export function getTestList(params: PageInfo & { id: number }) {
         msg: ""
     }
 
-    return new Promise<ApiResultList>(function (resolve, reject) {
+    return new Promise<ApiResult<ApiResultList>>(function (resolve, reject) {
         setTimeout(function () {
             if (delay > 1500) {
                 result.msg = "接口查询超时"

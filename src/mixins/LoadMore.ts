@@ -49,10 +49,10 @@ export default class LoadMore extends Vue {
     loadMoreData = useLoadMoreData();
 
     /** 请求数据的异步函数 */
-    requestList?(): Promise<ApiResultList>
+    requestList?(): Promise<ApiResult<ApiResultList>>
 
     /** 获取数据之后的回调（需要的时候可能会用到） */
-    getListCallback?(res: ApiResultList): void;
+    getListCallback?(res: ApiResult<ApiResultList>): void;
 
     /** 重置列表数据 */
     resetListData() {
