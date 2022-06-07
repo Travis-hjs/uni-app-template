@@ -7,9 +7,8 @@
 import { Component, Prop, Watch } from "vue-property-decorator";
 import Emitter from "@/mixins/Emitter";
 import TheFormItem from "./TheFormItem.vue";
-// import utils from "@/utils";
 import { TheFormRules, labelPosition, TheFormValidateCallback } from "@/types";
-import utils from "@/utils";
+import { getDeepLevelValue } from "@/utils";
 
 @Component({
     name: "TheForm",
@@ -101,7 +100,7 @@ export default class TheForm extends Emitter {
             // 这里其实也是可以用上面的来深拷贝，考虑到后面可能有 function 或者其他类型，这样处理会比较好
             // for (const key in forRules) {
             //     const value = forRules[key];
-            //     if (utils.checkType(value) === "array") {
+            //     if (checkType(value) === "array") {
             //         this.beforeRules[key] = [...value as any];
             //     } else {
             //         this.beforeRules[key] = forRules[key];
@@ -141,7 +140,7 @@ export default class TheForm extends Emitter {
         if (keys.length) {
             for (let i = 0; i < keys.length; i++) {
                 const key = keys[i];
-                const value = utils.getDeepLevelValue(res, key);
+                const value = getDeepLevelValue(res, key);
                 if (value !== "" && value !== null && value !== undefined && value.length !== 0) {
                     this.validateField(key, isValid => {
                         if (isValid) {
@@ -224,7 +223,7 @@ export default class TheForm extends Emitter {
 
         // 方式一：
         // 直接修改对象的引用值，这种方式在微信小程序里面会失效，原因是微信把所有数据都 JSON 格式化了，导致某些引用终端，而且传参类型也只能是 string | number | object
-        // utils.modifyData(this.model, this.beforeModel);
+        // modifyData(this.model, this.beforeModel);
         
         this.items.forEach(item => {
             item.resetField();

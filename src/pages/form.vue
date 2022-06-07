@@ -69,7 +69,7 @@ import UploadImage from "@/components/Upload/Image.vue";
 import TheButton from "@/components/TheButton.vue";
 import PickerDate from "@/components/Picker/Date.vue";
 import ThePicker from "@/components/Picker/index.vue";
-import utils from "@/utils";
+import { showToast } from "@/utils/control";
 import { PickerSelectItem, TheFormRulesItem, UniAppChangeEvent } from "@/types";
 import { createCityData } from "./hooks";
 
@@ -235,12 +235,12 @@ export default class FormPage extends Vue {
     onSubmit() {
         this.$refs["the-form"].validate((valid, reuls) => {
             if (valid) {
-                utils.showToast("验证通过，在控制台可以查看表单数据");
+                showToast("验证通过，在控制台可以查看表单数据");
                 console.log("表单数据 >>", JSON.stringify(this.formData, null, "\t"));
             } else {
                 const keys = Object.keys(reuls);
                 const firstProp = keys[0];
-                utils.showToast(`${reuls[firstProp][0].message}`);
+                showToast(`${reuls[firstProp][0].message}`);
             }
         })
     }
@@ -255,9 +255,9 @@ export default class FormPage extends Vue {
     validatePhone() {
         this.$refs["the-form"].validateField("phone", (valid, rules) => {
             if (valid) {
-                utils.showToast("手机验证通过");
+                showToast("手机验证通过");
             } else {
-                utils.showToast(rules["phone"][0].message as string);
+                showToast(rules["phone"][0].message as string);
             }
         })
     }

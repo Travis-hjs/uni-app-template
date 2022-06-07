@@ -26,7 +26,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { PickerSelectItem, UniAppChangeEvent } from "@/types";
-import utils from "@/utils";
+import { checkType } from "@/utils";
 
 /**
  * 弹出选择组件
@@ -108,9 +108,9 @@ export default class ThePicker extends Vue {
     pickerChange(e: UniAppChangeEvent<Array<number>>) {
         // console.log(e.detail.value);
         const list = e.detail.value;
-        const val1 = utils.checkType(list[0]) === "number" ? list[0] : 0;
-        const val2 = utils.checkType(list[1]) === "number" ? list[1] : 0;
-        const val3 = utils.checkType(list[2]) === "number" ? list[2] : 0;
+        const val1 = checkType(list[0]) === "number" ? list[0] : 0;
+        const val2 = checkType(list[1]) === "number" ? list[1] : 0;
+        const val3 = checkType(list[2]) === "number" ? list[2] : 0;
         this.selectIndexs = [val1, val2, val3];
         this.update();
     }

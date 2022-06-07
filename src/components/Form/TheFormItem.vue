@@ -18,8 +18,8 @@
 import { Component, Prop, Inject, Watch } from "vue-property-decorator";
 import TheForm from "./TheForm.vue";
 import Emitter from "@/mixins/Emitter";
-import utils from "@/utils";
 import { TheFormRulesItem, labelPosition } from "@/types";
+import { checkType, getDeepLevelValue } from "@/utils";
 
 @Component({
     name: "TheFormItem"
@@ -118,7 +118,7 @@ export default class TheFormItem extends Emitter {
     @Watch("parentComponent.border", { immediate: true })
     onBorder(val: boolean) {
         let result = this.border;
-        if (utils.checkType(result) !== "boolean") {
+        if (checkType(result) !== "boolean") {
             result = val;
         }
         this.useBorder = result;
@@ -159,7 +159,7 @@ export default class TheFormItem extends Emitter {
         /** 父组件的规则列表 */
         const parentRules = this.parentComponent.rules;
         const model = this.parentComponent.model;
-        const value = utils.getDeepLevelValue(model, this.prop);
+        const value = getDeepLevelValue(model, this.prop);
         const tip = "校验不通过";
 
         // console.log("this.prop >>", this.prop);
@@ -185,7 +185,7 @@ export default class TheFormItem extends Emitter {
             for (let i = 0; i < rulesList.length; i++) {
                 const item = rulesList[i];
                 if (item.type) {
-                    if (utils.checkType(value) !== item.type) {
+                    if (checkType(value) !== item.type) {
                         info = item;
                         this.validateText = item.message || tip;
                         this.showValidate = true;
@@ -197,7 +197,7 @@ export default class TheFormItem extends Emitter {
                     // const reg = new RegExp(item.reg.replace(/\//g, ""));
                     const reg = new RegExp(item.reg.slice(1, item.reg.length - 1));
 
-                    if (utils.checkType(reg) === "regexp") {
+                    if (checkType(reg) === "regexp") {
                         if (!reg.test(value.toString())) {
                             info = item;
                             this.validateText = item.message || tip;

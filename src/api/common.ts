@@ -1,6 +1,5 @@
-import { ApiListData, ListParams } from "../types";
-import request from "../utils/request";
-import utils from "../utils";
+import { randomText, ranInt } from "@/utils";
+import request from "@/utils/request";
 
 /**
  * 用户登录
@@ -22,8 +21,8 @@ export function searchUserType(value: "admin" | "vip" | "normal") {
  * 模拟请求数据 
  * @param params
  */
-export function getTestList(params: ListParams) {
-    const delay = utils.ranInt(200, 1000);
+export function getTestList(params: PageInfo) {
+    const delay = ranInt(200, 1000);
     const images = [
         "https://muse-ui.org/img/img1.35d144b4.png",
         "https://muse-ui.org/img/img2.9bd96df4.png",
@@ -31,33 +30,33 @@ export function getTestList(params: ListParams) {
         "https://muse-ui.org/img/sun.a646a52d.jpg",
         "https://muse-ui.org/img/breakfast.f1098290.jpg"
     ]
-    const result: ApiListData = {
+    const result: ApiResultList = {
         code: 1,
         data: {
-            pageIndex: params.pageIndex,
+            currentPage: params.currentPage,
             pageSize: params.pageSize,
             list: []
         },
         msg: ""
     }
-    return new Promise<ApiListData>(function (resolve, reject) {
+    return new Promise<ApiResultList>(function (resolve, reject) {
         setTimeout(function () {
-            if (delay > 900 && params.pageIndex !== 0) {
+            if (delay > 900 && params.currentPage !== 0) {
                 result.msg = "接口查询超时"
                 result.code = 0;
                 resolve(result);
             } else {
                 let total = params.pageSize;
-                if (params.pageIndex >= 5) {
-                    total = utils.ranInt(2, params.pageSize - 2);
+                if (params.currentPage >= 5) {
+                    total = ranInt(2, params.pageSize - 2);
                 }
                 result.msg = "success"
                 result.code = 1;
                 result.data.list = new Array(total).fill(0).map(function (_, index) {
                     return {
-                        id: params.pageIndex * params.pageSize + index + 1,
-                        value: utils.randomText(6, 30),
-                        img: images[utils.ranInt(0, images.length - 1)]
+                        id: params.currentPage * params.pageSize + index + 1,
+                        value: randomText(6, 30),
+                        img: images[ranInt(0, images.length - 1)]
                     }
                 })
                 resolve(result);

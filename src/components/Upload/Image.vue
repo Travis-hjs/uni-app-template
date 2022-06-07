@@ -28,7 +28,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import utils from "@/utils";
+import { showToast } from "@/utils/control";
 
 @Component({})
 export default class UploadImage extends Vue {
@@ -92,13 +92,13 @@ export default class UploadImage extends Vue {
                 //     fail(uploadFail) {
                 //         THAT.loading = false;
                 //         console.log("上传组件上传失败 ！！！", uploadFail);
-                //         utils.showToast(`上传失败 >> ${uploadFail.errMsg}`);
+                //         showToast(`上传失败 >> ${uploadFail.errMsg}`);
                 //     }
                 // });
             },
             fail(err) {
                 console.log("chooseImage fail >>", err);
-                utils.showToast("读取图片失败！");
+                showToast("读取图片失败！");
             }
         })
     }

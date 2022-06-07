@@ -18,7 +18,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import TheButton from "@/components/TheButton.vue";
-import utils from "@/utils";
+import { showToast } from "@/utils/control";
 
 @Component({
     components: {
@@ -67,12 +67,12 @@ export default class SpecialForm extends Vue {
                     this.checkNickname = true;
                     return;
                 }
-                utils.showToast("验证通过，在控制台可以查看表单数据");
+                showToast("验证通过，在控制台可以查看表单数据");
                 console.log("表单数据 >>", JSON.stringify(this.formData, null, "\t"));
             } else {
                 const keys = Object.keys(reuls);
                 const firstProp = keys[0];
-                utils.showToast(`${reuls[firstProp][0].message}`);
+                showToast(`${reuls[firstProp][0].message}`);
             }
         })
     }

@@ -24,7 +24,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import TheButton from "@/components/TheButton.vue";
 import cavansCreater from "@/utils/cavansCreater";
-import utils from "@/utils";
+import { showToast, showLoading, showAlert } from "@/utils/control";
 
 @Component({
     components: {
@@ -39,7 +39,7 @@ export default class PageCavansCreater extends Vue {
     }
 
     createBanner() {
-        utils.showLoading("生成中...");
+        showLoading("生成中...");
         cavansCreater({
             cavansId: "the-cavans",
             // fileType: "jpg",
@@ -160,7 +160,7 @@ export default class PageCavansCreater extends Vue {
             fail(err) {
                 console.log("错误信息 >>", err);
                 uni.hideLoading();
-                utils.showAlert(err.type === "load" ? `图片加载失败` : `canvas导出图片失败`);
+                showAlert(err.type === "load" ? `图片加载失败` : `canvas导出图片失败`);
             }
         })
     }
@@ -182,7 +182,7 @@ export default class PageCavansCreater extends Vue {
         uni.saveImageToPhotosAlbum({
             filePath: this.canvasUrl,
             success() {
-                utils.showToast("图片已下载至【图库】，请打开【图库】查看");
+                showToast("图片已下载至【图库】，请打开【图库】查看");
             }
         });
     }

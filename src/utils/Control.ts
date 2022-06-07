@@ -180,7 +180,7 @@ export default class ModuleControl {
      *      scrollLeft = 0;
      * 
      *      onClick(item: { id: number }, e: Event) {
-     *          utils.onScrollviewCenter({
+     *          onScrollviewCenter({
      *              ctx: this,
      *              event: e,
      *              id: 'scroll-' + item.id,

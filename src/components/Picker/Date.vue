@@ -26,7 +26,8 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { UniAppChangeEvent } from "@/types";
-import utils from "@/utils";
+import { checkType, findIndex } from "@/utils";
+
 
 /** 当前时间 */
 const now = new Date();
@@ -119,7 +120,7 @@ export default class PickerDate extends Vue {
         let indexs = [this.yearList.length - 1, 0, 0];
         if (this.value && this.value.split("-").length) {
             const list = this.value.split("-");
-            const index = utils.findIndex(this.yearList, item => item === Number(list[0]));
+            const index = findIndex(this.yearList, item => item === Number(list[0]));
             indexs[0] = index > -1 ? index : 0;
             if (list[1]) {
                 const second = Number(list[1]) - 1;
@@ -173,9 +174,9 @@ export default class PickerDate extends Vue {
 
     pickerChange(e: UniAppChangeEvent<Array<number>>) {
         const list = e.detail.value;
-        const val1 = utils.checkType(list[0]) === "number" ? list[0] : 0;
-        const val2 = utils.checkType(list[1]) === "number" ? list[1] : 0;
-        const val3 = utils.checkType(list[2]) === "number" ? list[2] : 0;
+        const val1 = checkType(list[0]) === "number" ? list[0] : 0;
+        const val2 = checkType(list[1]) === "number" ? list[1] : 0;
+        const val3 = checkType(list[2]) === "number" ? list[2] : 0;
         this.selectIndexs = [val1, val2, val3];
         this.update();
     }

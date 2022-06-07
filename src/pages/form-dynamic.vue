@@ -38,7 +38,7 @@ import { Component, Vue } from "vue-property-decorator";
 import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import TheButton from "@/components/TheButton.vue";
-import utils from "@/utils";
+import { showToast } from "@/utils/control";
 import { TheFormRulesItem } from "@/types";
 
 interface FormDataType {
@@ -98,7 +98,7 @@ export default class FormDynamic extends Vue {
             } else {
                 const keys = Object.keys(reuls);
                 const firstProp = keys[0];
-                utils.showToast(`${reuls[firstProp][0].message}`);
+                showToast(`${reuls[firstProp][0].message}`);
             }
         })
     }

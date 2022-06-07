@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import utils from "@/utils";
+import { ranInt } from "@/utils";
 import store from '@/store';
 import UploadImage from "@/components/Upload/Image.vue";
 import { UploadImageRes } from "@/types";
@@ -34,7 +34,7 @@ export default class Personal extends Vue {
 
     openDetail() {
         uni.navigateTo({
-            url: "/pages/details?id=" + utils.ranInt(12, 30)
+            url: "/pages/details?id=" + ranInt(12, 30)
         })
     }
 

@@ -1,7 +1,6 @@
 import ModuleAppOption from "./AppOption";
-import utils from "../utils";
-import { DeepPartial, DeepReadonly } from "../types";
-import { UserInfo } from "../types/user";
+import { modifyData } from "@/utils";
+import { UserInfo } from "@/types/user";
 
 const cacheName = "user-info";
 
@@ -36,7 +35,7 @@ export class ModuleStore extends ModuleAppOption {
      * @param value 
      */
     updateUserInfo(value: DeepPartial<UserInfo>) {
-        utils.modifyData(this.userInfo, value);
+        modifyData(this.userInfo, value);
         uni.setStorageSync(cacheName, JSON.stringify(this.userInfo));
     }
 

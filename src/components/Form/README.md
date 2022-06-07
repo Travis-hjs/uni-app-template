@@ -72,7 +72,7 @@ import { Component, Vue } from "vue-property-decorator";
 import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import UploadImage from "@/components/Upload/Image.vue";
-import utils from "@/utils";
+import { showToast } from "@/utils/control";
 
 interface FormDataType {
     userName: string,
@@ -122,7 +122,7 @@ export default class Demo extends Vue {
             } else {
                 const keys = Object.keys(reuls);
                 const firstProp = keys[0];
-                utils.showToast(`${reuls[firstProp][0].message}`);
+                showToast(`${reuls[firstProp][0].message}`);
             }
         })
     }
@@ -135,9 +135,9 @@ export default class Demo extends Vue {
     validatePhone() {
         this.$refs["the-form"].validateField("phone", (valid, rules) => {
             if (valid) {
-                utils.showToast("手机验证通过");
+                showToast("手机验证通过");
             } else {
-                utils.showToast(rules["phone"][0].message as string);
+                showToast(rules["phone"][0].message as string);
             }
         })
     }
