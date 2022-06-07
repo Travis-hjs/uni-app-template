@@ -28,6 +28,7 @@ export default class Demo extends Mixins(LoadMore) {
         console.log("获取数据之后的回调", res);
     }
 
+    // 方式一：
     requestList() {
         // 设置请求接口
         return getApiList({
@@ -35,6 +36,20 @@ export default class Demo extends Mixins(LoadMore) {
             pageSize: this.loadMoreData.pageSize,
             // ...其他参数
         })
+    }
+    
+    // 方式二：
+    async requestList() {
+        // 设置请求接口
+        const res = await getApiList({
+            currentPage: this.loadMoreData.currentPage,
+            pageSize: this.loadMoreData.pageSize,
+            // ...其他参数
+        })
+        if (res.code === 1) {
+            // 这里就相当于上面 getListCallback() 执行的回调了
+        }
+        return res;
     }
 
     onLoad() {

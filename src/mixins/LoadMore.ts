@@ -74,6 +74,7 @@ export default class LoadMore extends Vue {
                 this.loadMoreData.requestCount++;
                 this.loadMoreData.list = list.concat(result.data.list);
                 // 判断是否没有数据了
+                // result.data.total === this.loadMoreData.list.length
                 if (result.data.list.length < this.loadMoreData.pageSize) {
                     this.loadMoreData.state = "nomore";
                 } else {

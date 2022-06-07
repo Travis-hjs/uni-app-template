@@ -33,6 +33,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { LoadMoreInfo, useLoadMoreData } from "@/mixins/LoadMore";
 import store from "@/store";
 
+/** 触底加载更多提示组件 */
 @Component({})
 export default class LoadMoreTip extends Vue {
 

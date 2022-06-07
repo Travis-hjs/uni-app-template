@@ -17,48 +17,50 @@ export function searchUserType(value: "admin" | "vip" | "normal") {
     return request("POST", "/user/searchType", { type: value });
 }
 
+const images = [
+    "https://muse-ui.org/img/img1.35d144b4.png",
+    "https://muse-ui.org/img/img2.9bd96df4.png",
+    "https://muse-ui.org/img/img3.6e264e66.png",
+    "https://muse-ui.org/img/sun.a646a52d.jpg",
+    "https://muse-ui.org/img/breakfast.f1098290.jpg"
+]
+
+const testList = new Array(52).fill(0).map((_, index) => {
+    return {
+        id: index + 1,
+        name: randomText(6, 30),
+        img: images[ranInt(0, images.length - 1)]
+    }
+})
+
 /** 
  * 模拟请求数据 
  * @param params
  */
-export function getTestList(params: PageInfo) {
-    const delay = ranInt(200, 1000);
-    const images = [
-        "https://muse-ui.org/img/img1.35d144b4.png",
-        "https://muse-ui.org/img/img2.9bd96df4.png",
-        "https://muse-ui.org/img/img3.6e264e66.png",
-        "https://muse-ui.org/img/sun.a646a52d.jpg",
-        "https://muse-ui.org/img/breakfast.f1098290.jpg"
-    ]
+export function getTestList(params: PageInfo & { id: number }) {
+    const delay = ranInt(200, 2000);
+
     const result: ApiResultList = {
-        code: 1,
+        code: -1,
         data: {
             currentPage: params.currentPage,
             pageSize: params.pageSize,
-            list: []
+            list: [],
+            total: testList.length
         },
         msg: ""
     }
+
     return new Promise<ApiResultList>(function (resolve, reject) {
         setTimeout(function () {
-            if (delay > 900 && params.currentPage !== 0) {
+            if (delay > 1500) {
                 result.msg = "接口查询超时"
-                result.code = 0;
                 resolve(result);
             } else {
-                let total = params.pageSize;
-                if (params.currentPage >= 5) {
-                    total = ranInt(2, params.pageSize - 2);
-                }
-                result.msg = "success"
+                result.msg = "success";
                 result.code = 1;
-                result.data.list = new Array(total).fill(0).map(function (_, index) {
-                    return {
-                        id: params.currentPage * params.pageSize + index + 1,
-                        value: randomText(6, 30),
-                        img: images[ranInt(0, images.length - 1)]
-                    }
-                })
+                const index = (params.currentPage - 1) * params.pageSize;
+                result.data.list = [...testList].splice(index, params.pageSize);
                 resolve(result);
             }
         }, delay)

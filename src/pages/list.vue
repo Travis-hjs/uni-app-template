@@ -1,5 +1,5 @@
 <template>
-    <view class="load_more_list">
+    <view class="load-more-list">
         <view class="item card" v-for="item in loadMoreData.list" :key="item.id">
             <view class="id">{{ item.id }}.</view>
             <image class="pic" mode="aspectFill" :src="item.img"></image>
@@ -12,9 +12,8 @@
 <script lang="ts">
 import { Component } from "vue-property-decorator";
 import LoadMore from "@/mixins/LoadMore";
-import LoadMoreTip from "@/components/LoadMore/Tip.vue";
+import LoadMoreTip from "@/components/LoadMoreTip/index.vue";
 import { getTestList } from "@/api/common";
-import { ApiListData } from "@/types";
 
 @Component({
     components: {
@@ -23,14 +22,15 @@ import { ApiListData } from "@/types";
 })
 export default class LoadMoreList extends LoadMore {
 
-    getListCallback(res: ApiListData) {
+    getListCallback(res: ApiResultList) {
         console.log("获取数据之后的回调", res);
     }
 
     requestList() {
         return getTestList({
-            pageIndex: this.loadMoreData.pageIndex,
-            pageSize: this.loadMoreData.pageSize
+            currentPage: this.loadMoreData.currentPage,
+            pageSize: this.loadMoreData.pageSize,
+            id: 12
         })
     }
 
@@ -53,16 +53,16 @@ export default class LoadMoreList extends LoadMore {
 }
 </script>
 <style lang="scss">
-.load_more_list{
+.load-more-list {
     width: 100%;
     padding: 10px 10px 0;
-    .item{
+    .item {
         width: 100%;
         padding: 10px;
         margin-bottom: 16px;
-        .id{ font-size: 18px; color: #3185f3; margin-bottom: 8px; }
-        .value{ font-size: 15px; color: #555; }
-        .pic{ 
+        .id { font-size: 18px; color: #3185f3; margin-bottom: 8px; }
+        .value { font-size: 15px; color: #555; }
+        .pic { 
             width: 100%; 
             height: 140px;
             margin-bottom: 10px; 
