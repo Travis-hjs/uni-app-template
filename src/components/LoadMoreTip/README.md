@@ -12,7 +12,7 @@
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
 import LoadMore from "@/mixins/LoadMore";
-import LoadMoreTip from "@/components/LoadMore/Tip.vue";
+import LoadMoreTip from "@/components/LoadMoreTip/index.vue";
 import { getApiList } from "@/api/common";
 import { ApiListData } from "@/utils/interfaces";
 
@@ -31,7 +31,7 @@ export default class Demo extends Mixins(LoadMore) {
     requestList() {
         // 设置请求接口
         return getApiList({
-            pageIndex: this.loadMoreData.pageIndex,
+            currentPage: this.loadMoreData.currentPage,
             pageSize: this.loadMoreData.pageSize,
             // ...其他参数
         })

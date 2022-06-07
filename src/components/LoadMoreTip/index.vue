@@ -1,5 +1,5 @@
 <template>
-    <view class="load_more_tip fvc">
+    <view class="load-more-tip fvc">
         <view class="preloader" v-show="info.state === 'loading'">
             <view class="preloader-inner">
                 <view class="preloader-inner-gap"></view>
@@ -17,12 +17,12 @@
             <view class="text">上拉加载更多</view>
         </view>
         
-        <view class="content nomore_box" v-show="info.state === 'nomore' && info.list.length == 0">
-            <image class="nodata_img" :src="imageInfo.noneData" mode="aspectFill" />
+        <view class="content nomore-box" v-show="info.state === 'nomore' && info.list.length == 0">
+            <image class="nodata-img" :src="imageInfo.noneData" mode="aspectFill" />
             <view class="text">{{ noneDataText }}</view>
         </view>
         
-        <view class="content nomore_box" v-show="info.state === 'nomore' && info.list.length > 0">
+        <view class="content nomore-box" v-show="info.state === 'nomore' && info.list.length > 0">
             <view class="text">{{ finishText }}</view>
         </view>
         
@@ -30,7 +30,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { LoadMoreType } from "@/types";
+import { LoadMoreInfo, useLoadMoreData } from "@/mixins/LoadMore";
 import store from "@/store";
 
 @Component({})
@@ -39,14 +39,10 @@ export default class LoadMoreTip extends Vue {
     @Prop({
         type: Object,
         default() {
-            return {
-                state: "wait",
-                requestCount: 0,
-                list: []
-            }
+            return useLoadMoreData()
         }
     })
-    info!: LoadMoreType
+    info!: LoadMoreInfo
 
     @Prop({
         type: String,
@@ -71,14 +67,14 @@ export default class LoadMoreTip extends Vue {
 }
 </script>
 <style lang="scss">
-.load_more_tip{ 
+.load-more-tip { 
     width: 100%; min-height: 180rpx; 
     .content { 
         text-align: center; 
         .text { font-size: 28rpx; color: #999; }
         .iconfont { font-size: 48rpx; color: #999; margin-bottom: 4px; }
-        .nodata_img { width: 186rpx; height: 128rpx; margin: 0 auto 4px; }
+        .nodata-img { width: 186rpx; height: 128rpx; margin: 0 auto 4px; }
     }
-    .nomore_box { padding: 10px 0; }
+    .nomore-box { padding: 10px 0; }
 }
 </style>
