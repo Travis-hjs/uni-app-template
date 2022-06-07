@@ -69,10 +69,8 @@ interface PageInfo {
     pageSize: number
     /** 当前页，从`1`开始 */
     currentPage: number
-    /** 总数（前端用） */
+    /** 总数 */
     total?: number
-    /** 后端返回总条数 */
-    totalCount?: number
 }
 
 /** `uni-app`change事件参数 */

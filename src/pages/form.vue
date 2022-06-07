@@ -71,8 +71,7 @@ import PickerDate from "@/components/Picker/Date.vue";
 import ThePicker from "@/components/Picker/index.vue";
 import { showToast } from "@/utils/control";
 import { createCityData } from "./hooks";
-import { TheFormRulesItem } from "@/components/Form/type";
-import { PickerSelectItem } from "@/components/Picker/type";
+import { TheFormRulesItem, PickerSelectItem } from "@/types";
 
 interface FormDataType {
     userName: string,

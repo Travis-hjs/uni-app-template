@@ -1,4 +1,4 @@
-import config from "./Config";
+import config from "./config";
 import store from "../store";
 
 function getResultInfo(result: { statusCode: number, data: any }) {
@@ -17,7 +17,7 @@ function getResultInfo(result: { statusCode: number, data: any }) {
             break;
         case 403:
             info.msg = "登录已过期";
-            store.updateUserInfo({ token: "" });
+            store.user.reset();
             break;
         case 404:
             info.msg = "接口不存在";
@@ -44,7 +44,7 @@ export default function request<T>(method: "GET" | "POST" | "DELETE" | "PUT", pa
         uni.request({
             method: method,
             header: {
-                "Authorization": store.userInfo.token,
+                "Authorization": store.user.info.token,
                 ...headers
             },
             url: config.apiUrl + path,
