@@ -1,13 +1,13 @@
 {
     "pages": [
         {
-            "path": "pages/taBarHome/home",
+            "path": "pages/tabBar/home",
             "style": {
                 "navigationBarTitleText": "首页"
             }
         },
         {
-            "path": "pages/taBarHome/personal",
+            "path": "pages/tabBar/personal",
             "style": {
                 "navigationBarTitleText": "个人页"
             }
@@ -71,13 +71,13 @@
         "backgroundColor": "#f4f4f4",
         "list": [
             {
-                "pagePath": "pages/taBarHome/home",
+                "pagePath": "pages/tabBar/home",
                 "iconPath": "static/home_off.png",
                 "selectedIconPath": "static/home_on.png",
                 "text": "首页"
             },
             {
-                "pagePath": "pages/taBarHome/personal",
+                "pagePath": "pages/tabBar/personal",
                 "iconPath": "static/personal_off.png",
                 "selectedIconPath": "static/personal_on.png",
                 "text": "我的"
