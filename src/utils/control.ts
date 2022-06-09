@@ -147,7 +147,7 @@ interface ScrollviewCenterOptions<T = any> {
     /** 点击事件 */
     event: Event
     /** 是否首次设置偏移到中心位置，设置为`true`时，只需要传入`id`即可 */
-    first: boolean
+    scrollValue: number
     /** 回调 */
     callback: (left: number, info: UniApp.NodeInfo) => void
 }
@@ -179,7 +179,7 @@ interface ScrollviewCenterOptions<T = any> {
  *          onScrollviewCenter({
  *              ctx: this,
  *              event: e,
- *              id: 'scroll-' + item.id,
+ *              id: "scroll-" + item.id,
  *              callback: left => this.scrollLeft = left
  *          })
  *      }
@@ -188,27 +188,20 @@ interface ScrollviewCenterOptions<T = any> {
  * ```
  */
 export function onScrollviewCenter(option: ScrollviewCenterOptions) {
-    if (option.first) {
-        const el = document.getElementById(option.id);
-        if (el) {
-            el.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-                inline: "center"
-            });
-        }
-    } else {
-        const width = option.wrapWidth || uni.getSystemInfoSync().windowWidth;
-        option.ctx.$nextTick(function () {
-            const node = uni.createSelectorQuery().in(option.ctx).select(`#${option.id}`);
-            const left = option.event ? (option.event.currentTarget as HTMLElement).offsetLeft : 0;
-            node.boundingClientRect(function (nodeInfo) {
-                let result = 0;
-                if (nodeInfo) {
+    const width = option.wrapWidth || uni.getSystemInfoSync().windowWidth;
+    option.ctx.$nextTick(function () {
+        const node = uni.createSelectorQuery().in(option.ctx).select(`#${option.id}`);
+        const left = option.event ? (option.event.currentTarget as any).offsetLeft : 0;
+        node.boundingClientRect(function (nodeInfo) {
+            let result = 0;
+            if (nodeInfo) {
+                if (typeof option.scrollValue === "number") {
+                    result = option.scrollValue + nodeInfo.left! + nodeInfo.width! / 2 - width / 2;
+                } else {
                     result = left + nodeInfo.width! / 2 - width / 2;
                 }
-                typeof option.callback === "function" && option.callback(result, nodeInfo);
-            }).exec();
-        });
-    }
+            }
+            typeof option.callback === "function" && option.callback(result, nodeInfo);
+        }).exec();
+    });
 }
