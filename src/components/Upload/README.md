@@ -14,6 +14,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
 import UploadImage from "@/components/Upload/Image.vue";
+import { UploadImageRes } from "@/types";
 
 export default defineComponent({
     components: {
@@ -24,7 +25,7 @@ export default defineComponent({
             avatar: ""
         })
 
-        function onUpload(res: { id: string, src: string }) {
+        function onUpload(res: UploadImageRes) {
             formData.avatar = res.src;
         }
 
