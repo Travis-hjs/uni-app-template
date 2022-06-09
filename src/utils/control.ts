@@ -64,13 +64,13 @@ export function showAlert(content: string, success?: (res: UniApp.ShowModalRes) 
 
 interface ShowConfirmOptions {
     /** 内容 */
-    content: string 
+    content: string
     /** 标题 */
     title?: string
     /** 确认回调 */
     callback?(): void
     /** 取消回调 */
-    cancel?(): void 
+    cancel?(): void
     /** 确认按钮文字 */
     text?: string
 }
@@ -149,7 +149,7 @@ interface ScrollviewOption {
     /** 点击事件 */
     event: Event
     /** 是否首次设置偏移到中心位置，设置为`true`时，只需要传入`id`即可 */
-    first: boolean
+    scrollValue: number
     /** 回调 */
     callback(left: number, node: UniApp.NodeInfo): void
 }
@@ -190,27 +190,20 @@ interface ScrollviewOption {
  * ```
  */
 export function onScrollviewCenter(option: ScrollviewOption) {
-    if (option.first) {
-        const el = document.getElementById(option.id);
-        if (el) {
-            el.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-                inline: "center"
-            });
-        }
-    } else {
-        const width = option.wrapWidth || uni.getSystemInfoSync().windowWidth;
-        option.ctx.$nextTick(function () {
-            const node = uni.createSelectorQuery().in(option.ctx).select(`#${option.id}`);
-            const left = option.event ? (option.event.currentTarget as HTMLElement).offsetLeft : 0;
-            node.boundingClientRect(function (nodeInfo) {
-                let result = 0;
-                if (nodeInfo) {
-                    result = left + nodeInfo.width / 2 - width / 2;
+    const width = option.wrapWidth || uni.getSystemInfoSync().windowWidth;
+    option.ctx.$nextTick(function () {
+        const node = uni.createSelectorQuery().in(option.ctx).select(`#${option.id}`);
+        const left = option.event ? (option.event.currentTarget as any).offsetLeft : 0;
+        node.boundingClientRect(function (nodeInfo) {
+            let result = 0;
+            if (nodeInfo) {
+                if (typeof option.scrollValue === 'number') {
+                    result = option.scrollValue + nodeInfo.left! + nodeInfo.width! / 2 - width / 2;
+                } else {
+                    result = left + nodeInfo.width! / 2 - width / 2;
                 }
-                typeof option.callback === "function" && option.callback(result, nodeInfo);
-            }).exec();
-        });
-    }
+            }
+            typeof option.callback === 'function' && option.callback(result, nodeInfo);
+        }).exec();
+    });
 }
