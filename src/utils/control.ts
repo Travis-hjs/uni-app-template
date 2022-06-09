@@ -148,7 +148,7 @@ interface ScrollviewOption {
     wrapWidth: number
     /** 点击事件 */
     event: Event
-    /** 是否首次设置偏移到中心位置，设置为`true`时，只需要传入`id`即可 */
+    /** 是否主动设置偏移到中心位置，设置值时，`event`不需要传入 */
     scrollValue: number
     /** 回调 */
     callback(left: number, node: UniApp.NodeInfo): void
