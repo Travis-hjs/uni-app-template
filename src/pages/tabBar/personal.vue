@@ -1,67 +1,28 @@
 <template>
     <view class="personal">
-        <button class="button_pink" @click="openDetail()">跳转详情页并传参</button>
-        <view>userInfo.token: {{ userInfo.token }}</view>
-        <button class="button" @click="clearUserInfo()">清空用户信息</button>
-        <view style="padding: 10px 0">
-            <UploadImage :uploadId="uploadInfo.index" :src="uploadInfo.path" @change="setContentImage" />
-        </view>
-        <view class="test_include">测试全局 `@include`</view>
-        <button class="button_dark" @click="openList()">跳转列表页</button>
-    </view>    
+        <view style="margin-bottom: 40rpx; font-size: 30rpx">userInfo: {{ JSON.stringify(userInfo, null, 4) }}</view>
+        <button class="button button-green" @click="clearUserInfo()">清空`userInfo`</button>
+    </view>
 </template>
-
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { ranInt } from "@/utils";
-import store from '@/store';
-import UploadImage from "@/components/Upload/Image.vue";
-import { UploadImageRes } from "@/types";
+import store from "@/store";
+import { defineComponent } from "vue";
 
-@Component({
-    components: {
-        UploadImage
-    }
-})
-export default class Personal extends Vue {
-    
-    readonly userInfo = store.user.info;
+export default defineComponent({
+    setup() {
+        function clearUserInfo() {
+            store.user.reset();
+        }
 
-    uploadInfo = {
-        index: 13,
-        path: "",
-    }
-
-    openDetail() {
-        uni.navigateTo({
-            url: "/pages/details?id=" + ranInt(12, 30)
-        })
-    }
-
-    openList() {
-        uni.navigateTo({
-            url: "/pages/list"
-        })
-    }
-
-    clearUserInfo() {
-        store.user.reset();
-    }
-
-    setContentImage(res: UploadImageRes) {
-        this.uploadInfo.path = res.src;
-    }
-}
-
+        return {
+            clearUserInfo,
+            userInfo: store.user.info,
+        };
+    },
+});
 </script>
-
 <style lang="scss">
-.personal { 
-    padding: 30rpx 30rpx 40rpx; 
-    .test_include { 
-        @include button();
-        margin-bottom: 16px;
-    }
-    .value { color: $pink; }
+.personal {
+    padding: 30rpx 30rpx 40rpx;
 }
 </style>

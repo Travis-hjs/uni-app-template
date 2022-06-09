@@ -1,61 +1,59 @@
 <template>
     <button 
-        :class="['the_button', { 'isdisabled': disabled || loading }]"
+        :class="['the-button', { 'isdisabled': disabled || loading }]"
         :style="{ 'background': color, 'height': height + 'rpx', 'color': textColor, 'border-radius': radius }"
         :disabled="disabled || loading"
         @click="onClick()"
     >
-        <view :class="['loading_icon', { 'loading_icon_hide': !loading }]" :style="{ 'border-top-color': textColor }"></view>
+        <view :class="['loading-icon', { 'loading-icon-hide': !loading }]" :style="{ 'border-top-color': textColor }"></view>
         <slot></slot>
     </button>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { computed, defineComponent } from "vue";
 
 /** 自定义按钮，包含 loading、disabled 等状态 */
-@Component({})
-export default class TheButton extends Vue {
-    /** 按钮颜色 */
-    @Prop({ type: String, default: "#40a9ff" })
-    color!: string;
+export default defineComponent({
+    name: "TheButton",
+    emits: ["click"],
+    props: {
+        /** 按钮颜色 */
+        color: { type: String, default: "#40a9ff" },
+        /** 按钮文字颜色 */
+        textColor: { type: String, default: "#fff" },
+        /** 按钮高度`rpx` */
+        height: { type: Number, default: 90 },
+        /** 是否圆角按钮 */
+        round: { type: Boolean, default: false },
+        /** 加载状态 */
+        loading: { type: Boolean, default: false },
+        /** 是否禁用状态 */
+        disabled: { type: Boolean, default: false },
+    },
+    setup(props, context) {
+        const radius = computed(function() {
+            let value = "2px";
+            if (props.round) {
+                value = `${props.height / 2}rpx`;
+            }
+            return value;
+        })
 
-    /** 按钮颜色 */
-    @Prop({ type: String, default: "#fff" })
-    textColor!: string;
-
-    /** 按钮高度`rpx` */
-    @Prop({ type: Number, default: 90 })
-    height!: number;
-
-    /** 是否圆角按钮 */
-    @Prop({ type: Boolean, default: false })
-    round!: boolean;
-
-    /** 加载状态 */
-    @Prop({ type: Boolean, default: false })
-    loading!: boolean;
-
-    /** 是否禁用状态 */
-    @Prop({ type: Boolean, default: false })
-    disabled!: boolean;
-
-    get radius() {
-        let value = "2px";
-        if (this.round) {
-            value = `${this.height / 2}rpx`;
+        function onClick() {
+            context.emit("click");
         }
-        return value;
-    }
 
-    onClick() {
-        this.$emit("click");
-    }
-}
+        return {
+            radius,
+            onClick
+        };
+    },
+});
 </script>
 <style lang="scss">
 $time: 0.3s all;
 
-.the_button {
+.the-button {
     width: 100%;
     display: flex;
     flex-wrap: nowrap;
@@ -66,7 +64,7 @@ $time: 0.3s all;
     font-size: 32rpx;
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
     transition: $time;
-    .loading_icon {
+    .loading-icon {
         width: 40rpx;
         height: 40rpx;
         border-radius: 50%;
@@ -78,7 +76,7 @@ $time: 0.3s all;
         animation: btnLoading 1s infinite linear;
         transition: $time;
     }
-    .loading_icon_hide {
+    .loading-icon-hide {
         width: 0px;
         height: 0px;
         margin-right: 0px;
@@ -87,12 +85,16 @@ $time: 0.3s all;
         visibility: hidden;
     }
 }
-.the_button.isdisabled {
+.the-button.isdisabled {
     opacity: 0.8;
 }
 
 @keyframes btnLoading {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 </style>

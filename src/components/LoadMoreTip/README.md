@@ -10,60 +10,55 @@
     </view>
 </template>
 <script lang="ts">
-import { Component, Mixins } from "vue-property-decorator";
-import LoadMore from "@/mixins/LoadMore";
+import { defineComponent } from "vue";
 import LoadMoreTip from "@/components/LoadMoreTip/index.vue";
-import { getApiList } from "@/api/common";
-import { ApiListData } from "@/utils/interfaces";
+import useLoadMore from "@/hooks/loadMore";
+import { getTestList } from "@/api/common";
+import { onLoad } from "@dcloudio/uni-app";
 
-@Component({
+export default defineComponent({
     components: {
-        LoadMoreTip
-    }
-})
-export default class Demo extends Mixins(LoadMore) {
-    
-    // 可选操作，具体看代码提示
-    getListCallback(res: ApiListData) {
-        console.log("获取数据之后的回调", res);
-    }
+    LoadMoreTip
+    },
+    setup() {
+        const { loadMoreData, setRequestListFn, refreshData } = useLoadMore();
 
-    // 方式一：
-    requestList() {
-        // 设置请求接口
-        return getApiList({
-            currentPage: this.loadMoreData.currentPage,
-            pageSize: this.loadMoreData.pageSize,
-            // ...其他参数
-        })
-    }
-    
-    // 方式二：
-    async requestList() {
-        // 设置请求接口
-        const res = await getApiList({
-            currentPage: this.loadMoreData.currentPage,
-            pageSize: this.loadMoreData.pageSize,
-            // ...其他参数
-        })
-        if (res.code === 1) {
-            // 这里就相当于上面 getListCallback() 执行的回调了
-        }
-        return res;
-    }
-
-    onLoad() {
-        // 页面一开始用 getListData 和 refreshData都是一样的，因为变量一开始都一样
-        this.getListData();
-    }
-    
-    // 可选操作，监听下拉刷新-没有下拉就去掉
-    onPullDownRefresh() {
-        this.refreshData(() => {
-            uni.stopPullDownRefresh();
+        // 方式一：
+        setRequestListFn(function() {
+            return getTestList({
+            id: 12,
+            pageSize: loadMoreData.pageSize,
+            currentPage: loadMoreData.currentPage
+            })
         });
-    }
 
-}
-</script>
+        // 方式二：
+        // setRequestListFn(async function() {
+        //     const res = await getTestList({
+        //         id: 12,
+        //         pageSize: loadMoreData.pageSize,
+        //         currentPage: loadMoreData.currentPage
+        //     })
+        //     if (res.code === 1) {
+        //         // 这里可以做接口数据请求回调处理
+        //     }
+        //     return res;
+        // });
+
+        onLoad(function() {
+            refreshData();
+        })
+
+        /** 主动点击刷新数据 */
+        function onClickRefresh() {
+            refreshData(function() {
+            console.log("请求数据回调 >>", loadMoreData.list);
+            });
+        }
+
+        return {
+            loadMoreData
+        }
+    },
+});
 ```

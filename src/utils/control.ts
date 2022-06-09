@@ -1,7 +1,5 @@
 // ========================= 控件模块 =========================
 
-import Vue from "vue";
-
 /**
  * 打开其他应用
  * @param name 应用名
@@ -64,13 +62,13 @@ export function showAlert(content: string, success?: (res: UniApp.ShowModalRes) 
 
 interface ShowConfirmOptions {
     /** 内容 */
-    content: string 
+    content: string
     /** 标题 */
     title?: string
     /** 确认回调 */
     callback?(): void
     /** 取消回调 */
-    cancel?(): void 
+    cancel?(): void
     /** 确认按钮文字 */
     text?: string
 }
@@ -139,9 +137,9 @@ export function copyText(value: string, success?: () => void) {
     // #endif
 }
 
-interface ScrollviewOption {
+interface ScrollviewCenterOptions<T = any> {
     /** 当前实例 */
-    ctx: Vue
+    ctx: T,
     /** 要滚动的目标节点`id` */
     id: string
     /** `<scrollview>`的宽度，默认是屏幕宽度 */
@@ -151,7 +149,7 @@ interface ScrollviewOption {
     /** 是否首次设置偏移到中心位置，设置为`true`时，只需要传入`id`即可 */
     first: boolean
     /** 回调 */
-    callback(left: number, node: UniApp.NodeInfo): void
+    callback: (left: number, info: UniApp.NodeInfo) => void
 }
 
 /**
@@ -189,7 +187,7 @@ interface ScrollviewOption {
  * 
  * ```
  */
-export function onScrollviewCenter(option: ScrollviewOption) {
+export function onScrollviewCenter(option: ScrollviewCenterOptions) {
     if (option.first) {
         const el = document.getElementById(option.id);
         if (el) {
@@ -207,7 +205,7 @@ export function onScrollviewCenter(option: ScrollviewOption) {
             node.boundingClientRect(function (nodeInfo) {
                 let result = 0;
                 if (nodeInfo) {
-                    result = left + nodeInfo.width / 2 - width / 2;
+                    result = left + nodeInfo.width! / 2 - width / 2;
                 }
                 typeof option.callback === "function" && option.callback(result, nodeInfo);
             }).exec();

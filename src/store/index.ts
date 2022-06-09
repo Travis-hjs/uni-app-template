@@ -8,7 +8,7 @@ export class ModuleStore extends ModuleAppOption {
 
     /** 图片对象集 */
     get imageInfo() {
-        // 需要用作背景图的可以用`require`引入
+        // 需要用作背景图的可以用`import`引入
         return {
             iconWx: "/static/logo_wx.png",
             iconZfb: "/static/logo_zfb.png",

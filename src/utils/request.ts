@@ -1,5 +1,5 @@
 import config from "./config";
-import store from "../store";
+import store from "@/store";
 
 function getResultInfo(result: { statusCode: number, data: any }) {
     const info: ApiResult = { code: -1, msg: "", data: null }

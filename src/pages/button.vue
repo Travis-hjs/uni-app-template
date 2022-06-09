@@ -15,25 +15,28 @@
     </view>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { defineComponent, ref } from "vue";
 import TheButton from "@/components/TheButton.vue";
 
-@Component({
+export default defineComponent({
     components: {
         TheButton
+    },
+    setup(props, context) {
+        const loading = ref(false);
+        
+        function setLoading(val: number) {
+            // console.log("执行");
+            loading.value = true;
+            setTimeout(() => loading.value = false, val * 1000);
+        }
+
+        return {
+            loading,
+            setLoading
+        }
     }
 })
-export default class PageButton extends Vue {
-    
-    loading = false;
-
-    setLoading(val: number) {
-        // console.log("执行");
-        this.loading = true;
-        setTimeout(() => this.loading = false, val * 1000);
-    }
-
-}
 </script>
 <style lang="scss">
 .page-button {

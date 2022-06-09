@@ -8,7 +8,7 @@
  * @param id 
  */
 export function getUserInfo(id: number | string) {
-    return request('GET', '/getUserInfoById', { id })
+  return request('GET', '/getUserInfoById', { id })
 }
 
 /**
@@ -16,7 +16,7 @@ export function getUserInfo(id: number | string) {
  * @param params 
  */
 export function saveBannerInfo(params: { img: string, date: string, sort: number }) {
-    return request('POST', '/saveBannerInfo', params)
+  return request('POST', '/saveBannerInfo', params)
 }
 ```
 
@@ -30,11 +30,11 @@ import { jsonToFormData } from '@/utils';
  * @param params
  */
 export function saveUserInfo(params: { account: string, password: string }) {
-    return request('POST', '/saveUserInfo', jsonToFormData(params), {
-        headers: {
-        'codeMode': 'form'
-        }
-    })
+  return request('POST', '/saveUserInfo', jsonToFormData(params), {
+    headers: {
+      'codeMode': 'form'
+    }
+  })
 }
 ```
 
@@ -46,8 +46,8 @@ export function saveUserInfo(params: { account: string, password: string }) {
  * @param params
  */
 export function getBlob(params: { name: string }) {
-    return request('GET', '/getXlsxBlob', params, {
-        responseType: 'blob'
-    })
+  return request('GET', '/getXlsxBlob', params, {
+    responseType: 'blob'
+  })
 }
 ```
