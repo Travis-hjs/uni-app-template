@@ -1,3 +1,4 @@
+import { reactive } from "vue";
 import { modifyData } from "@/utils";
 import { UserInfo } from "@/types/user";
 
@@ -28,7 +29,7 @@ export default class ModuleUser {
     }
 
     /** 用户信息 */
-    info: DeepReadonly<UserInfo> = useUserInfo();
+    readonly info = reactive<DeepReadonly<UserInfo>>(useUserInfo());
 
     /**
      * 更新用户信息字段

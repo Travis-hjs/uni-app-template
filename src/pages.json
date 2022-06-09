@@ -13,13 +13,7 @@
             }
         },
         {
-            "path": "pages/details",
-            "style": {
-                "navigationStyle": "custom"
-            }
-        },
-        {
-            "path": "pages/list",
+            "path": "pages/load-more-list",
             "style": {
                 "navigationBarTitleText": "加载更多列表",
                 "navigationBarBackgroundColor": "#222222",

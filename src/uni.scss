@@ -17,19 +17,29 @@ $pink: #f04e7d;
     overflow: hidden;
 }
 
-@mixin button {
+@mixin button($color, $bg) {
     font-size: 30rpx;
     min-width: 160rpx;
     padding: 0 20rpx;
     border-radius: 2px;
     height: 80rpx;
-    background-color: #eee; 
-    color: $dark;
+    background-color: $bg;
+    border-color: $bg;
+    color: $color;
     line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    &:active{
+    &::after, &::before {
+        border: none;
+        background-color: transparent;
+    }
+    &:hover {
+        background-color: $bg;
+        border-color: $bg;
+        color: $color;
+    }
+    &:active {
         opacity: 0.85;
     }
 }

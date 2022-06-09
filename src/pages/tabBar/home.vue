@@ -4,7 +4,7 @@
             <image class="logo" :src="imageInfo.logo"></image>
             <view class="line"></view>
             <view style="margin-bottom: 40rpx; font-size: 30rpx">userInfo: {{ JSON.stringify(userInfo, null, 4) }}</view>
-            <button class="button button-blue" @click="setUserInfo()">修改`userInfo`</button>
+            <button class="button-dark" @click="setUserInfo()">修改`userInfo`</button>
         </view>
         <view class="cell">
             <view class="cell-item fvertical" v-for="(item, index) in menuList" :key="index" @click="openMenu(item.path)">

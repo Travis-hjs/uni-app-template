@@ -1,7 +1,7 @@
 <template>
     <view class="personal">
         <view style="margin-bottom: 40rpx; font-size: 30rpx">userInfo: {{ JSON.stringify(userInfo, null, 4) }}</view>
-        <button class="button button-green" @click="clearUserInfo()">清空`userInfo`</button>
+        <button class="button-pink" @click="clearUserInfo()">清空`userInfo`</button>
     </view>
 </template>
 <script lang="ts">

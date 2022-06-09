@@ -48,10 +48,10 @@ uni-page-body{ min-height: auto !important; }
     overflow: hidden;
 }
 
-.button { @include button(); }
-.button_dark { @include button(); background-color: $dark; color: #e3b480; }
-.button_pink {  @include button(); background-color: $pink; border-color: $pink; color: $white; }
-.button_red { @include button(); background-color: $red; border-color: $red; color: $white; }
+.button { @include button($dark, #eee); }
+.button-dark { @include button(#e3b480, $dark); }
+.button-pink {  @include button($white, $pink); }
+.button-red { @include button($white, $red); }
 
 .line { width: 100%; padding-top: 40rpx; margin-bottom: 40rpx; border-bottom: solid 1px #eee; }
 
