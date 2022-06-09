@@ -181,7 +181,7 @@ interface ScrollviewOption {
  *          onScrollviewCenter({
  *              ctx: this,
  *              event: e,
- *              id: 'scroll-' + item.id,
+ *              id: "scroll-" + item.id,
  *              callback: left => this.scrollLeft = left
  *          })
  *      }
@@ -197,13 +197,13 @@ export function onScrollviewCenter(option: ScrollviewOption) {
         node.boundingClientRect(function (nodeInfo) {
             let result = 0;
             if (nodeInfo) {
-                if (typeof option.scrollValue === 'number') {
+                if (typeof option.scrollValue === "number") {
                     result = option.scrollValue + nodeInfo.left! + nodeInfo.width! / 2 - width / 2;
                 } else {
                     result = left + nodeInfo.width! / 2 - width / 2;
                 }
             }
-            typeof option.callback === 'function' && option.callback(result, nodeInfo);
+            typeof option.callback === "function" && option.callback(result, nodeInfo);
         }).exec();
     });
 }
