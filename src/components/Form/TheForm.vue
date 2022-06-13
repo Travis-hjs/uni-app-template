@@ -7,7 +7,7 @@
 import { Component, Prop, Watch } from "vue-property-decorator";
 import Emitter from "@/mixins/Emitter";
 import TheFormItem from "./TheFormItem.vue";
-import { TheFormRules, labelPosition, TheFormValidateCallback } from "@/types";
+import { TheFormRules, LabelPosition, TheFormValidateCallback } from "@/types";
 import { getDeepLevelValue } from "@/utils";
 
 @Component({
@@ -39,7 +39,7 @@ export default class TheForm extends Emitter {
         type: String,
         default: "left"
     })
-    labelPosition!: labelPosition;
+    labelPosition!: LabelPosition;
 
     /** 是否需要显示底部边框 */
     @Prop({

@@ -18,7 +18,7 @@
 import { Component, Prop, Inject, Watch } from "vue-property-decorator";
 import TheForm from "./TheForm.vue";
 import Emitter from "@/mixins/Emitter";
-import { TheFormRulesItem, labelPosition } from "@/types";
+import { TheFormRulesItem, LabelPosition } from "@/types";
 import { checkType, getDeepLevelValue } from "@/utils";
 
 @Component({
@@ -57,7 +57,7 @@ export default class TheFormItem extends Emitter {
         type: String,
         default: ""
     })
-    labelPosition!: labelPosition;
+    labelPosition!: LabelPosition;
 
     /** 表单规则 */
     @Prop({
@@ -86,11 +86,11 @@ export default class TheFormItem extends Emitter {
     }
 
     /** 视图中使用的定位属性值 */
-    private usePosition: labelPosition = "left";
+    private usePosition: LabelPosition = "left";
 
     // 监听父组件`labelPosition`变动
     @Watch("parentComponent.labelPosition", { immediate: true })
-    private onLabelPosition(val: labelPosition) {
+    private onLabelPosition(val: LabelPosition) {
         let result = this.labelPosition;
         if (!result) {
             result = val;

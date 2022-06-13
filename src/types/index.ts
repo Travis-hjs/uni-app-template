@@ -25,7 +25,7 @@ export interface TheFormRulesItem {
 export type TheFormRules = { [key: string]: Array<TheFormRulesItem> };
 
 /** `label`布局位置 */
-export type labelPosition = "left" | "right" | "top";
+export type LabelPosition = "left" | "right" | "top";
 
 /** 表单验证回调类型 */
 export interface TheFormValidateCallback {
