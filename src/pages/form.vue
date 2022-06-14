@@ -7,7 +7,7 @@
             </label>
         </radio-group>
         <view class="line"></view>
-        <TheForm :model="formData" :rules="formRules" labelWidth="168rpx" :labelPosition="position" :border="hasBorder" ref="the-form">
+        <TheForm :model="formData" :rules="formRules" labelWidth="168rpx" :labelPosition="position" :border="hasBorder" ref="theForm">
             <TheFormItem prop="userName" label="用户名">
                 <input class="the-input" type="text" v-model="formData.userName" :placeholder="formRules.userName[0].message">
             </TheFormItem>
@@ -17,7 +17,7 @@
             <TheFormItem prop="avatar" label="用户头像" :border="false">
                 <UploadImage :src="formData.avatar" @change="onUpload" />
             </TheFormItem>
-            <!-- <TheFormItem prop="isAdmin" label="是否管理员">
+            <TheFormItem prop="isAdmin" label="是否管理员">
                 <switch :checked="formData.isAdmin" @change="onIsAdmin" />
                 <text style="font-size: 30rpx">{{ formData.isAdmin ? '是' : '否' }}</text>
             </TheFormItem>
@@ -55,10 +55,10 @@
                 <TheButton color="#ffba00" @click="switchDesc()">
                     <text class="ellipsis" style="font-size: 28rpx">切换“描述”验证状态</text>
                 </TheButton>
-            </view> -->
+            </view>
         </TheForm>
-        <!-- <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" :value="formData.date" startDate="2019-03-12" endDate="2021-06-04" title="请选择日期" />
-        <ThePicker :show="showPickerAddress" @cancel="closePickerAddress" @confirm="onPickerAddress" :list="addressList" title="动态层级变动" /> -->
+        <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" :value="formData.date" startDate="2019-03-12" endDate="2021-06-04" title="请选择日期" />
+        <ThePicker :show="showPickerAddress" @cancel="closePickerAddress" @confirm="onPickerAddress" :list="addressList" title="动态层级变动" />
     </view>
 </template>
 <script lang="ts">
@@ -70,8 +70,8 @@ import TheButton from "@/components/TheButton.vue";
 import PickerDate from "@/components/Picker/Date.vue";
 import ThePicker from "@/components/Picker/index.vue";
 import { showToast } from "@/utils/control";
-// import { createCityData } from "./hooks";
-import { TheFormRulesItem, PickerSelectItem, TheFormRules, labelPosition, UploadImageRes } from "@/types";
+import { useCityData } from "@/hooks";
+import { PickerSelectItem, TheFormRules, LabelPosition, UploadImageRes, TheFormCtx } from "@/types";
 
 interface FormDataType {
     userName: string,
@@ -107,7 +107,8 @@ export default defineComponent({
             address: []
         })
         
-        const formRules: TheFormRules = {
+        // 注意！！！这里不需要动态修改则可以不设置为响应式
+        const formRules = reactive<TheFormRules>({
             userName: [
                 { required: true, message: "请输入用户名" }
             ],
@@ -133,9 +134,9 @@ export default defineComponent({
             address: [
                 { required: true, message: "请选择地址" }
             ]
-        }
+        })
 
-        const position = ref<labelPosition>("left");
+        const position = ref<LabelPosition>("left");
 
         const positionOptions = [
             { value: "left", label: "靠左排列" },
@@ -143,7 +144,7 @@ export default defineComponent({
             { value: "top", label: "靠顶部排列" }
         ]
 
-        function onPosition(e: UniAppChangeEvent<labelPosition>) {
+        function onPosition(e: UniAppChangeEvent<LabelPosition>) {
             position.value = e.detail.value;
         }
 
@@ -153,8 +154,112 @@ export default defineComponent({
             hasBorder.value = !hasBorder.value;
         }
 
+        const showPickerDate = ref(false);
+
+        function openPickerDate() {
+            showPickerDate.value = true;
+        }
+
+        function closePickerDate() {
+            showPickerDate.value = false;
+        }
+
+        function onPickerDate(val: string) {
+            formData.date = val;
+            closePickerDate();
+        }
+
+        const addressList = useCityData();
+        /** 展示的值 */
+        const addressLabel = ref("");
+
+        const showPickerAddress = ref(false);
+
+        function openPickerAddress() {
+            showPickerAddress.value = true;
+        }
+
+        function closePickerAddress() {
+            showPickerAddress.value = false;
+        }
+
+        function onPickerAddress(res: { id: string, value: Array<PickerSelectItem<number>>}) {
+            formData.address = res.value.map(item => item.value);
+            addressLabel.value = res.value.map(item => item.label).join("-");
+            closePickerAddress();
+        }
+
+        function switchDesc() {
+            const rules = formRules.description;
+            rules[0].required = !rules[0].required;
+        }
+
+        function onIsAdmin(e: UniAppChangeEvent<boolean>) {
+            formData.isAdmin = e.detail.value;
+        }
+
+        const multipleOptions = [
+            { value: "1", label: "多选一" },
+            { value: "2", label: "多选二" },
+            { value: "3", label: "多选三" },
+            { value: "4", label: "多选四" },
+            { value: "5", label: "多选五" },
+        ]
+
+        function onMultiple(e: UniAppChangeEvent<Array<string>>) {
+            formData.multiple = e.detail.value;
+        }
+
+        const radioOptions = [
+            { value: "1", label: "单选一" },
+            { value: "2", label: "单选二" },
+            { value: "3", label: "单选三" },
+            { value: "4", label: "单选四" },
+        ]
+
+        function onRadio(e: UniAppChangeEvent<string>) {
+            formData.radioValue = e.detail.value;
+        }
+
         function onUpload(res: UploadImageRes) {
             formData.avatar = res.src;
+        }
+
+        const theForm = ref<TheFormCtx>();
+
+        function onSubmit() {
+            theForm.value!.validate((valid, reuls) => {
+                if (valid) {
+                    showToast("验证通过，在控制台可以查看表单数据");
+                    console.log("表单数据 >>", JSON.stringify(formData, null, "\t"));
+                } else {
+                    const keys = Object.keys(reuls);
+                    const firstProp = keys[0];
+                    showToast(`${reuls[firstProp][0].message}`);
+                }
+            })
+        }
+
+        function onReset() {
+            theForm.value!.resetFields(formData => {
+                formData = formData;
+            });
+        }
+
+        /** 验证手机号码 */
+        function validatePhone() {
+            theForm.value!.validateField("phone", (valid, rules) => {
+                if (valid) {
+                    showToast("手机验证通过");
+                } else {
+                    showToast(rules["phone"][0].message!);
+                }
+            })
+        }
+
+        /** 移除验证手机号 */
+        function resetPhone() {
+            theForm.value!.resetField("phone");
         }
 
         return {
@@ -165,7 +270,36 @@ export default defineComponent({
             onPosition,
             hasBorder,
             switchBorder,
-            onUpload
+            
+
+            showPickerDate,
+            openPickerDate,
+            closePickerDate,
+            onPickerDate,
+
+            addressList,
+            addressLabel,
+            showPickerAddress,
+            openPickerAddress,
+            closePickerAddress,
+            onPickerAddress,
+
+            switchDesc,
+            onIsAdmin,
+
+            multipleOptions,
+            onMultiple,
+
+            radioOptions,
+            onRadio,
+            
+            onUpload,
+
+            theForm,
+            onSubmit,
+            onReset,
+            validatePhone,
+            resetPhone
         }
     },
 });

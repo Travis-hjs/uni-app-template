@@ -63,6 +63,12 @@ export interface TheFormCtx extends TheFormProps {
      * @param callback 验证回调操作
      */
     validate(callback?: TheFormValidateCallback): void
+    /** 
+     * 指定验证某个值
+     * @param prop 要验证的字段
+     * @param callback 验证回调
+     */
+    validateField(prop: string, callback?: TheFormValidateCallback): void
     /**
      * 移除所有校验
      * @param callback 校验回调（同步），携带了原始数据：表单 和 规则
