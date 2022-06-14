@@ -1,3 +1,5 @@
+@import "../../uni.scss";
+
 $duration: 0.3s all;
 
 .the-picker {
@@ -36,7 +38,7 @@ $duration: 0.3s all;
         }
 
         .confirm {
-            color: #f37131;
+            color: $blue;
         }
     }
 
