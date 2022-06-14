@@ -1,5 +1,5 @@
 <template>
-    <view class="upload_image card">
+    <view class="upload-image card">
         <!-- H5 中 widthFix 不生效，要用下面的方式 -->
         <!-- #ifdef H5 -->
         <img style="width: 100%; display: block" :src="src" v-if="src">
@@ -10,7 +10,7 @@
         <!-- #endif -->
 
         <view class="close" v-if="src" @click="removeImage"></view>
-        <view class="upload_icon" @click="uploadImage" v-if="!src && !loading" :style="{ 'min-height': minHeight }"></view>
+        <view class="upload-icon" @click="uploadImage" v-if="!src && !loading" :style="{ 'min-height': minHeight }"></view>
         <view class="fvc" v-if="!src && loading" :style="{ 'min-height': minHeight }">
             <view class="preloader">
                 <view class="preloader-inner">
@@ -113,14 +113,14 @@ export default class UploadImage extends Vue {
 }
 </script>
 <style lang="scss">
-.upload_image{ 
+.upload-image{ 
     width: 100%; position: relative; 
     .close {
         width: 70rpx; height: 70rpx; background-color: rgba(0,0,0,0.45); border-radius: 50%; position: absolute; top: 16rpx; right: 16rpx; 
         &::before{ content: ""; width: 64%; height: 2px; background-color: #eee; border-radius: 1px; position: absolute; top: 50%; left: 18%; transform: translateY(-50%) rotate(45deg); }
         &::after{ content: ""; width: 64%; height: 2px; background-color: #eee; border-radius: 1px; position: absolute; top: 50%; left: 18%; transform: translateY(-50%) rotate(-45deg); }
     }
-    .upload_icon {
+    .upload-icon {
         width: 100%; height: 100%; position: relative; 
         &::before{ content: ""; width: 100rpx; height: 2px; background-color: #999; border-radius: 1px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}
         &::after{ content: ""; width: 100rpx; height: 2px; background-color: #999; border-radius: 1px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); }

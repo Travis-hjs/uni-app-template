@@ -1,7 +1,7 @@
 <template>
-    <view :class="['the_footer', isFixed ? 'fixed' : null]" :style="{ 'background': background, 'z-index': zIndex }">
+    <view :class="['the-footer', isFixed ? 'fixed' : null]" :style="{ 'background': background, 'z-index': zIndex }">
         <slot></slot>
-        <view :class="['spacing_box', appOption.isIPhoneX ? 'spacing_height' : null]"></view>
+        <view :class="['spacing-box', appOption.isIPhoneX ? 'spacing-height' : null]"></view>
     </view>
 </template>
 <script lang="ts">
@@ -36,20 +36,20 @@ export default class TheFooter extends Vue {
 }
 </script>
 <style lang="scss">
-.the_footer {
+.the-footer {
     width: 100%;
     bottom: 0;
     left: 0;
-    .spacing_box {
+    .spacing-box {
         width: 100%;
         height: constant(safe-area-inset-bottom);
         height: env(safe-area-inset-bottom);
     }
-    .spacing_height {
+    .spacing-height {
         height: 34px;
     }
 }
-.the_footer.fixed {
+.the-footer.fixed {
     position: fixed;
 }
 </style>

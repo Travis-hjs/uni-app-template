@@ -1,15 +1,15 @@
 <template>
-    <view :class="['the_picker flex', { 'the_picker_show': show }]">
+    <view :class="['the-picker flex', { 'the_picker_show': show }]">
         <view class="f1" @click="clickCancel()"></view>
-        <view class="picker_content">
+        <view class="picker-content">
             <!-- 操作栏 -->
-            <view class="picker_option fvertical">
+            <view class="picker-option fvertical">
                 <view class="btn" @click="clickCancel()">取消</view>
-                <view class="f1 picker_title">{{ title }}</view>
+                <view class="f1 picker-title">{{ title }}</view>
                 <view class="btn confirm" @click="clickConfirm()">确定</view>
             </view>
             <!-- 选择栏 -->
-            <picker-view class="picker_view" indicator-style="height: 36px;" @change="pickerChange">
+            <picker-view class="picker-view" indicator-style="height: 36px;" @change="pickerChange">
                 <picker-view-column v-show="list.length > 0">
                     <view class="picker_item ellipsis_1" v-for="(item, index) in list" :key="index">{{ item.label }}</view>
                 </picker-view-column>

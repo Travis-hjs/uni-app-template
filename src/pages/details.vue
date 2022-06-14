@@ -1,11 +1,11 @@
 <template>
     <view class="details">
-        <button class="button_pink goback_btn" :style="{ 'top': appOption.statusBarHeight + 10 + 'px' }" @click="goback">返回上一页</button>
+        <button class="button-pink goback_btn" :style="{ 'top': appOption.statusBarHeight + 10 + 'px' }" @click="goback">返回上一页</button>
         <view class="box" :style="{ 'padding-top': appOption.statusBarHeight + 90 + 'px' }">
             <view>页面参数{{ pageParam }}</view>
         </view>
         <TheFooter background="#222">
-            <view class="button_dark footer fvc">
+            <view class="button-dark footer fvc">
                 <view>footer</view>
             </view>
         </TheFooter>

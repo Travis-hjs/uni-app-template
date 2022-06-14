@@ -1,11 +1,11 @@
 <template>
     <button 
-        :class="['the_button', { 'isdisabled': disabled || loading }]"
+        :class="['the-button', { 'isdisabled': disabled || loading }]"
         :style="{ 'background': color, 'height': height + 'rpx', 'color': textColor, 'border-radius': radius }"
         :disabled="disabled || loading"
         @click="onClick()"
     >
-        <view :class="['loading_icon', { 'loading_icon_hide': !loading }]" :style="{ 'border-top-color': textColor }"></view>
+        <view :class="['loading-icon', { 'loading-icon-hide': !loading }]" :style="{ 'border-top-color': textColor }"></view>
         <slot></slot>
     </button>
 </template>
@@ -55,7 +55,7 @@ export default class TheButton extends Vue {
 <style lang="scss">
 $time: 0.3s all;
 
-.the_button {
+.the-button {
     width: 100%;
     display: flex;
     flex-wrap: nowrap;
@@ -66,7 +66,7 @@ $time: 0.3s all;
     font-size: 32rpx;
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
     transition: $time;
-    .loading_icon {
+    .loading-icon {
         width: 40rpx;
         height: 40rpx;
         border-radius: 50%;
@@ -78,7 +78,7 @@ $time: 0.3s all;
         animation: btnLoading 1s infinite linear;
         transition: $time;
     }
-    .loading_icon_hide {
+    .loading-icon-hide {
         width: 0px;
         height: 0px;
         margin-right: 0px;
@@ -87,7 +87,7 @@ $time: 0.3s all;
         visibility: hidden;
     }
 }
-.the_button.isdisabled {
+.the-button.isdisabled {
     opacity: 0.8;
 }
 

@@ -1,15 +1,15 @@
 <template>
-    <view :class="['the_picker flex', { 'the_picker_show': show }]">
+    <view :class="['the-picker flex', { 'the_picker_show': show }]">
         <view class="f1" @click="clickCancel()"></view>
-        <view class="picker_content">
+        <view class="picker-content">
             <!-- 操作栏 -->
-            <view class="picker_option fvertical">
+            <view class="picker-option fvertical">
                 <view class="btn" @click="clickCancel()">取消</view>
-                <view class="f1 picker_title">{{ title }}</view>
+                <view class="f1 picker-title">{{ title }}</view>
                 <view class="btn confirm" @click="clickConfirm()">确定</view>
             </view>
 
-            <picker-view class="picker_view" indicator-style="height: 36px;" @change="pickerChange" :value="selectIndexs">
+            <picker-view class="picker-view" indicator-style="height: 36px;" @change="pickerChange" :value="selectIndexs">
                 <picker-view-column v-if="type === 'Y-M-D' || type === 'Y-M' || type === 'Y'">
                     <view class="picker_item ellipsis_1" v-for="(item, index) in yearList" :key="index">{{item}}</view>
                 </picker-view-column>

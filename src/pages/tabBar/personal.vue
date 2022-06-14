@@ -1,13 +1,13 @@
 <template>
     <view class="personal">
-        <button class="button_pink" @click="openDetail()">跳转详情页并传参</button>
-        <view>userInfo.token: {{ userInfo.token }}</view>
+        <button class="button-pink mgb_40" @click="openDetail()">跳转详情页并传参</button>
+        <view class="mgb_40" style="font-size: 30rpx">userInfo: {{ JSON.stringify(userInfo, null, 4) }}</view>
         <button class="button" @click="clearUserInfo()">清空用户信息</button>
         <view style="padding: 10px 0">
             <UploadImage :uploadId="uploadInfo.index" :src="uploadInfo.path" @change="setContentImage" />
         </view>
-        <view class="test_include">测试全局 `@include`</view>
-        <button class="button_dark" @click="openList()">跳转列表页</button>
+        <view class="test-include">测试全局 `@include`</view>
+        <button class="button-dark" @click="openList()">跳转列表页</button>
     </view>    
 </template>
 
@@ -58,7 +58,7 @@ export default class Personal extends Vue {
 <style lang="scss">
 .personal { 
     padding: 30rpx 30rpx 40rpx; 
-    .test_include { 
+    .test-include { 
         @include button();
         margin-bottom: 16px;
     }

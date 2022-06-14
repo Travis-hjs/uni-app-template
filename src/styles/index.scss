@@ -49,9 +49,9 @@ uni-page-body{ min-height: auto !important; }
 }
 
 .button { @include button(); }
-.button_dark { @include button(); background-color: $dark; color: #e3b480; }
-.button_pink {  @include button(); background-color: $pink; border-color: $pink; color: $white; }
-.button_red { @include button(); background-color: $red; border-color: $red; color: $white; }
+.button-dark { @include button(); background-color: $dark; color: #e3b480; }
+.button-pink {  @include button(); background-color: $pink; border-color: $pink; color: $white; }
+.button-red { @include button(); background-color: $red; border-color: $red; color: $white; }
 
 .line { width: 100%; padding-top: 40rpx; margin-bottom: 40rpx; border-bottom: solid 1px #eee; }
 

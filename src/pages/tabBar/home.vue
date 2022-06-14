@@ -1,9 +1,9 @@
 <template>
     <view class="home">
         <view class="pdl_30 pdr_30 mgb_30">
-            <button class="button_pink" @click="addCount">当前页面`count`：{{ count }}</button>
-            <view>userInfo.token: {{ userInfo.token }}</view>
-            <button class="button" @click="setToken">修改`userInfo.token = "123"`</button>
+            <button class="button-pink mgb_40" @click="addCount">当前页面`count`：{{ count }}</button>
+            <view class="mgb_40" style="font-size: 30rpx">userInfo: {{ JSON.stringify(userInfo, null, 4) }}</view>
+            <button class="button-dark" @click="setUserInfo()">修改`userInfo`</button>
             <view class="line"></view>
             <image class="logo" :src="imageInfo.logo"></image>
             <view class="line"></view>
@@ -46,8 +46,12 @@ export default class Home extends Vue {
         // console.log("执行");
     }
 
-    setToken() {
-        store.user.update({ token: "123" });
+    setUserInfo() {
+        store.user.update({
+            id: this.count,
+            phone: Date.now(),
+            token: Math.random().toString(36).slice(2),
+        });
     }
 
     addCount() {

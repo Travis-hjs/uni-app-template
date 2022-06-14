@@ -1,6 +1,6 @@
 $duration: 0.3s all;
 
-.the_picker {
+.the-picker {
     width: 100%; 
     height: 100%;
     position: fixed;
@@ -14,10 +14,10 @@ $duration: 0.3s all;
     transition: $duration;
     opacity: 0;
     visibility: hidden;
-    .picker_option { 
+    .picker-option { 
         width: 100%; 
         padding: 12rpx 0;
-        .picker_title {
+        .picker-title {
             font-size: 32rpx;
             color: #555;
             font-weight: 500;
@@ -35,11 +35,11 @@ $duration: 0.3s all;
             color: #F37131;
         }
     }
-    .picker_content { 
+    .picker-content { 
         background-color: #fff;
         transition: $duration;
         transform: translate3d(0, 100%, 0);
-        .picker_view { 
+        .picker-view { 
             width: 100%;
             height: 236px; 
             .picker_item {
@@ -52,7 +52,7 @@ $duration: 0.3s all;
 .the_picker_show {
     opacity: 1;
     visibility: visible;
-    .picker_content {
+    .picker-content {
         transform: translate3d(0, 0%, 0);
     }
 }
