@@ -271,7 +271,6 @@ export default defineComponent({
             hasBorder,
             switchBorder,
             
-
             showPickerDate,
             openPickerDate,
             closePickerDate,
