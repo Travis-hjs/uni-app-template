@@ -25,7 +25,7 @@ export interface TheFormRulesItem {
 export type TheFormRules = { [key: string]: Array<TheFormRulesItem> };
 
 /** `label`布局位置 */
-export type labelPosition = "left" | "right" | "top";
+export type LabelPosition = "left" | "right" | "top";
 
 /** 表单验证回调类型 */
 export interface TheFormValidateCallback {
@@ -35,6 +35,72 @@ export interface TheFormValidateCallback {
         /** 验证不通过的规则列表 */
         rules: { [key: string]: Array<TheFormRulesItem> }
     ): void
+}
+
+/** `<TheForm>`&`<TheFormItem>`通用`props`类型 */
+interface TheFormProps {
+    /** 表单字段宽度，这里使用字符串，因为可能是`px`或者`rpx` */
+    labelWidth: string
+    /** 表单字段排版 */
+    labelPosition: LabelPosition
+    /** 是否需要显示底部边框 */
+    border: boolean
+}
+
+/** 
+ * `<TheForm>`上下文
+ * - `vue3`中没有动态识别组件类型，所以需要单独去定义
+ */
+export interface TheFormCtx extends TheFormProps {
+    /** 表单数据对象 */
+    model: BaseObj
+    /** 表单校验规则 */
+    rules: TheFormRules
+    /** 是否需要验证时滚动到对应位置 */
+    validateScroll: boolean
+    /**
+     * 表单验证
+     * @param callback 验证回调操作
+     */
+    validate(callback?: TheFormValidateCallback): void
+    /**
+     * 移除所有校验
+     * @param callback 校验回调（同步），携带了原始数据：表单 和 规则
+     */
+    resetFields(callback?: (formData: any, rules: TheFormRules) => void): void
+    /**
+     * 移除某个验证
+     * @param prop 指定值
+     */
+    resetField(prop: string): void
+}
+
+/**
+ * `<TheFormItem>`上下文
+ * - `vue3`中没有动态识别组件类型，所以需要单独去定义
+ */
+export interface TheFormItemCtx extends TheFormProps {
+    /** `<TheFormItem prop="表单数据的键值" >` */
+    prop: string
+    /** 表单规则 */
+    rules: Array<TheFormRulesItem>
+    /**
+     * 重置当前验证提示
+     * @public 暴露给外部组件调用
+     */
+    resetField(): void
+    /**
+     * 验证当前`item`
+     * @param callback 
+     */
+    validateField(callback: (prop: string, rules: Array<TheFormRulesItem>) => void): void
+    /** 滚动到视图可见位置 */
+    scrollIntoView(): void
+    /**
+     * 设置验证提示
+     * @param message 要显示验证的内容，不传则用原来的提示文字
+     */
+    showValidateField(message: string): void
 }
 
 /** 选择器`item`数据 */

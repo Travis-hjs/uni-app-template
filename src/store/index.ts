@@ -20,7 +20,7 @@ export class ModuleStore extends ModuleAppOption {
     }
 
     /** 用户状态 */
-    user = new ModuleUser();
+    readonly user = new ModuleUser();
 
 }
 
