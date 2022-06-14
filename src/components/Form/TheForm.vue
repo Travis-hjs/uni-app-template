@@ -72,7 +72,7 @@ export default class TheForm extends Emitter {
      * `rules`原始数据，重置时用
      * @description 非响应式
      */
-    private beforeRules!: any;
+    private beforeRules!: TheFormRules;
 
     /**
      * `<TheFromItem>`实例列表
@@ -215,7 +215,7 @@ export default class TheForm extends Emitter {
      * @description 暴露给外部调用的
      * @param callback 校验回调（同步），携带了原始数据：表单 和 规则
      */
-    resetFields(callback?: (formData: any, rules: any) => void) {
+    resetFields(callback?: (formData: any, rules: TheFormRules) => void) {
         if (!this.model) return console.warn(`表单验证缺少 "model" 对象`);
         // console.log(this.model, this.beforeModel);
         // 清空验证对象，减少`watch`的性能开销
