@@ -93,6 +93,8 @@ export default defineComponent({
                     }
                 }
             }
+        }, {
+            deep: true
         })
 
         /** 
@@ -109,7 +111,7 @@ export default defineComponent({
             let adopt = true;
             for (let i = 0; i < items.length; i++) {
                 const item = items[i];
-                if (((rules && rules[prop]) || (item.rules && item.rules.length)) && item.prop === prop) {
+                if (((props.rules && props.rules[prop]) || (item.rules && item.rules.length)) && item.prop === prop) {
                     item.validateField(function(prop, rule) {
                         if (prop && rule.length > 0) {
                             rules[prop] = rule;
@@ -138,8 +140,8 @@ export default defineComponent({
             let rules: TheFormRules = {};
             let failItems: Array<TheFormItemCtx> = [];
             let adopt = true;
-            items.forEach(item => {
-                item.validateField((prop, rule) => {
+            items.forEach(function(item) {
+                item.validateField(function(prop, rule) {
                     if (prop && rule.length > 0) {
                         rules[prop] = rule;
                         adopt = false;

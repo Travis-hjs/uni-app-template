@@ -1,6 +1,6 @@
 <template>
     <view :class="['the-form-item', { 'the-form-item-border': useBorder }]">
-        <!-- <view :class="[{ 'flex': usePosition !== 'top' }]">
+        <view :class="[{ 'flex': usePosition !== 'top' }]">
             <view :class="['the-form-label ellipsis', { 'the-form-label-right': usePosition === 'right' }]" :style="{ 'width': useLabelWidth }">
                 <text class="the-form-symbol" v-if="isRequired">*</text>
                 <text>{{ label }}</text>
@@ -11,7 +11,7 @@
                     <view :class="['validate-tip ellipsis', { 'validate-tip-show': showValidate }]">{{ validateText }}</view>
                 </view>
             </view>
-        </view> -->
+        </view>
     </view>
 </template>
 <script lang="ts">
@@ -73,7 +73,6 @@ export default defineComponent({
         /** 是否验证 */
         const isRequired = computed(function() {
             let result = false;
-            // 父组件的规则
             const rules = parentComponent.rules;
             if (rules && rules[props.prop] && rules[props.prop].length) {
                 result = rules[props.prop].some(item => item.required);
@@ -126,7 +125,8 @@ export default defineComponent({
             const model = parentComponent.model;
             const value = getDeepLevelValue(model, currentProp);
             const tip = "校验不通过";
-            if (isRequired && currentProp) {
+            if (isRequired.value && currentProp) {
+
                 /** 自身规则列表 */
                 const selfRules = props.rules;
                 /** 要校验的规则列表 */
@@ -243,6 +243,7 @@ export default defineComponent({
             usePosition,
             useLabelWidth,
             useBorder,
+            showValidate,
             validateText,
             resetField,
             validateField,
