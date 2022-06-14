@@ -24,7 +24,7 @@
     </view>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, reactive, ref, watch, nextTick } from "vue";
+import { defineComponent, PropType, ref, watch, nextTick } from "vue";
 import { PickerSelectItem } from "@/types";
 import { checkType } from "@/utils";
 
@@ -71,31 +71,19 @@ export default defineComponent({
             const indexs = selectIndexs;
             const column = props.column;
 
-            const hasSecond =
-                list.length &&
-                list[indexs[0]] &&
-                list[indexs[0]].children &&
-                list[indexs[0]].children!.length > 0;
+            const hasSecond = list.length && list[indexs[0]] && list[indexs[0]].children && list[indexs[0]].children!.length > 0;
 
             if (column >= 2) {
-                secondList.value = hasSecond
-                    ? list[indexs[0]].children!
-                    : [{ label: "-", value: "" }];
+                secondList.value = hasSecond ? list[indexs[0]].children! : [{ label: "-", value: "" }];
             } else if (column === 0) {
                 secondList.value = hasSecond ? list[indexs[0]].children! : [];
             }
 
             const second = secondList.value;
-            const hasThird =
-                second.length > 0 &&
-                second[indexs[1]] &&
-                second[indexs[1]].children &&
-                second[indexs[1]].children!.length > 0;
+            const hasThird = second.length > 0 && second[indexs[1]] && second[indexs[1]].children && second[indexs[1]].children!.length > 0;
 
             if (column >= 3) {
-                thirdList.value = hasThird
-                    ? second[indexs[1]].children!
-                    : [{ label: "-", value: "" }];
+                thirdList.value = hasThird ? second[indexs[1]].children! : [{ label: "-", value: "" }];
             } else if (column === 0) {
                 thirdList.value = hasThird ? second[indexs[1]].children! : [];
             }

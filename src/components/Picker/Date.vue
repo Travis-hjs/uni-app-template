@@ -24,7 +24,7 @@
     </view>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref, watch, nextTick, PropType } from "vue";
+import { defineComponent, ref, watch, nextTick, PropType } from "vue";
 import { checkType, findIndex } from "@/utils";
 
 /** 当前时间 */
@@ -105,10 +105,7 @@ export default defineComponent({
             let indexs = [yearList.value.length - 1, 0, 0];
             if (props.modelValue && props.modelValue.split("-").length) {
                 const list = props.modelValue.split("-");
-                const index = findIndex(
-                    yearList.value,
-                    (item) => item === Number(list[0])
-                );
+                const index = findIndex(yearList.value, item => item === Number(list[0]));
                 indexs[0] = index > -1 ? index : 0;
                 if (list[1]) {
                     const second = Number(list[1]) - 1;
@@ -147,15 +144,10 @@ export default defineComponent({
 
             if (props.type === "Y-M-D") {
                 const selectYear = yearList.value[selectIndexs.value[0]];
-                const selectMonth = Number(
-                    monthList.value[selectIndexs.value[1]]
-                );
+                const selectMonth = Number(monthList.value[selectIndexs.value[1]]);
                 let start = 1;
                 let total = new Date(selectYear, selectMonth, 0).getDate();
-                if (
-                    selectYear === startList[0] &&
-                    selectMonth === startList[1]
-                ) {
+                if (selectYear === startList[0] && selectMonth === startList[1]) {
                     start = startList[2];
                 }
                 if (selectYear === endList[0] && selectMonth === endList[1]) {
@@ -199,20 +191,17 @@ export default defineComponent({
 
         // #ifdef MP
         // 微信小程序需要在下一帧设置索引值
-        nextTick(() => {
+        setTimeout(() => {
             selectIndexs.value = getUseIndexs();
             update();
-        });
+        }, 1000 / 60);
         // #endif
 
-        watch(
-            () => props.modelValue,
-            (val) => {
-                if (val) {
-                    selectIndexs.value = getUseIndexs();
-                }
+        watch(() => props.modelValue, val => {
+            if (val) {
+                selectIndexs.value = getUseIndexs();
             }
-        );
+        });
 
         return {
             yearList,
