@@ -15,7 +15,7 @@
     </view>
 </template>
 <script lang="ts">
-import { Component, Prop, Inject, Watch } from "vue-property-decorator";
+import { Component, Prop, Inject } from "vue-property-decorator";
 import TheForm from "./TheForm.vue";
 import Emitter from "@/mixins/Emitter";
 import { TheFormRulesItem, LabelPosition } from "@/types";
@@ -71,7 +71,7 @@ export default class TheFormItem extends Emitter {
     private parentComponent!: TheForm;
 
     /** 是否验证 */
-    private get isRequired() {
+    get isRequired() {
         let result = false;
         // 父组件的规则
         const rules = this.parentComponent.rules;
@@ -86,49 +86,24 @@ export default class TheFormItem extends Emitter {
     }
 
     /** 视图中使用的定位属性值 */
-    private usePosition: LabelPosition = "left";
-
-    // 监听父组件`labelPosition`变动
-    @Watch("parentComponent.labelPosition", { immediate: true })
-    private onLabelPosition(val: LabelPosition) {
-        let result = this.labelPosition;
-        if (!result) {
-            result = val;
-        }
-        this.usePosition = result;
+    get usePosition() {
+        return this.labelPosition || this.parentComponent.labelPosition;
     }
 
     /** 视图中使用的`label`宽度值 */
-    private useLabelWidth = "";
-
-    // 监听父组件`labelWidth`变动
-    @Watch("parentComponent.labelWidth", { immediate: true })
-    private onLabelWidth(val: string) {
-        let result = this.labelWidth;
-        if (!result) {
-            result = val;
-        }
-        this.useLabelWidth = result;
+    get useLabelWidth() {
+        return this.labelWidth || this.parentComponent.labelWidth;
     }
 
     /** 视图中使用的`border`值 */
-    private useBorder = false;
-
-    // 监听父组件`border`变动
-    @Watch("parentComponent.border", { immediate: true })
-    onBorder(val: boolean) {
-        let result = this.border;
-        if (checkType(result) !== "boolean") {
-            result = val;
-        }
-        this.useBorder = result;
+    get useBorder() {
+        return checkType(this.border) === "boolean" ? this.border : this.parentComponent.border;
     }
 
     mounted() {
         if (this.prop) {
             this.dispatch("TheForm", "addTheFormItem", [this]);
         }
-        // console.log(this.parentComponent.labelPosition);
     }
 
     beforeDestroy() {
@@ -153,7 +128,7 @@ export default class TheFormItem extends Emitter {
      * 验证当前`item`
      * @description 暴露给外部调用的方法
      * @param callback 校验回调
-    */
+     */
     validateField(callback: (prop: string, rules: Array<TheFormRulesItem>) => void) {
         let info = null;
         /** 父组件的规则列表 */
