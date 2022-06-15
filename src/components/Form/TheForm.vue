@@ -27,7 +27,7 @@ export default defineComponent({
             type: Boolean,
             default: true
         },
-        ...useFormProps("left")
+        ...useFormProps()
     },
     setup(props, context) {
         const instance = getCurrentInstance() as Vue3.Instance;
