@@ -84,6 +84,8 @@ interface TheFormProps {
  * - `vue3`中没有动态识别组件类型，所以需要单独去定义
  */
 export interface TheFormCtx extends TheFormProps {
+    /** 对外暴露的`uid`，作为提交事件用 */
+    uid: number
     /** 表单数据对象 */
     model: BaseObj
     /** 表单校验规则 */

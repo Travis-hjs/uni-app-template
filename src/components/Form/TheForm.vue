@@ -64,15 +64,19 @@ export default defineComponent({
         setBeforeData(props.model, props.rules || {});
         
         // 监听`<TheFromItem>`创建传进来的自身组件
-        uni.$on("addTheFormItem", function(item: TheFormItemCtx) {
-            // console.log("addField >>", item);
-            items.push(item);
+        uni.$on("addTheFormItem", function(res: [TheFormItemCtx, number]) {
+            // console.log("addField >>", res);
+            if (res[1] === instance.uid) {
+                items.push(res[0]);
+            }
         })
 
         // 监听对应的`<TheFromItem>`移除操作
-        uni.$on("removeTheFormItem", function(item: TheFormItemCtx) {
-            // console.log("removeField >>", item);
-            item.prop && items.splice(items.indexOf(item), 1);
+        uni.$on("removeTheFormItem", function(res: [TheFormItemCtx, number]) {
+            // console.log("removeField >>", res);
+            if (res[1] === instance.uid) {
+                res[0].prop && items.splice(items.indexOf(res[0]), 1);
+            }
         })
         
         provide("theFormComponent", instance.ctx);
@@ -95,9 +99,7 @@ export default defineComponent({
                     }
                 }
             }
-        }, {
-            deep: true
-        })
+        }, { deep: true });
 
         /** 
          * 指定验证某个值
