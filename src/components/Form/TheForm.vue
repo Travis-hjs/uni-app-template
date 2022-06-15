@@ -65,7 +65,7 @@ export default defineComponent({
         
         // 监听`<TheFromItem>`创建传进来的自身组件
         uni.$on("addTheFormItem", function(res: [TheFormItemCtx, number]) {
-            // console.log("addField >>", res);
+            // console.log("addField >>", res, instance.uid);
             if (res[1] === instance.uid) {
                 items.push(res[0]);
             }
@@ -200,6 +200,7 @@ export default defineComponent({
         }
         
         return {
+            uid: instance.uid,
             validate,
             validateField,
             resetFields,
