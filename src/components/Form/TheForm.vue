@@ -5,7 +5,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, PropType, provide, getCurrentInstance, watch } from "vue";
-import { TheFormRules, TheFormItemCtx, TheFormValidateCallback } from "@/types";
+import { TheFormRules, TheFormItemCtx, TheFormValidateCallback, Vue3 } from "@/types";
 import { useFormProps } from "./hooks";
 import { getDeepLevelValue } from "@/utils";
 
@@ -30,6 +30,8 @@ export default defineComponent({
         ...useFormProps("left")
     },
     setup(props, context) {
+        const instance = getCurrentInstance() as Vue3.Instance;
+
         /** `model`原始数据，重置时用到 */
         let beforeModel: BaseObj;
 
@@ -72,8 +74,8 @@ export default defineComponent({
             // console.log("removeField >>", item);
             item.prop && items.splice(items.indexOf(item), 1);
         })
-
-        provide("theFormComponent", (getCurrentInstance() as any).ctx);
+        
+        provide("theFormComponent", instance.ctx);
 
         /** 执行验证之后，储存的对象 */
         let validateInfo: BaseObj<boolean> = {};

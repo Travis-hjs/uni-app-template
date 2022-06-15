@@ -1,3 +1,35 @@
+import { ComponentInternalInstance } from "vue";
+
+/**
+ * `vue3`类型扩充
+ * - 弥补官方的类型不足问题
+ */
+export declare namespace Vue3 {
+    /**
+     * `vue`实例上下文
+     * - `vue3`类型文件中貌似没有暴露可以使用的类型，所以自定义补充一个接口代替，和`vue2`中一样的类型一致
+     */
+    interface Ctx {
+        /** 当前组件节点 */
+        readonly $el: HTMLElement
+        /** 父节点 */
+        readonly $parent?: Ctx
+        /** 当前组件实例 */
+        readonly $root: Ctx
+        /** 选项配置 */
+        readonly $options: {
+            name: string
+        }
+    }
+    /**
+     * `hooks: getCurrentInstance()`钩子函数返回的类型扩充
+     */
+    interface Instance extends ComponentInternalInstance {
+        /** 实例上下文对象 */
+        ctx: Ctx
+    }
+}
+
 /** 上传图片返回结果 */
 export interface UploadImageRes {
     /** 和当前上传组件绑定的`id` */

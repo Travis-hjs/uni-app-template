@@ -16,7 +16,7 @@
 </template>
 <script lang="ts">
 import { useFormProps } from "./hooks";
-import { TheFormCtx, TheFormRulesItem } from "@/types";
+import { TheFormCtx, TheFormRulesItem, Vue3 } from "@/types";
 import { computed, defineComponent, getCurrentInstance, inject, onMounted, onUnmounted, PropType, ref } from "vue";
 import { checkType, getDeepLevelValue } from "@/utils";
 
@@ -27,7 +27,7 @@ import { checkType, getDeepLevelValue } from "@/utils";
  * @param eventName 事件名
  * @param ctx 当前实例
  */
-function dispatch(componentName: string, eventName: string, ctx: VueCtx) {
+function dispatch(componentName: string, eventName: string, ctx: Vue3.Ctx) {
     let parent = ctx.$parent || ctx.$root;
     let name = parent.$options.name;
 
@@ -61,9 +61,9 @@ export default defineComponent({
         ...useFormProps()
     },
     setup(props, context) {
-        const instance = getCurrentInstance();
+        const instance = getCurrentInstance() as Vue3.Instance;
         /** 当前实例 */
-        let ctx: VueCtx;
+        let ctx: Vue3.Ctx;
         /**
          * 父组件实例对象
          * - 注入形式
@@ -227,7 +227,7 @@ export default defineComponent({
             // console.log("context >>", context);
             // console.log("parentComponent >>", parentComponent);
             
-            ctx = (instance as any).ctx;
+            ctx = instance.ctx;
             if (props.prop) {
                 dispatch("TheForm", "addTheFormItem", ctx);
             }
