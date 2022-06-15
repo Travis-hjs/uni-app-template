@@ -72,6 +72,7 @@ import ThePicker from "@/components/Picker/index.vue";
 import { showToast } from "@/utils/control";
 import { useCityData } from "@/hooks";
 import { PickerSelectItem, TheFormRules, LabelPosition, UploadImageRes, TheFormCtx } from "@/types";
+import { modifyData } from "@/utils";
 
 interface FormDataType {
     userName: string,
@@ -241,8 +242,8 @@ export default defineComponent({
         }
 
         function onReset() {
-            theForm.value!.resetFields(formData => {
-                formData = formData;
+            theForm.value!.resetFields(data => {
+                modifyData(formData, data);
             });
         }
 
