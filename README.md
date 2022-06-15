@@ -1,8 +1,8 @@
 # uni-app 通用模板
 
-**demo：[预览地址](http://huangjingsheng.gitee.io/hjs/uni-app)**
+- [预览地址](http://huangjingsheng.gitee.io/hjs/uni-app)
 
-码云平台最近在网络整顿导，所以导致当前预览地址失效，请本地运行预览
+- [vue3 版本](https://github.com/Hansen-hjs/uni-app-template/tree/v3)
 
 ## 模板说明：
 1. 基于`cli`创建的轻量化项目模板，只保留`vue`最基础的使用方式，保证打包到多端时不需要作太多判断处理
