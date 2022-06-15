@@ -4,7 +4,7 @@
     </view>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, provide, getCurrentInstance, watch } from "vue";
+import { defineComponent, PropType, provide, getCurrentInstance, watch, onUnmounted } from "vue";
 import { TheFormRules, TheFormItemCtx, TheFormValidateCallback, Vue3 } from "@/types";
 import { useFormProps } from "./hooks";
 import { getDeepLevelValue } from "@/utils";
@@ -63,22 +63,28 @@ export default defineComponent({
 
         setBeforeData(props.model, props.rules || {});
         
+        const eventMap = {
+            add: `add-the-form-item-${instance.uid}`,
+            remove: `remove-the-form-item-${instance.uid}`
+        }
+
         // 监听`<TheFromItem>`创建传进来的自身组件
-        uni.$on("addTheFormItem", function(res: [TheFormItemCtx, number]) {
-            // console.log("addField >>", res, instance.uid);
-            if (res[1] === instance.uid) {
-                items.push(res[0]);
-            }
+        uni.$on(eventMap.add, function(item: TheFormItemCtx) {
+            // console.log("addField >>", item, instance.uid);
+            items.push(item);
         })
 
         // 监听对应的`<TheFromItem>`移除操作
-        uni.$on("removeTheFormItem", function(res: [TheFormItemCtx, number]) {
-            // console.log("removeField >>", res);
-            if (res[1] === instance.uid) {
-                res[0].prop && items.splice(items.indexOf(res[0]), 1);
-            }
+        uni.$on(eventMap.remove, function(item: TheFormItemCtx) {
+            // console.log("removeField >>", item);
+            item.prop && items.splice(items.indexOf(item), 1);
         })
         
+        // 组件卸载后移除监听事件
+        onUnmounted(function() {
+            uni.$off([eventMap.add, eventMap.remove]);
+        })
+
         provide("theFormComponent", instance.ctx);
 
         /** 执行验证之后，储存的对象 */
@@ -200,7 +206,7 @@ export default defineComponent({
         }
         
         return {
-            uid: instance.uid,
+            eventMap,
             validate,
             validateField,
             resetFields,

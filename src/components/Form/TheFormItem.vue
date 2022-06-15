@@ -26,9 +26,8 @@ import { checkType, getDeepLevelValue } from "@/utils";
  * @param componentName 指定的组件名
  * @param eventName 事件名
  * @param ctx 当前实例
- * @param uid 指定节点的`uid`
  */
-function dispatch(componentName: string, eventName: string, ctx: Vue3.Ctx, uid: number) {
+function dispatch(componentName: string, eventName: string, ctx: Vue3.Ctx) {
     let parent = ctx.$parent || ctx.$root;
     let name = parent.$options.name;
 
@@ -39,7 +38,7 @@ function dispatch(componentName: string, eventName: string, ctx: Vue3.Ctx, uid: 
         }
     }
     if (name === componentName) {
-        uni.$emit(eventName, [ctx, uid]);
+        uni.$emit(eventName, ctx);
     }
 }
 
@@ -230,12 +229,12 @@ export default defineComponent({
             
             ctx = instance.ctx;
             if (props.prop) {
-                dispatch("TheForm", "addTheFormItem", ctx, parentComponent.uid);
+                dispatch("TheForm", parentComponent.eventMap.add, ctx);
             }
         })
 
         onUnmounted(function() {
-            dispatch("TheForm", "removeTheFormItem", ctx, parentComponent.uid);
+            dispatch("TheForm", parentComponent.eventMap.remove, ctx);
         })
 
 
