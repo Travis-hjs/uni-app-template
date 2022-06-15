@@ -58,7 +58,7 @@ export default defineComponent({
             type: Array as PropType<Array<TheFormRulesItem>>,
             default: () => []
         },
-        ...useFormProps(false)
+        ...useFormProps(true)
     },
     setup(props, context) {
         const instance = getCurrentInstance() as Vue3.Instance;
