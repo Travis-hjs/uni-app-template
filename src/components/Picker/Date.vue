@@ -1,5 +1,5 @@
 <template>
-    <view :class="['the-picker flex', { 'the_picker_show': show }]">
+    <view :class="['the-picker flex', { 'the-picker-show': show }]">
         <view class="f1" @click="clickCancel()"></view>
         <view class="picker-content">
             <!-- 操作栏 -->
@@ -11,13 +11,13 @@
 
             <picker-view class="picker-view" indicator-style="height: 36px;" @change="pickerChange" :value="selectIndexs">
                 <picker-view-column v-if="type === 'Y-M-D' || type === 'Y-M' || type === 'Y'">
-                    <view class="picker_item ellipsis_1" v-for="(item, index) in yearList" :key="index">{{item}}</view>
+                    <view class="picker-item ellipsis_1" v-for="(item, index) in yearList" :key="index">{{item}}</view>
                 </picker-view-column>
                 <picker-view-column v-if="type === 'Y-M-D' || type === 'Y-M'">
-                    <view class="picker_item ellipsis_1" v-for="(item, index) in monthList" :key="index">{{item}}</view>
+                    <view class="picker-item ellipsis_1" v-for="(item, index) in monthList" :key="index">{{item}}</view>
                 </picker-view-column>
                 <picker-view-column v-if="type === 'Y-M-D'">
-                    <view class="picker_item ellipsis_1" v-for="(item, index) in dayList" :key="index">{{item}}</view>
+                    <view class="picker-item ellipsis_1" v-for="(item, index) in dayList" :key="index">{{item}}</view>
                 </picker-view-column>
             </picker-view>
         </view>

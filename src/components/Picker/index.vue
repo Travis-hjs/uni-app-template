@@ -1,5 +1,5 @@
 <template>
-    <view :class="['the-picker flex', { 'the_picker_show': show }]">
+    <view :class="['the-picker flex', { 'the-picker-show': show }]">
         <view class="f1" @click="clickCancel()"></view>
         <view class="picker-content">
             <!-- 操作栏 -->
@@ -11,13 +11,13 @@
             <!-- 选择栏 -->
             <picker-view class="picker-view" indicator-style="height: 36px;" @change="pickerChange">
                 <picker-view-column v-show="list.length > 0">
-                    <view class="picker_item ellipsis_1" v-for="(item, index) in list" :key="index">{{ item.label }}</view>
+                    <view class="picker-item ellipsis_1" v-for="(item, index) in list" :key="index">{{ item.label }}</view>
                 </picker-view-column>
                 <picker-view-column v-show="secondList.length > 0">
-                    <view class="picker_item ellipsis_1" v-for="(item, index) in secondList" :key="index">{{ item.label }}</view>
+                    <view class="picker-item ellipsis_1" v-for="(item, index) in secondList" :key="index">{{ item.label }}</view>
                 </picker-view-column>
                 <picker-view-column v-show="thirdList.length > 0">
-                    <view class="picker_item ellipsis_1" v-for="(item, index) in thirdList" :key="index">{{ item.label }}</view>
+                    <view class="picker-item ellipsis_1" v-for="(item, index) in thirdList" :key="index">{{ item.label }}</view>
                 </picker-view-column>
             </picker-view>
         </view>

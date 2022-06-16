@@ -1,4 +1,4 @@
-$duration: 0.3s all;
+@import "../../uni.scss";
 
 .the-picker {
     width: 100%; 
@@ -32,7 +32,7 @@ $duration: 0.3s all;
             text-align: center;
         }
         .confirm {
-            color: #F37131;
+            color: $blue;
         }
     }
     .picker-content { 
@@ -42,14 +42,15 @@ $duration: 0.3s all;
         .picker-view { 
             width: 100%;
             height: 236px; 
-            .picker_item {
+            .picker-item {
                 text-align: center;
                 line-height: 36px;
+                font-size: 16px;
             }
         }
     }
 }
-.the_picker_show {
+.the-picker-show {
     opacity: 1;
     visibility: visible;
     .picker-content {
