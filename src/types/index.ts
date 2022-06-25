@@ -147,7 +147,7 @@ export interface TheFormItemCtx extends TheFormProps {
 }
 
 /** 选择器`item`数据 */
-export interface PickerSelectItem<T = any> {
+export interface PickerSelectItem<T = string | number> {
     /** 展示字段 */
     label: string
     /** 对应的值 */
