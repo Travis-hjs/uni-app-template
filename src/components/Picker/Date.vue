@@ -24,7 +24,7 @@
     </view>
 </template>
 <script lang="ts">
-import { defineComponent, ref, watch, nextTick, PropType } from "vue";
+import { defineComponent, ref, watch, nextTick, PropType, onMounted } from "vue";
 import { checkType, findIndex } from "@/utils";
 
 /** 当前时间 */
@@ -65,8 +65,8 @@ export default defineComponent({
             type: [String, Number],
             default: "",
         },
-        /** 双向绑定的值（索引） */
-        modelValue: {
+        /** 绑定的值（索引）,非双向绑定 */
+        value: {
             type: String,
             default: "",
         },
@@ -83,11 +83,7 @@ export default defineComponent({
         /** 结束日期（Y-M-D） */
         endDate: {
             type: String,
-            default: `${now.getFullYear()}-12-${new Date(
-                now.getFullYear(),
-                12,
-                0
-            ).getDate()}`,
+            default: `${now.getFullYear()}-12-${new Date(now.getFullYear(), 12, 0).getDate()}`,
         },
     },
     setup(props, context) {
@@ -103,8 +99,8 @@ export default defineComponent({
         /** 使用的索引值 */
         function getUseIndexs() {
             let indexs = [yearList.value.length - 1, 0, 0];
-            if (props.modelValue && props.modelValue.split("-").length) {
-                const list = props.modelValue.split("-");
+            if (props.value && props.value.split("-").length) {
+                const list = props.value.split("-");
                 const index = findIndex(yearList.value, item => item === Number(list[0]));
                 indexs[0] = index > -1 ? index : 0;
                 if (list[1]) {
@@ -167,6 +163,11 @@ export default defineComponent({
         }
 
         function clickCancel() {
+            // 还原上一次选中的状态
+            if (props.value) {
+                selectIndexs.value = getUseIndexs();
+                update();
+            }
             context.emit("cancel");
         }
 
@@ -184,22 +185,15 @@ export default defineComponent({
         // 先更新一下日期数据，之后再设置选中值最后再更新一次
         update();
 
-        // #ifndef MP
-        selectIndexs.value = getUseIndexs();
-        update();
-        // #endif
-
-        // #ifdef MP
-        // 微信小程序需要在下一帧设置索引值
-        setTimeout(() => {
+        onMounted(function() {
             selectIndexs.value = getUseIndexs();
             update();
-        }, 1000 / 60);
-        // #endif
+        })
 
-        watch(() => props.modelValue, val => {
+        watch(() => props.value, val => {
             if (val) {
                 selectIndexs.value = getUseIndexs();
+                update();
             }
         });
 
