@@ -116,7 +116,7 @@ export default defineComponent({
 
             context.emit("confirm", {
                 id: props.pickerId,
-                value: result.filter((item) => item.value !== ""),
+                value: result.filter(item => item.value !== ""),
             });
         }
 
@@ -124,10 +124,7 @@ export default defineComponent({
             nextTick(function() {
                 update();
             })
-        },
-        {
-            immediate: true,
-        });
+        }, { immediate: true });
 
         return {
             secondList,
