@@ -1,12 +1,12 @@
 <template>
     <view :class="['the-picker fwrap', { 'the-picker-show': show }]">
-        <view class="f1" @click="clickCancel()"></view>
+        <view class="f1" @click="onCancel()"></view>
         <view class="picker-content">
             <!-- 操作栏 -->
             <view class="picker-option fvertical">
-                <view class="btn" @click="clickCancel()">取消</view>
+                <view class="btn" @click="onCancel()">取消</view>
                 <view class="f1 picker-title">{{ title }}</view>
-                <view class="btn confirm" @click="clickConfirm()">确定</view>
+                <view class="btn confirm" @click="onConfirm()">确定</view>
             </view>
 
             <picker-view class="picker-view" indicator-style="height: 36px;" @change="pickerChange" :value="selectIndexs">
@@ -95,6 +95,8 @@ export default defineComponent({
         const dayList = ref<Array<string>>([]);
         /** 选中索引 */
         const selectIndexs = ref<Array<number>>([]);
+        /** 上一次选中的索引，做优化判断用 */
+        let beforeSelectIndexs: Array<number>;
 
         /** 使用的索引值 */
         function getUseIndexs() {
@@ -162,16 +164,15 @@ export default defineComponent({
             update();
         }
 
-        function clickCancel() {
+        function onCancel() {
             // 还原上一次选中的状态
-            if (props.value) {
-                selectIndexs.value = getUseIndexs();
-                update();
+            if (props.value && beforeSelectIndexs.toString() !== selectIndexs.value.toString()) {
+                setData();
             }
             context.emit("cancel");
         }
 
-        function clickConfirm() {
+        function onConfirm() {
             let result = yearList.value[selectIndexs.value[0]].toString();
             if (props.type === "Y-M-D" || props.type === "Y-M") {
                 result = `${result}-${monthList.value[selectIndexs.value[1]]}`;
@@ -182,18 +183,24 @@ export default defineComponent({
             context.emit("confirm", result);
         }
 
-        // 先更新一下日期数据，之后再设置选中值最后再更新一次
+        /** 设置数据并更新 */
+        function setData() {
+            selectIndexs.value = getUseIndexs();
+            beforeSelectIndexs = selectIndexs.value;
+            update();
+        }
+
+        // 先输出日期选择数据
         update();
 
         onMounted(function() {
-            selectIndexs.value = getUseIndexs();
-            update();
-        })
+            // 再更新选中状态
+            setData();
+        });
 
-        watch(() => props.value, val => {
-            if (val) {
-                selectIndexs.value = getUseIndexs();
-                update();
+        watch(() => props.value, function(now, before) {
+            if (now && now != before) {
+                setData();
             }
         });
 
@@ -203,8 +210,8 @@ export default defineComponent({
             dayList,
             selectIndexs,
             pickerChange,
-            clickCancel,
-            clickConfirm,
+            onCancel,
+            onConfirm,
         };
     },
 });
