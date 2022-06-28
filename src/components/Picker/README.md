@@ -16,7 +16,7 @@
 
 ```js
 /** 选择器`item`数据 */
-interface PickerSelectItem<T = any> {
+interface PickerSelectItem<T = string | number> {
     /** 展示字段 */
     label: string
     /** 对应的值 */
