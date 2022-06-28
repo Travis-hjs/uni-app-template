@@ -1,12 +1,12 @@
 <template>
     <view :class="['the-picker flex', { 'the-picker-show': show }]">
-        <view class="f1" @click="clickCancel()"></view>
+        <view class="f1" @click="onCancel()"></view>
         <view class="picker-content">
             <!-- 操作栏 -->
             <view class="picker-option fvertical">
-                <view class="btn" @click="clickCancel()">取消</view>
+                <view class="btn" @click="onCancel()">取消</view>
                 <view class="f1 picker-title">{{ title }}</view>
-                <view class="btn confirm" @click="clickConfirm()">确定</view>
+                <view class="btn confirm" @click="onConfirm()">确定</view>
             </view>
 
             <picker-view class="picker-view" indicator-style="height: 36px;" @change="pickerChange" :value="selectIndexs">
@@ -113,6 +113,8 @@ export default class PickerDate extends Vue {
     dayList: Array<string> = [];
     /** 选中索引 */
     selectIndexs: Array<number> = [0, 0, 0];
+    /** 上一次选中的索引，做优化判断用 */
+    beforeSelectIndexs!: Array<number>;
 
     /** 使用的索引值 */
     getUseIndexs() {
@@ -180,16 +182,15 @@ export default class PickerDate extends Vue {
         this.update();
     }
 
-    clickCancel() {
+    onCancel() {
         // 还原上一次选中的状态
-        if (this.value) {
-            this.selectIndexs = this.getUseIndexs();
-            this.update();
+        if (this.value && this.beforeSelectIndexs.toString() !== this.selectIndexs.toString()) {
+            this.setData();
         }
         this.$emit("cancel");
     }
 
-    clickConfirm() {
+    onConfirm() {
         let result = this.yearList[this.selectIndexs[0]].toString();
         if (this.type === "Y-M-D" || this.type === "Y-M") {
             result = `${result}-${this.monthList[this.selectIndexs[1]]}`;
@@ -201,20 +202,27 @@ export default class PickerDate extends Vue {
     }
 
     @Watch("value")
-    onValue(val: string) {
-        if (val) {
-            this.selectIndexs = this.getUseIndexs();
-            this.update();
+    onValue(now: string, before: string) {
+        if (now && now != before) {
+            this.setData();
         }
     }
 
+    /** 设置数据并更新 */
+    setData() {
+        this.selectIndexs = this.getUseIndexs();
+        this.beforeSelectIndexs = this.selectIndexs;
+        this.update();
+    }
+
     created() {
+        // 先输出日期选择数据
         this.update();
     }
 
     mounted() {
-        this.selectIndexs = this.getUseIndexs();
-        this.update();
+        // 再更新选中状态
+        this.setData();
     }
 }
 </script>
