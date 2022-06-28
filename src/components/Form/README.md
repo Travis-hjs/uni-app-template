@@ -73,7 +73,7 @@ import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import UploadImage from "@/components/Upload/Image.vue";
 import { showToast } from "@/utils/control";
-import { TheFormCtx, TheFormRules, UploadImageRes } from "@/types";
+import { TheFormRules, UploadImageRes } from "@/types";
 
 export default defineComponent({
     components: {
@@ -100,7 +100,7 @@ export default defineComponent({
             ]
         }
 
-        const theForm = ref<TheFormCtx>();
+        const theForm = ref<InstanceType<typeof TheForm>>();
 
         function onUpload(res: UploadImageRes) {
             formData.avatar = res.src;

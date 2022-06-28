@@ -71,7 +71,7 @@ import PickerDate from "@/components/Picker/Date.vue";
 import ThePicker from "@/components/Picker/index.vue";
 import { showToast } from "@/utils/control";
 import { useCityData } from "@/hooks";
-import { PickerSelectItem, TheFormRules, LabelPosition, UploadImageRes, TheFormCtx } from "@/types";
+import { PickerSelectItem, TheFormRules, LabelPosition, UploadImageRes } from "@/types";
 import { modifyData } from "@/utils";
 
 interface FormDataType {
@@ -226,7 +226,7 @@ export default defineComponent({
             formData.avatar = res.src;
         }
 
-        const theForm = ref<TheFormCtx>();
+        const theForm = ref<InstanceType<typeof TheForm>>();
 
         function onSubmit() {
             theForm.value!.validate((valid, reuls) => {

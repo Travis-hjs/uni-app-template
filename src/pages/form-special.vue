@@ -19,7 +19,7 @@ import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import TheButton from "@/components/TheButton.vue";
 import { showToast } from "@/utils/control";
-import { TheFormCtx, TheFormItemCtx, TheFormRules } from "@/types";
+import { TheFormRules } from "@/types";
 
 export default defineComponent({
     components: {
@@ -45,9 +45,9 @@ export default defineComponent({
         /** 是否需求监听昵称 */
         let checkNickname = false;
 
-        const theForm = ref<TheFormCtx>();
+        const theForm = ref<InstanceType<typeof TheForm>>();
 
-        const itemNickname = ref<TheFormItemCtx>();
+        const itemNickname = ref<InstanceType<typeof TheFormItem>>();
 
         function onSubmit() {
             theForm.value!.validate((valid, reuls) => {

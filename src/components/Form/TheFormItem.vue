@@ -15,8 +15,9 @@
     </view>
 </template>
 <script lang="ts">
+import TheForm from "./TheForm.vue";
 import { useFormProps } from "./hooks";
-import { TheFormCtx, TheFormRulesItem, Vue3 } from "@/types";
+import { TheFormRulesItem, Vue3 } from "@/types";
 import { computed, defineComponent, getCurrentInstance, inject, onMounted, onUnmounted, PropType, ref } from "vue";
 import { checkType, getDeepLevelValue } from "@/utils";
 
@@ -68,7 +69,7 @@ export default defineComponent({
          * 父组件实例对象
          * - 注入形式
          */
-        const parentComponent = inject("theFormComponent") as TheFormCtx;
+        const parentComponent = inject("theFormComponent") as InstanceType<typeof TheForm>;
         
         /** 是否验证 */
         const isRequired = computed(function() {

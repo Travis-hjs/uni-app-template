@@ -39,7 +39,7 @@ import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import TheButton from "@/components/TheButton.vue";
 import { showToast } from "@/utils/control";
-import { TheFormCtx, TheFormRules, TheFormRulesItem } from "@/types";
+import { TheFormRules, TheFormRulesItem } from "@/types";
 import { modifyData } from "@/utils";
 
 interface FormDataType {
@@ -85,7 +85,7 @@ export default defineComponent({
             return rules;
         }
 
-        const theForm = ref<TheFormCtx>();
+        const theForm = ref<InstanceType<typeof TheForm>>();
 
         function onSubmit() {
             theForm.value!.validate((valid, reuls) => {
