@@ -16,7 +16,7 @@
 
 ```ts
 /** 选择器`item`数据 */
-interface PickerSelectItem<T = any> {
+interface PickerSelectItem<T = string | number> {
     /** 展示字段 */
     label: string
     /** 对应的值 */
@@ -44,8 +44,8 @@ interface PickerSelectItem<T = any> {
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import ThePicker from '@/components/Picker/index.vue';
-import { PickerSelectItem } from '@/types';
+import ThePicker from "@/components/Picker/index.vue";
+import { PickerSelectItem } from "@/types";
 
 export default defineComponent({
     components: {
@@ -53,20 +53,20 @@ export default defineComponent({
     },
     setup() {
         const options = [
-            { label: '选项一', value: 1 },
-            { label: '选项二', value: 2 },
+            { label: "选项一", value: 1 },
+            { label: "选项二", value: 2 },
             {
-                label: '两级选项', value: 3,
+                label: "两级选项", value: 3,
                 children: [
-                    { label: '二级-1', value: 1 },
-                    { label: '二级-2', value: 2 },
+                    { label: "二级-1", value: 1 },
+                    { label: "二级-2", value: 2 },
                 ]
             },
         ]
 
         const showPicker = ref(false);
         /** 展示的值 */
-        const selectLabel = ref('');
+        const selectLabel = ref("");
 
         function openPicker() {
             showPicker.value = true;
@@ -78,8 +78,8 @@ export default defineComponent({
 
         function onPicker(res: { id: string, value: Array<PickerSelectItem<number>> }) {
             const values = res.value.map(item => item.value);
-            console.log('values >>', values)
-            selectLabel.value = res.value.map(item => item.label).join('-');
+            console.log("values >>", values)
+            selectLabel.value = res.value.map(item => item.label).join("-");
             closePicker();
         }
 
