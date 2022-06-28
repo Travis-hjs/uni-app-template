@@ -25,7 +25,7 @@ interface PickerSelectItem<T = string | number> {
      * 下级数据
      * @description 最多三层，选择器栏目数根据当前下级动态显示
      */
-    children?: Array<PickerSelectItem>
+    children?: Array<PickerSelectItem<T>>
     /** 其他携带的值 */
     [key: string]: any
 }
