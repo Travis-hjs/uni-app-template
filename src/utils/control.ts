@@ -140,7 +140,13 @@ export function copyText(value: string, success?: () => void) {
 }
 
 interface ScrollviewCenterOptions<T = any> {
-    /** 当前实例 */
+    /**
+     * 当前实例
+     * ```js
+     * import { getCurrentInstance } from "vue";
+     * getCurrentInstance();
+     * ```
+     */
     ctx: T,
     /** 要滚动的目标节点`id` */
     id: string

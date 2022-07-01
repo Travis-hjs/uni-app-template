@@ -24,11 +24,10 @@ import { defineComponent, getCurrentInstance, reactive } from "vue";
 import { onReady } from "@dcloudio/uni-app";
 import { randomText } from "@/utils";
 import { onScrollviewCenter } from "@/utils/control";
-import { Vue3 } from "@/types";
 
 export default defineComponent({
     setup() {
-        const instance = getCurrentInstance() as Vue3.Instance;
+        const instance = getCurrentInstance();
 
         const list = new Array(12).fill(0).map(function (item, index) {
             return {
@@ -48,7 +47,7 @@ export default defineComponent({
         function onTab1(item: { value: number }, e: Event) {
             state.activeValue1 = item.value;
             onScrollviewCenter({
-                ctx: instance.ctx,
+                ctx: instance,
                 id: "one-" + item.value,
                 event: e,
                 callback(left) {
@@ -63,7 +62,7 @@ export default defineComponent({
         function onTab2(item: { value: number }, e: Event) {
             state.activeValue2 = item.value;
             onScrollviewCenter({
-                ctx: instance.ctx,
+                ctx: instance,
                 id: "two-" + item.value,
                 event: e,
                 wrapWidth: list2Width,
@@ -74,7 +73,7 @@ export default defineComponent({
         }
 
         onReady(function () {
-            const node = uni.createSelectorQuery().in(instance.ctx).select("#list-2");
+            const node = uni.createSelectorQuery().in(instance).select("#list-2");
             node.boundingClientRect(function (info) {
                 list2Width = info.width!;
             }).exec();
@@ -82,7 +81,7 @@ export default defineComponent({
             // 页面初始化选中某个选项
             state.activeValue1 = 5;
             onScrollviewCenter({
-                ctx: instance.ctx,
+                ctx: instance,
                 id: "one-" + 5,
                 scrollValue: state.scrollLeft1,
                 callback(left) {

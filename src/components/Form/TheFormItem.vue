@@ -17,31 +17,9 @@
 <script lang="ts">
 import TheForm from "./TheForm.vue";
 import { useFormProps } from "./hooks";
-import { TheFormRulesItem, Vue3 } from "@/types";
+import { TheFormRulesItem } from "@/types";
 import { computed, defineComponent, getCurrentInstance, inject, onMounted, onUnmounted, PropType, ref } from "vue";
 import { checkType, getDeepLevelValue } from "@/utils";
-
-/**
- * 指定派发组件监听的事件
- * - 通过递归遍历来找到对应的父组件并且将当前组件属性方法和参数带到父组件方便调用
- * @param componentName 指定的组件名
- * @param eventName 事件名
- * @param ctx 当前实例
- */
-function dispatch(componentName: string, eventName: string, ctx: Vue3.Ctx) {
-    let parent = ctx.$parent || ctx.$root;
-    let name = parent.$options.name;
-
-    while (parent && (!name || name !== componentName)) {
-        parent = parent.$parent!;
-        if (parent) {
-            name = parent.$options.name;
-        }
-    }
-    if (name === componentName) {
-        uni.$emit(eventName, ctx);
-    }
-}
 
 export default defineComponent({
     name: "TheFormItem",
@@ -61,14 +39,10 @@ export default defineComponent({
         },
         ...useFormProps(true)
     },
-    setup(props, context) {
-        const instance = getCurrentInstance() as Vue3.Instance;
-        /** 当前实例 */
-        let ctx: Vue3.Ctx;
-        /**
-         * 父组件实例对象
-         * - 注入形式
-         */
+    setup(props) {
+        const instance = getCurrentInstance();
+
+        /** 父组件注入的对象 */
         const parentComponent = inject("theFormComponent") as InstanceType<typeof TheForm>;
         
         /** 是否验证 */
@@ -186,17 +160,8 @@ export default defineComponent({
          * @public 暴露给外部调用的方法
          */
         function scrollIntoView() {
-            // #ifdef H5
-            const top = ctx.$el.offsetTop;
-            uni.pageScrollTo({
-                scrollTop: top - 50, // 这里 50 是顶部导航高度
-                duration: 100
-            });
-            // #endif
-
-            // #ifndef H5
             let scrollTop = 0;
-            uni.createSelectorQuery().in(ctx).selectViewport().scrollOffset(res => {
+            uni.createSelectorQuery().in(instance).selectViewport().scrollOffset(res => {
                 // console.log(res);
                 scrollTop = res.scrollTop!;
             }).select(".the-form-item").boundingClientRect(res => {
@@ -207,7 +172,6 @@ export default defineComponent({
                     duration: 100
                 });
             }).exec();
-            // #endif
         }
 
         /**
@@ -223,19 +187,23 @@ export default defineComponent({
             parentComponent.validateScroll && scrollIntoView();
         }
 
+        /** 暴露的属性对象 */
+        const exposeInfo = {
+            ...props,
+            resetField,
+            validateField,
+            scrollIntoView,
+            showValidateField
+        } 
+
         onMounted(function() {
-            // console.clear();
-            // console.log("context >>", context);
-            // console.log("parentComponent >>", parentComponent);
-            
-            ctx = instance.ctx;
             if (props.prop) {
-                dispatch("TheForm", parentComponent.eventMap.add, ctx);
+                uni.$emit(parentComponent.eventMap.add, exposeInfo);
             }
         })
 
         onUnmounted(function() {
-            dispatch("TheForm", parentComponent.eventMap.remove, ctx);
+            uni.$emit(parentComponent.eventMap.remove, exposeInfo);
         })
 
 

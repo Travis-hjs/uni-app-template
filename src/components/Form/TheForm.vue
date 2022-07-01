@@ -5,12 +5,15 @@
 </template>
 <script lang="ts">
 import TheFormItem from "./TheFormItem.vue";
-import { defineComponent, PropType, provide, getCurrentInstance, watch, onUnmounted } from "vue";
-import { TheFormRules, TheFormValidateCallback, Vue3 } from "@/types";
+import { defineComponent, PropType, provide, watch, onUnmounted } from "vue";
+import { TheFormRules, TheFormValidateCallback } from "@/types";
 import { useFormProps } from "./hooks";
 import { getDeepLevelValue } from "@/utils";
 
 type ItemCtx = InstanceType<typeof TheFormItem>;
+
+/** 一直累加的`formId`，需要时可以暴露给外部使用 */
+let formId = 1;
 
 export default defineComponent({
     name: "TheForm",
@@ -33,7 +36,8 @@ export default defineComponent({
         ...useFormProps()
     },
     setup(props, context) {
-        const instance = getCurrentInstance() as Vue3.Instance;
+        const currentId = formId;
+        formId++;
 
         /** `model`原始数据，重置时用到 */
         let beforeModel: BaseObj;
@@ -66,14 +70,15 @@ export default defineComponent({
 
         setBeforeData(props.model, props.rules || {});
         
+        /** 传给子组件的事件表 */
         const eventMap = {
-            add: `add-the-form-item-${instance.uid}`,
-            remove: `remove-the-form-item-${instance.uid}`
+            add: `add-the-form-item-${currentId}`,
+            remove: `remove-the-form-item-${currentId}`
         }
 
         // 监听`<TheFormItem>`创建传进来的自身组件
         uni.$on(eventMap.add, function(item: ItemCtx) {
-            // console.log("addField >>", item, instance.uid);
+            // console.log("addField >>", item, currentId);
             items.push(item);
         })
 
@@ -88,7 +93,15 @@ export default defineComponent({
             uni.$off([eventMap.add, eventMap.remove]);
         })
 
-        provide("theFormComponent", instance.ctx);
+        provide("theFormComponent", {
+            eventMap,
+            rules: props.rules,
+            model: props.model,
+            border: props.border,
+            labelWidth: props.labelWidth,
+            labelPosition: props.labelPosition,
+            validateScroll: props.validateScroll,
+        })
 
         /** 执行验证之后，储存的对象 */
         let validateInfo: BaseObj<boolean> = {};
