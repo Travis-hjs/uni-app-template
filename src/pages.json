@@ -50,6 +50,12 @@
             "style": {
 				"navigationBarTitleText": "cavans-生成海报图"
 			}
+        },
+        {
+            "path": "pages/scroll-tab",
+            "style": {
+				"navigationBarTitleText": "滚动tab居中示例"
+			}
         }
     ],
     "globalStyle": {

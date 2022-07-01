@@ -10,7 +10,7 @@ input::after, input::before, button::after, button::before { border: none; @incl
 // h5默认是100vh,即使页面没有内容也会滚动，这里取消这个设定
 // 注意：scss 条件编译必须以 css 注释为标准才能条件编译
 /* #ifdef H5 */
-uni-page-body{ min-height: auto !important; }
+uni-page-body { min-height: auto !important; }
 /* #endif */
 
 /* flex布局 */
