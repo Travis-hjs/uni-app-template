@@ -156,7 +156,6 @@ interface ScrollviewCenterOptions<T = any> {
 
 /**
  * 监听`<scrollview>`组件指定元素滚动到视图中心的偏移值
- * - [使用示例](http://139.159.133.199/components/uni-app-template/tree/master/src/components/SwipeTab)
  * @param option 配置参数
  */
 export function onScrollviewCenter(option: ScrollviewCenterOptions) {
