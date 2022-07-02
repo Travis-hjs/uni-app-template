@@ -37,7 +37,8 @@ export default class Home extends Vue {
         { label: "form-表单组件（动态表单）", path: "/pages/form-dynamic" },
         { label: "form-表单组件（特殊/边缘处理）", path: "/pages/form-special" },
         { label: "加载更多列表", path: "/pages/list" },
-        { label: "cavans-生成海报", path: "/pages/cavans-creater" }
+        { label: "cavans-生成海报", path: "/pages/cavans-creater" },
+        { label: "滚动tab居中示例", path: "/pages/scroll-tab" },
     ]
 
     count = 0
