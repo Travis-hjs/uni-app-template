@@ -41,14 +41,15 @@ export default defineComponent({
     },
     setup(props) {
         const instance = getCurrentInstance();
-
         /** 父组件注入的对象 */
-        const parentComponent = inject("theFormComponent") as InstanceType<typeof TheForm>;
-        
+        const parentProvide = inject("theFormComponent") as InstanceType<typeof TheForm>;
+        /** 父组件`props` */
+        const parentProps = parentProvide.$props;
+
         /** 是否验证 */
         const isRequired = computed(function() {
             let result = false;
-            const rules = parentComponent.rules;
+            const rules = parentProps.rules;
             if (rules && rules[props.prop] && rules[props.prop].length) {
                 result = rules[props.prop].some(item => item.required);
             }
@@ -61,17 +62,17 @@ export default defineComponent({
 
         /** 视图中使用的定位属性值 */
         const usePosition = computed(function() {
-            return props.labelPosition || parentComponent.labelPosition;
+            return props.labelPosition || parentProps.labelPosition;
         })
 
         /** 视图中使用的`label`宽度值 */
         const useLabelWidth = computed(function() {
-            return props.labelWidth || parentComponent.labelWidth;
+            return props.labelWidth || parentProps.labelWidth;
         })
 
         /** 视图中使用的`border`值 */
         const useBorder = computed(function() {
-            return checkType(props.border) === "boolean" ? props.border : parentComponent.border;
+            return checkType(props.border) === "boolean" ? props.border : parentProps.border;
         })
 
         /** 
@@ -96,8 +97,8 @@ export default defineComponent({
         function validateField(callback: (prop: string, rules: Array<TheFormRulesItem>) => void) {
             let info;
             const currentProp = props.prop;
-            const parentRules = parentComponent.rules;
-            const model = parentComponent.model;
+            const parentRules = parentProps.rules;
+            const model = parentProps.model;
             const value = getDeepLevelValue(model, currentProp);
             const tip = "校验不通过";
             if (isRequired.value && currentProp) {
@@ -184,11 +185,11 @@ export default defineComponent({
                 validateText.value = message;
             }
             showValidate.value = true;
-            parentComponent.validateScroll && scrollIntoView();
+            parentProps.validateScroll && scrollIntoView();
         }
 
-        /** 暴露的属性对象 */
-        const exposeInfo = {
+        /** 暴露自身属性给父组件 */
+        const provideSelf = {
             ...props,
             resetField,
             validateField,
@@ -198,12 +199,12 @@ export default defineComponent({
 
         onMounted(function() {
             if (props.prop) {
-                uni.$emit(parentComponent.eventMap.add, exposeInfo);
+                uni.$emit(parentProvide.eventMap.add, provideSelf);
             }
         })
 
         onUnmounted(function() {
-            uni.$emit(parentComponent.eventMap.remove, exposeInfo);
+            uni.$emit(parentProvide.eventMap.remove, provideSelf);
         })
 
 

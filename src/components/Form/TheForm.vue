@@ -95,12 +95,11 @@ export default defineComponent({
 
         provide("theFormComponent", {
             eventMap,
-            rules: props.rules,
-            model: props.model,
-            border: props.border,
-            labelWidth: props.labelWidth,
-            labelPosition: props.labelPosition,
-            validateScroll: props.validateScroll,
+            // TODO: 这里使用 $props 作为注入的 key 原因是因为不想写接口声明，
+            // InstanceType<typeof TheForm> 默认就可以动态识别 $props 中的动态类型
+            // 节省了定义类型的代码操作，TheFormItem 那边传过来没有用 $props 作为 key
+            // 是因为用到的数据都是一次性只读，非响应式，所以不需要用 $props 作为 key
+            $props: props
         })
 
         /** 执行验证之后，储存的对象 */
