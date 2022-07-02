@@ -195,7 +195,7 @@ export default defineComponent({
             validateField,
             scrollIntoView,
             showValidateField
-        } 
+        }
 
         onMounted(function() {
             if (props.prop) {
@@ -206,7 +206,6 @@ export default defineComponent({
         onUnmounted(function() {
             uni.$emit(parentProvide.eventMap.remove, provideSelf);
         })
-
 
         return {
             isRequired,

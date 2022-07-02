@@ -1,5 +1,5 @@
 <template>
-    <view class="swipe-tab">
+    <view class="scroll-tab">
 
         <scroll-view scroll-x="true" scroll-with-animation :scroll-left="state.scrollLeft1" class="list-1 mgb_50">
             <view class="tab-box flex">
@@ -100,7 +100,7 @@ export default defineComponent({
 })
 </script>
 <style lang="scss">
-.swipe-tab {
+.scroll-tab {
     width: 100%;
     .tab-box {
         .tab-item {
