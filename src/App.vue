@@ -23,6 +23,6 @@ export default Vue.extend({
 @import "./styles/loading.scss";
 // 去除滚动条样式
 ::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 </style>
