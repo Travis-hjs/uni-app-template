@@ -1,67 +1,67 @@
 <template>
-    <view class="personal">
-        <button class="button-pink mgb_40" @click="openDetail()">跳转详情页并传参</button>
-        <view class="mgb_40" style="font-size: 30rpx">userInfo: {{ JSON.stringify(userInfo, null, 4) }}</view>
-        <button class="button" @click="clearUserInfo()">清空用户信息</button>
-        <view style="padding: 10px 0">
-            <UploadImage :uploadId="uploadInfo.index" :src="uploadInfo.path" @change="setContentImage" />
-        </view>
-        <view class="test-include">测试全局 `@include`</view>
-        <button class="button-dark" @click="openList()">跳转列表页</button>
-    </view>    
+  <view class="personal">
+    <button class="button-pink mgb_40" @click="openDetail()">跳转详情页并传参</button>
+    <view class="mgb_40" style="font-size: 30rpx">userInfo: {{ JSON.stringify(userInfo, null, 4) }}</view>
+    <button class="button" @click="clearUserInfo()">清空用户信息</button>
+    <view style="padding: 10px 0">
+      <UploadImage :uploadId="uploadInfo.index" :src="uploadInfo.path" @change="setContentImage" />
+    </view>
+    <view class="test-include">测试全局 `@include`</view>
+    <button class="button-dark" @click="openList()">跳转列表页</button>
+  </view>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { ranInt } from "@/utils";
-import store from '@/store';
+import store from "@/store";
 import UploadImage from "@/components/Upload/Image.vue";
 import { UploadImageRes } from "@/types";
 
 @Component({
-    components: {
-        UploadImage
-    }
+  components: {
+    UploadImage,
+  },
 })
 export default class Personal extends Vue {
-    
-    readonly userInfo = store.user.info;
+  readonly userInfo = store.user.info;
 
-    uploadInfo = {
-        index: 13,
-        path: "",
-    }
+  uploadInfo = {
+    index: 13,
+    path: "",
+  };
 
-    openDetail() {
-        uni.navigateTo({
-            url: "/pages/details?id=" + ranInt(12, 30)
-        })
-    }
+  openDetail() {
+    uni.navigateTo({
+      url: "/pages/details?id=" + ranInt(12, 30),
+    });
+  }
 
-    openList() {
-        uni.navigateTo({
-            url: "/pages/list"
-        })
-    }
+  openList() {
+    uni.navigateTo({
+      url: "/pages/list",
+    });
+  }
 
-    clearUserInfo() {
-        store.user.reset();
-    }
+  clearUserInfo() {
+    store.user.reset();
+  }
 
-    setContentImage(res: UploadImageRes) {
-        this.uploadInfo.path = res.src;
-    }
+  setContentImage(res: UploadImageRes) {
+    this.uploadInfo.path = res.src;
+  }
 }
-
 </script>
 
 <style lang="scss">
-.personal { 
-    padding: 30rpx 30rpx 40rpx; 
-    .test-include { 
-        @include button();
-        margin-bottom: 16px;
-    }
-    .value { color: $pink; }
+.personal {
+  padding: 30rpx 30rpx 40rpx;
+  .test-include {
+    @include button();
+    margin-bottom: 16px;
+  }
+  .value {
+    color: $pink;
+  }
 }
 </style>

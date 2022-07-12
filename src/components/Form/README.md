@@ -48,23 +48,23 @@
 
 ```html
 <template>
-    <view>
-        <TheForm :model="formData" :rules="formRules" labelWidth="160rpx" labelPosition="left" ref="the-form">
-            <TheFormItem prop="userName" label="用户名">
-                <input class="the-input" type="text" v-model="formData.userName" :placeholder="formRules.userName[0].message">
-            </TheFormItem>
-            <TheFormItem prop="phone" label="用户手机号">
-                <input class="the-input" type="number" v-model="formData.phone" :placeholder="formRules.phone[0].message">
-            </TheFormItem>
-            <TheFormItem prop="avatar" label="用户头像" :border="false">
-                <UploadImage :src="formData.avatar" @change="onUpload" />
-            </TheFormItem>
-        </TheForm>
-        <button @click="onSubmit()">提交表单</button>
-        <button @click="onReset()">重置表单</button>
-        <button @click="validatePhone()">验证手机号码</button>
-        <button @click="resetPhone()">重置验证手机号码</button>
-    </view>
+  <view>
+    <TheForm :model="formData" :rules="formRules" labelWidth="160rpx" labelPosition="left" ref="the-form">
+      <TheFormItem prop="userName" label="用户名">
+        <input class="the-input" type="text" v-model="formData.userName" :placeholder="formRules.userName[0].message">
+      </TheFormItem>
+      <TheFormItem prop="phone" label="用户手机号">
+        <input class="the-input" type="number" v-model="formData.phone" :placeholder="formRules.phone[0].message">
+      </TheFormItem>
+      <TheFormItem prop="avatar" label="用户头像" :border="false">
+        <UploadImage :src="formData.avatar" @change="onUpload" />
+      </TheFormItem>
+    </TheForm>
+    <button @click="onSubmit()">提交表单</button>
+    <button @click="onReset()">重置表单</button>
+    <button @click="validatePhone()">验证手机号码</button>
+    <button @click="resetPhone()">重置验证手机号码</button>
+  </view>
 </template>
 
 <script lang="ts">
@@ -75,77 +75,77 @@ import UploadImage from "@/components/Upload/Image.vue";
 import { showToast } from "@/utils/control";
 
 interface FormDataType {
-    userName: string,
-    phone: "" | number,
-    avatar: string
+  userName: string,
+  phone: "" | number,
+  avatar: string
 }
 
 @Component({
-    components: {
-        TheForm,
-        TheFormItem,
-        UploadImage
-    }
+  components: {
+    TheForm,
+    TheFormItem,
+    UploadImage
+  }
 })
 export default class Demo extends Vue {
 
-    hasBorder = true;
+  hasBorder = true;
 
-    formData: FormDataType = {
-        userName: "",
-        phone: "",
-        avatar: ""
-    }
+  formData: FormDataType = {
+    userName: "",
+    phone: "",
+    avatar: ""
+  }
 
-    formRules: TheForm["rules"] = {
-        userName: [
-            { required: true, message: "请输入用户名" }
-        ],
-        phone: [
-            { required: true, message: "请输入用户手机号" },
-            { reg: /^1[345678]\d{9}$/.toString(), message: "手机号不正确" }
-        ]
-    }
+  formRules: TheForm["rules"] = {
+    userName: [
+      { required: true, message: "请输入用户名" }
+    ],
+    phone: [
+      { required: true, message: "请输入用户手机号" },
+      { reg: /^1[345678]\d{9}$/.toString(), message: "手机号不正确" }
+    ]
+  }
 
-    onUpload(res: { id: string, src: string }) {
-        this.formData.avatar = res.src;
-    }
+  onUpload(res: { id: string, src: string }) {
+    this.formData.avatar = res.src;
+  }
 
-    $refs!: {
-        "the-form": TheForm
-    }
+  $refs!: {
+    "the-form": TheForm
+  }
 
-    onSubmit() {
-        this.$refs["the-form"].validate((valid, reuls) => {  
-            if (valid) {
-                console.log("表单数据 >>", this.formData);
-            } else {
-                const keys = Object.keys(reuls);
-                const firstProp = keys[0];
-                showToast(`${reuls[firstProp][0].message}`);
-            }
-        })
-    }
+  onSubmit() {
+    this.$refs["the-form"].validate((valid, reuls) => {  
+      if (valid) {
+        console.log("表单数据 >>", this.formData);
+      } else {
+        const keys = Object.keys(reuls);
+        const firstProp = keys[0];
+        showToast(`${reuls[firstProp][0].message}`);
+      }
+    })
+  }
 
-    onReset() {
-        this.$refs["the-form"].resetFields();
-    }
+  onReset() {
+    this.$refs["the-form"].resetFields();
+  }
 
-    /** 验证手机号码 */
-    validatePhone() {
-        this.$refs["the-form"].validateField("phone", (valid, rules) => {
-            if (valid) {
-                showToast("手机验证通过");
-            } else {
-                showToast(rules["phone"][0].message as string);
-            }
-        })
-    }
+  /** 验证手机号码 */
+  validatePhone() {
+    this.$refs["the-form"].validateField("phone", (valid, rules) => {
+      if (valid) {
+        showToast("手机验证通过");
+      } else {
+        showToast(rules["phone"][0].message as string);
+      }
+    })
+  }
 
-    /** 移除验证手机号 */
-    resetPhone() {
-        this.$refs["the-form"].resetField("phone");
-    }
+  /** 移除验证手机号 */
+  resetPhone() {
+    this.$refs["the-form"].resetField("phone");
+  }
     
 }
 </script>

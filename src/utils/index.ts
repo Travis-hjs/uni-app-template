@@ -3,9 +3,9 @@
  * @param target 检测的目标
  */
 export function checkType(target: any) {
-    const value: string = Object.prototype.toString.call(target);
-    const result = (value.match(/\[object (\S*)\]/) as RegExpMatchArray)[1];
-    return result.toLocaleLowerCase() as JavaScriptTypes;
+  const value: string = Object.prototype.toString.call(target);
+  const result = (value.match(/\[object (\S*)\]/) as RegExpMatchArray)[1];
+  return result.toLocaleLowerCase() as JavaScriptTypes;
 }
 
 /**
@@ -14,17 +14,17 @@ export function checkType(target: any) {
  * @param value 修改的内容
  */
 export function modifyData<T>(target: T, value: T) {
-    for (const key in value) {
-        if (Object.prototype.hasOwnProperty.call(target, key)) {
-            // target[key] = value[key];
-            // 需要的话，深层逐个赋值
-            if (checkType(target[key]) === "object") {
-                modifyData(target[key], value[key]);
-            } else {
-                target[key] = value[key];
-            }
-        }
+  for (const key in value) {
+    if (Object.prototype.hasOwnProperty.call(target, key)) {
+      // target[key] = value[key];
+      // 需要的话，深层逐个赋值
+      if (checkType(target[key]) === "object") {
+        modifyData(target[key], value[key]);
+      } else {
+        target[key] = value[key];
+      }
     }
+  }
 }
 
 /**
@@ -33,9 +33,9 @@ export function modifyData<T>(target: T, value: T) {
  * @param value 设置的内容
  */
 export function setData<T>(target: T, value: T) {
-    for (const key in value) {
-        target[key] = value[key];
-    }
+  for (const key in value) {
+    target[key] = value[key];
+  }
 }
 
 /**
@@ -51,25 +51,25 @@ export function setData<T>(target: T, value: T) {
  * ```
  */
 export function formatDate(value: string | number | Date = Date.now(), format = "Y-M-D h:m:s") {
-    if (["null", null, "undefined", undefined, ""].includes(value as any)) return "";
-    // ios 和 mac 系统中，带横杆的字符串日期是格式不了的，这里做一下判断处理
-    if (typeof value === "string" && new Date(value).toString() === "Invalid Date") {
-        value = value.replace(/-/g, "/");
-    }
-    const formatNumber = (n: number) => `0${n}`.slice(-2);
-    const date = new Date(value);
-    const formatList = ["Y", "M", "D", "h", "m", "s"];
-    const resultList = [];
-    resultList.push(date.getFullYear().toString());
-    resultList.push(formatNumber(date.getMonth() + 1));
-    resultList.push(formatNumber(date.getDate()));
-    resultList.push(formatNumber(date.getHours()));
-    resultList.push(formatNumber(date.getMinutes()));
-    resultList.push(formatNumber(date.getSeconds()));
-    for (let i = 0; i < resultList.length; i++) {
-        format = format.replace(formatList[i], resultList[i]);
-    }
-    return format;
+  if (["null", null, "undefined", undefined, ""].includes(value as any)) return "";
+  // ios 和 mac 系统中，带横杆的字符串日期是格式不了的，这里做一下判断处理
+  if (typeof value === "string" && new Date(value).toString() === "Invalid Date") {
+    value = value.replace(/-/g, "/");
+  }
+  const formatNumber = (n: number) => `0${n}`.slice(-2);
+  const date = new Date(value);
+  const formatList = ["Y", "M", "D", "h", "m", "s"];
+  const resultList = [];
+  resultList.push(date.getFullYear().toString());
+  resultList.push(formatNumber(date.getMonth() + 1));
+  resultList.push(formatNumber(date.getDate()));
+  resultList.push(formatNumber(date.getHours()));
+  resultList.push(formatNumber(date.getMinutes()));
+  resultList.push(formatNumber(date.getSeconds()));
+  for (let i = 0; i < resultList.length; i++) {
+    format = format.replace(formatList[i], resultList[i]);
+  }
+  return format;
 }
 
 /**
@@ -86,69 +86,69 @@ export function formatDate(value: string | number | Date = Date.now(), format = 
  * ```
  */
 export function computeNumber(a: number, type: NumberSymbols, b: number) {
+  /**
+   * 获取数字小数点的长度
+   * @param n 数字
+   */
+  function getDecimalLength(n: number) {
+    const decimal = n.toString().split(".")[1];
+    return decimal ? decimal.length : 0;
+  }
+  /**
+   * 修正小数点
+   * @description 防止出现 `33.33333*100000 = 3333332.9999999995` && `33.33*10 = 333.29999999999995` 这类情况做的处理
+   * @param n 数字
+   */
+  const amend = (n: number, precision = 15) => parseFloat(Number(n).toPrecision(precision));
+  const power = Math.pow(10, Math.max(getDecimalLength(a), getDecimalLength(b)));
+  let result = 0;
+
+  a = amend(a * power);
+  b = amend(b * power);
+
+  switch (type) {
+    case "+":
+      result = (a + b) / power;
+      break;
+    case "-":
+      result = (a - b) / power;
+      break;
+    case "*":
+      result = (a * b) / (power * power);
+      break;
+    case "/":
+      result = a / b;
+      break;
+  }
+
+  result = amend(result);
+
+  return {
+    /** 计算结果 */
+    result,
     /**
-     * 获取数字小数点的长度
-     * @param n 数字
+     * 继续计算
+     * @param nextType 继续计算方式
+     * @param nextValue 继续计算的值
      */
-    function getDecimalLength(n: number) {
-        const decimal = n.toString().split(".")[1];
-        return decimal ? decimal.length : 0;
-    }
-    /**
-     * 修正小数点
-     * @description 防止出现 `33.33333*100000 = 3333332.9999999995` && `33.33*10 = 333.29999999999995` 这类情况做的处理
-     * @param n 数字
+    next(nextType: NumberSymbols, nextValue: number) {
+      return computeNumber(result, nextType, nextValue);
+    },
+    /** 
+     * 小数点进位 
+     * @param n 小数点后的位数
      */
-    const amend = (n: number, precision = 15) => parseFloat(Number(n).toPrecision(precision));
-    const power = Math.pow(10, Math.max(getDecimalLength(a), getDecimalLength(b)));
-    let result = 0;
-
-    a = amend(a * power);
-    b = amend(b * power);
-
-    switch (type) {
-        case "+":
-            result = (a + b) / power;
-            break;
-        case "-":
-            result = (a - b) / power;
-            break;
-        case "*":
-            result = (a * b) / (power * power);
-            break;
-        case "/":
-            result = a / b;
-            break;
+    toHex(n: number) {
+      const strings = result.toString().split(".");
+      if (n > 0 && strings[1] && strings[1].length > n) {
+        const decimal = strings[1].slice(0, n);
+        const value = Number(`${strings[0]}.${decimal}`);
+        const difference = 1 / Math.pow(10, decimal.length);
+        result = computeNumber(value, "+", difference).result;
+      }
+      return result;
     }
-
-    result = amend(result);
-
-    return {
-        /** 计算结果 */
-        result,
-        /**
-         * 继续计算
-         * @param nextType 继续计算方式
-         * @param nextValue 继续计算的值
-         */
-        next(nextType: NumberSymbols, nextValue: number) {
-            return computeNumber(result, nextType, nextValue);
-        },
-        /** 
-         * 小数点进位 
-         * @param n 小数点后的位数
-         */
-        toHex(n: number) {
-            const strings = result.toString().split(".");
-            if (n > 0 && strings[1] && strings[1].length > n) {
-                const decimal = strings[1].slice(0, n);
-                const value = Number(`${strings[0]}.${decimal}`);
-                const difference = 1 / Math.pow(10, decimal.length);
-                result = computeNumber(value, "+", difference).result;
-            }
-            return result;
-        }
-    };
+  };
 }
 
 /**
@@ -165,22 +165,22 @@ export function computeNumber(a: number, type: NumberSymbols, b: number) {
  * new URLSearchParams(location.search).get("age");
  * ```
  */
-export function getQueryParam(name ?: string, target ?: string) {
-    const code = target || location.href.split("?")[1] || "";
-    const list = code.split("&");
-    const params: any = {};
-    for (let i = 0; i < list.length; i++) {
-        const item = list[i];
-        const items = item.split("=");
-        if (items.length > 1) {
-            params[items[0]] = item.replace(`${items[0]}=`, "");
-        }
+export function getQueryParam(name?: string, target?: string) {
+  const code = target || location.href.split("?")[1] || "";
+  const list = code.split("&");
+  const params: any = {};
+  for (let i = 0; i < list.length; i++) {
+    const item = list[i];
+    const items = item.split("=");
+    if (items.length > 1) {
+      params[items[0]] = item.replace(`${items[0]}=`, "");
     }
-    if (name) {
-        return params[name] || "";
-    } else {
-        return params;
-    }
+  }
+  if (name) {
+    return params[name] || "";
+  } else {
+    return params;
+  }
 }
 
 /**
@@ -198,19 +198,19 @@ export function getQueryParam(name ?: string, target ?: string) {
  * ```
  */
 export function getDeepLevelValue(target: any, key: string) {
-    const keys = key.split(".");
-    let result;
-    for (let i = 0; i < keys.length; i++) {
-        const prop = keys[i];
-        result = target[prop];
-        const type = checkType(result);
-        if (type !== "object" && type !== "array") {
-            break;
-        } else {
-            target = target[prop];
-        }
+  const keys = key.split(".");
+  let result;
+  for (let i = 0; i < keys.length; i++) {
+    const prop = keys[i];
+    result = target[prop];
+    const type = checkType(result);
+    if (type !== "object" && type !== "array") {
+      break;
+    } else {
+      target = target[prop];
     }
-    return result;
+  }
+  return result;
 }
 
 /**
@@ -218,15 +218,15 @@ export function getDeepLevelValue(target: any, key: string) {
  * @param array 
  * @param compare 对比函数
  */
-export function findIndex<T>(array: Array < T >, compare: (value: T, index: number) => boolean) {
-    var result = -1;
-    for (var i = 0; i < array.length; i++) {
-        if (compare(array[i], i)) {
-            result = i;
-            break;
-        }
+export function findIndex<T>(array: Array<T>, compare: (value: T, index: number) => boolean) {
+  var result = -1;
+  for (var i = 0; i < array.length; i++) {
+    if (compare(array[i], i)) {
+      result = i;
+      break;
     }
-    return result;
+  }
+  return result;
 }
 
 /**
@@ -235,7 +235,7 @@ export function findIndex<T>(array: Array < T >, compare: (value: T, index: numb
  * @param max 最大数
  */
 export function ranInt(min: number, max: number) {
-    return Math.round(Math.random() * (max - min) + min);
+  return Math.round(Math.random() * (max - min) + min);
 }
 
 /**
@@ -244,15 +244,15 @@ export function ranInt(min: number, max: number) {
  * @param max 最大数
  */
 export function randomText(min: number, max: number) {
-    const len = Math.floor(Math.random() * max) + min;
-    const base = 20000;
-    const range = 1000;
-    let str = "";
-    let i = 0;
-    while (i < len) {
-        i++;
-        const lower = Math.floor(Math.random() * range);
-        str += String.fromCharCode(base + lower);
-    }
-    return str;
+  const len = Math.floor(Math.random() * max) + min;
+  const base = 20000;
+  const range = 1000;
+  let str = "";
+  let i = 0;
+  while (i < len) {
+    i++;
+    const lower = Math.floor(Math.random() * range);
+    str += String.fromCharCode(base + lower);
+  }
+  return str;
 }

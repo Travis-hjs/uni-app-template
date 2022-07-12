@@ -1,87 +1,87 @@
 {
-    "pages": [
-        {
-            "path": "pages/tabBar/home",
-            "style": {
-                "navigationBarTitleText": "首页"
-            }
-        },
-        {
-            "path": "pages/tabBar/personal",
-            "style": {
-                "navigationBarTitleText": "个人页"
-            }
-        },
-        {
-            "path": "pages/details",
-            "style": {
-                "navigationStyle": "custom"
-            }
-        },
-        {
-            "path": "pages/list",
-            "style": {
-                "navigationBarTitleText": "加载更多列表",
-                "navigationBarBackgroundColor": "#222222",
-                "navigationBarTextStyle": "white",
-                "enablePullDownRefresh": true
-            }
-        },
-        {
-            "path": "pages/form",
-            "style": {
-                "navigationBarTitleText": "表单验证"
-            }
-        },
-        {
-            "path": "pages/form-dynamic",
-            "style": {
-                "navigationBarTitleText": "表单验证（动态）"
-            }
-        },
-        {
-            "path": "pages/form-special",
-            "style": {
-                "navigationBarTitleText": "表单验证（特殊/边缘操作）"
-            }
-        },
-        {
-			"path": "pages/button",
-			"style": {
-				"navigationBarTitleText": "ui-button"
-			}
-        },
-        {
-            "path": "pages/cavans-creater",
-            "style": {
-				"navigationBarTitleText": "cavans-生成海报图"
-			}
-        }
-    ],
-    "globalStyle": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "uni-app",
-        "navigationBarBackgroundColor": "#F8F8F8",
-        "backgroundColor": "#F8F8F8"
+  "pages": [
+    {
+      "path": "pages/tabBar/home",
+      "style": {
+        "navigationBarTitleText": "首页"
+      }
     },
-    "tabBar": {
-        "color": "#7A7E83",
-        "selectedColor": "#000000",
-        "borderStyle": "white",
-        "backgroundColor": "#f4f4f4",
-        "list": [
-            {
-                "pagePath": "pages/tabBar/home",
-                "iconPath": "static/home_off.png",
-                "selectedIconPath": "static/home_on.png",
-                "text": "首页"
-            },
-            {
-                "pagePath": "pages/tabBar/personal",
-                "iconPath": "static/personal_off.png",
-                "selectedIconPath": "static/personal_on.png",
-                "text": "我的"
-            }
-        ]
+    {
+      "path": "pages/tabBar/personal",
+      "style": {
+        "navigationBarTitleText": "个人页"
+      }
+    },
+    {
+      "path": "pages/details",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/list",
+      "style": {
+        "navigationBarTitleText": "加载更多列表",
+        "navigationBarBackgroundColor": "#222222",
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/form",
+      "style": {
+        "navigationBarTitleText": "表单验证"
+      }
+    },
+    {
+      "path": "pages/form-dynamic",
+      "style": {
+        "navigationBarTitleText": "表单验证（动态）"
+      }
+    },
+    {
+      "path": "pages/form-special",
+      "style": {
+        "navigationBarTitleText": "表单验证（特殊/边缘操作）"
+      }
+    },
+    {
+      "path": "pages/button",
+      "style": {
+        "navigationBarTitleText": "ui-button"
+      }
+    },
+    {
+      "path": "pages/cavans-creater",
+      "style": {
+        "navigationBarTitleText": "cavans-生成海报图"
+      }
     }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#000000",
+    "borderStyle": "white",
+    "backgroundColor": "#f4f4f4",
+    "list": [
+      {
+        "pagePath": "pages/tabBar/home",
+        "iconPath": "static/home_off.png",
+        "selectedIconPath": "static/home_on.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/tabBar/personal",
+        "iconPath": "static/personal_off.png",
+        "selectedIconPath": "static/personal_on.png",
+        "text": "我的"
+      }
+    ]
+  }
 }

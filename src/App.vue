@@ -3,17 +3,17 @@ import Vue from "vue";
 import store from "./store";
 
 export default Vue.extend({
-    mpType: "app",
-    onLaunch() {
-        console.log("【App Launch】")
-        store.initAppOption();
-    },
-    onShow() {
-        console.log("【App Show】")
-    },
-    onHide() {
-        console.log("【App Hide】")
-    }
+  mpType: "app",
+  onLaunch() {
+    console.log("【App Launch】");
+    store.initAppOption();
+  },
+  onShow() {
+    console.log("【App Show】");
+  },
+  onHide() {
+    console.log("【App Hide】");
+  },
 });
 </script>
 

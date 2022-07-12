@@ -13,25 +13,26 @@ $duration: 0.3s all;
 
 // 溢出...显示
 @mixin ellipsis($number) {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: $number;
-    overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $number;
+  overflow: hidden;
 }
 
 @mixin button {
-    font-size: 30rpx;
-    min-width: 160rpx;
-    padding: 0 20rpx;
-    border-radius: 2px;
-    height: 80rpx;
-    background-color: #eee; 
-    color: $dark;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    &:active{
-        opacity: 0.85;
-    }
+  font-size: 30rpx;
+  min-width: 160rpx;
+  padding: 0 20rpx;
+  border-radius: 2px;
+  height: 80rpx;
+  background-color: #eee;
+  color: $dark;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:active {
+    opacity: 0.85;
+  }
 }
