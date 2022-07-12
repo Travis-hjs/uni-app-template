@@ -145,49 +145,18 @@ interface ScrollviewOption {
   /** 要滚动的目标节点`id` */
   id: string
   /** `<scrollview>`的宽度，默认是屏幕宽度 */
-  wrapWidth: number
+  wrapWidth?: number
   /** 点击事件 */
-  event: Event
+  event?: Event
   /** 是否主动设置偏移到中心位置，设置值时，`event`不需要传入 */
-  scrollValue: number
+  scrollValue?: number
   /** 回调 */
-  callback(left: number, node: UniApp.NodeInfo): void
+  callback?(left: number, node: UniApp.NodeInfo): void
 }
 
 /**
- * 监听或设置`<scrollview>`组件指定元素滚动到视图中心的偏移值
- * ## 使用示例
- * 
- * **template**部分
- * 
- * ```html
- * <scroll-view scroll-x scroll-with-animation :scroll-left="scrollLeft">
- *      <view @click="onClick(item, $event)" v-for="item in list" :id="'scroll-' + item.id" :key="item.id">
- *          <text>{{ item.label }}</text>
- *      </view>
- * </scroll-view>
- * ```
- * 
- * **js部分**
- * 
- * ```ts
- * // ...省略前置代码
- * export default class Demo extends Vue {
- *      list: Array<{ id: number, label: string }> = [];
- *      
- *      scrollLeft = 0;
- * 
- *      onClick(item: { id: number }, e: Event) {
- *          onScrollviewCenter({
- *              ctx: this,
- *              event: e,
- *              id: "scroll-" + item.id,
- *              callback: left => this.scrollLeft = left
- *          })
- *      }
- * }
- * 
- * ```
+ * 监听`<scrollview>`组件指定元素滚动到视图中心的偏移值
+ * @param option 配置参数
  */
 export function onScrollviewCenter(option: ScrollviewOption) {
   const width = option.wrapWidth || uni.getSystemInfoSync().windowWidth;
