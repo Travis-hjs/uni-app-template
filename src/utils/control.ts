@@ -8,17 +8,17 @@ import { nextTick } from "vue";
  * @param callback 错误回调
  */
 export function openApp(name: "qq" | "wx" | "zfb" | "sina" | "taobao", callback?: (result: any) => void) {
-    // #ifdef APP-PLUS
-    // learn: https://ask.dcloud.net.cn/article/35621
-    const data = {
-        qq: "mqq://",
-        wx: "weixin://",
-        zfb: "alipay://",
-        sina: "sinaweibo://",
-        taobao: "taobao://",
-    }
-    plus.runtime.openURL(data[name], callback);
-    // #endif
+  // #ifdef APP-PLUS
+  // learn: https://ask.dcloud.net.cn/article/35621
+  const data = {
+    qq: "mqq://",
+    wx: "weixin://",
+    zfb: "alipay://",
+    sina: "sinaweibo://",
+    taobao: "taobao://",
+  }
+  plus.runtime.openURL(data[name], callback);
+  // #endif
 }
 
 /**
@@ -26,10 +26,10 @@ export function openApp(name: "qq" | "wx" | "zfb" | "sina" | "taobao", callback?
  * @param text 提示文字
  */
 export function showLoading(text: string = "加载中..") {
-    uni.showLoading({
-        title: text,
-        mask: true
-    });
+  uni.showLoading({
+    title: text,
+    mask: true
+  });
 }
 
 /**
@@ -38,13 +38,13 @@ export function showLoading(text: string = "加载中..") {
  * @param duration 持续时间
  */
 export function showToast(tip: string, duration = 2000) {
-    uni.showToast({
-        title: tip,
-        // position: "bottom",
-        icon: "none",
-        duration: duration,
-        // image: src
-    });
+  uni.showToast({
+    title: tip,
+    // position: "bottom",
+    icon: "none",
+    duration: duration,
+    // image: src
+  });
 }
 
 /**
@@ -54,25 +54,25 @@ export function showToast(tip: string, duration = 2000) {
  * @param title 提示标题 
  */
 export function showAlert(content: string, success?: (res: UniApp.ShowModalRes) => void, title: string = "操作提示") {
-    uni.showModal({
-        title: title,
-        content: content,
-        showCancel: false,
-        success: success
-    })
+  uni.showModal({
+    title: title,
+    content: content,
+    showCancel: false,
+    success: success
+  })
 }
 
 interface ShowConfirmOptions {
-    /** 内容 */
-    content: string
-    /** 标题 */
-    title?: string
-    /** 确认回调 */
-    callback?(): void
-    /** 取消回调 */
-    cancel?(): void
-    /** 确认按钮文字 */
-    text?: string
+  /** 内容 */
+  content: string
+  /** 标题 */
+  title?: string
+  /** 确认回调 */
+  callback?(): void
+  /** 取消回调 */
+  cancel?(): void
+  /** 确认按钮文字 */
+  text?: string
 }
 
 /**
@@ -80,19 +80,19 @@ interface ShowConfirmOptions {
  * @param options 传参对象
  */
 export function showConfirm(options: ShowConfirmOptions) {
-    uni.showModal({
-        title: options.title || "操作提示",
-        content: options.content,
-        showCancel: true,
-        confirmText: options.text || "确认",
-        success(res) {
-            if (res.confirm) {
-                options.callback && options.callback();
-            } else if (res.cancel) {
-                options.cancel && options.cancel();
-            }
-        },
-    });
+  uni.showModal({
+    title: options.title || "操作提示",
+    content: options.content,
+    showCancel: true,
+    confirmText: options.text || "确认",
+    success(res) {
+      if (res.confirm) {
+        options.callback && options.callback();
+      } else if (res.cancel) {
+        options.cancel && options.cancel();
+      }
+    },
+  });
 }
 
 /**
@@ -101,63 +101,63 @@ export function showConfirm(options: ShowConfirmOptions) {
  * @param success 成功回调
  */
 export function copyText(value: string, success?: () => void) {
-    value = value.replace(/(^\s*)|(\s*$)/g, "");
-    if (!value) {
-        return showToast("复制的内容不能为空！");
-    }
+  value = value.replace(/(^\s*)|(\s*$)/g, "");
+  if (!value) {
+    return showToast("复制的内容不能为空！");
+  }
 
-    // #ifndef H5
-    uni.setClipboardData({
-        data: value,
-        success() {
-            showToast("复制成功");
-            success && success();
-        }
-    });
-    // #endif
+  // #ifndef H5
+  uni.setClipboardData({
+    data: value,
+    success() {
+      showToast("复制成功");
+      success && success();
+    }
+  });
+  // #endif
 
-    // #ifdef H5
-    const id = "the-clipboard";
-    let clipboard = document.getElementById(id) as HTMLTextAreaElement;
-    if (!clipboard) {
-        clipboard = document.createElement("textarea");
-        clipboard.id = id;
-        clipboard.readOnly = true;
-        clipboard.style.cssText = "font-size: 15px; position: fixed; top: -1000%; left: -1000%;";
-        document.body.appendChild(clipboard);
-    }
-    clipboard.value = value;
-    clipboard.select();
-    clipboard.setSelectionRange(0, clipboard.value.length);
-    const state = document.execCommand("copy");
-    if (state) {
-        showToast("复制成功");
-        success && success();
-    } else {
-        showToast("复制失败");
-    }
-    // #endif
+  // #ifdef H5
+  const id = "the-clipboard";
+  let clipboard = document.getElementById(id) as HTMLTextAreaElement;
+  if (!clipboard) {
+    clipboard = document.createElement("textarea");
+    clipboard.id = id;
+    clipboard.readOnly = true;
+    clipboard.style.cssText = "font-size: 15px; position: fixed; top: -1000%; left: -1000%;";
+    document.body.appendChild(clipboard);
+  }
+  clipboard.value = value;
+  clipboard.select();
+  clipboard.setSelectionRange(0, clipboard.value.length);
+  const state = document.execCommand("copy");
+  if (state) {
+    showToast("复制成功");
+    success && success();
+  } else {
+    showToast("复制失败");
+  }
+  // #endif
 }
 
 interface ScrollviewCenterOptions<T = any> {
-    /**
-     * 当前实例
-     * ```js
-     * import { getCurrentInstance } from "vue";
-     * getCurrentInstance();
-     * ```
-     */
-    ctx: T,
-    /** 要滚动的目标节点`id` */
-    id: string
-    /** `<scrollview>`的宽度，默认是屏幕宽度 */
-    wrapWidth?: number
-    /** 点击事件 */
-    event?: Event
-    /** 是否主动设置偏移到中心位置，设置值时，`event`不需要传入 */
-    scrollValue?: number
-    /** 回调 */
-    callback?: (left: number, info: UniApp.NodeInfo) => void
+  /**
+   * 当前实例
+   * ```js
+   * import { getCurrentInstance } from "vue";
+   * getCurrentInstance();
+   * ```
+   */
+  ctx: T,
+  /** 要滚动的目标节点`id` */
+  id: string
+  /** `<scrollview>`的宽度，默认是屏幕宽度 */
+  wrapWidth?: number
+  /** 点击事件 */
+  event?: Event
+  /** 是否主动设置偏移到中心位置，设置值时，`event`不需要传入 */
+  scrollValue?: number
+  /** 回调 */
+  callback?: (left: number, info: UniApp.NodeInfo) => void
 }
 
 /**
@@ -165,20 +165,20 @@ interface ScrollviewCenterOptions<T = any> {
  * @param option 配置参数
  */
 export function onScrollviewCenter(option: ScrollviewCenterOptions) {
-    const width = option.wrapWidth || uni.getSystemInfoSync().windowWidth;
-    nextTick(function () {
-        const node = uni.createSelectorQuery().in(option.ctx).select(`#${option.id}`);
-        const left = option.event ? (option.event.currentTarget as any).offsetLeft : 0;
-        node.boundingClientRect(function (nodeInfo) {
-            let result = 0;
-            if (nodeInfo) {
-                if (typeof option.scrollValue === "number") {
-                    result = option.scrollValue + nodeInfo.left! + nodeInfo.width! / 2 - width / 2;
-                } else {
-                    result = left + nodeInfo.width! / 2 - width / 2;
-                }
-            }
-            typeof option.callback === "function" && option.callback(result, nodeInfo);
-        }).exec();
-    });
+  const width = option.wrapWidth || uni.getSystemInfoSync().windowWidth;
+  nextTick(function () {
+    const node = uni.createSelectorQuery().in(option.ctx).select(`#${option.id}`);
+    const left = option.event ? (option.event.currentTarget as any).offsetLeft : 0;
+    node.boundingClientRect(function (nodeInfo) {
+      let result = 0;
+      if (nodeInfo) {
+        if (typeof option.scrollValue === "number") {
+          result = option.scrollValue + nodeInfo.left! + nodeInfo.width! / 2 - width / 2;
+        } else {
+          result = left + nodeInfo.width! / 2 - width / 2;
+        }
+      }
+      typeof option.callback === "function" && option.callback(result, nodeInfo);
+    }).exec();
+  });
 }

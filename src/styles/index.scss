@@ -42,10 +42,10 @@ uni-page-body { min-height: auto !important; }
 
 /* 卡片 */
 .card { 
-    border-radius: 2px; 
-    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12); 
-    background-color: #fff;
-    overflow: hidden;
+  border-radius: 2px; 
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12); 
+  background-color: #fff;
+  overflow: hidden;
 }
 
 .button { @include button($dark, #eee); }
@@ -57,29 +57,29 @@ uni-page-body { min-height: auto !important; }
 
 /* 上下左右边距 */
 @for $index from 1 through 5 {
-    .mgl_#{$index}0 {
-        margin-left: 10rpx * $index;
-    }
-    .mgr_#{$index}0 {
-        margin-right: 10rpx * $index;
-    }
-    .mgt_#{$index}0 {
-        margin-top: 10rpx * $index;
-    }
-    .mgb_#{$index}0 {
-        margin-bottom: 10rpx * $index;
-    }
-    .pdl_#{$index}0 {
-        padding-left: 10rpx * $index;
-    }
-    .pdr_#{$index}0 {
-        padding-right: 10rpx * $index;
-    }
-    .pdt_#{$index}0 {
-        padding-top: 10rpx * $index;
-    }
-    .pdb_#{$index}0 {
-        padding-bottom: 10rpx * $index;
-    }
+  .mgl_#{$index}0 {
+    margin-left: 10rpx * $index;
+  }
+  .mgr_#{$index}0 {
+    margin-right: 10rpx * $index;
+  }
+  .mgt_#{$index}0 {
+    margin-top: 10rpx * $index;
+  }
+  .mgb_#{$index}0 {
+    margin-bottom: 10rpx * $index;
+  }
+  .pdl_#{$index}0 {
+    padding-left: 10rpx * $index;
+  }
+  .pdr_#{$index}0 {
+    padding-right: 10rpx * $index;
+  }
+  .pdt_#{$index}0 {
+    padding-top: 10rpx * $index;
+  }
+  .pdb_#{$index}0 {
+    padding-bottom: 10rpx * $index;
+  }
 }
   

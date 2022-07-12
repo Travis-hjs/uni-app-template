@@ -37,16 +37,16 @@
 
 ```html
 <template>
-    <div>
-        ...一些其他标签
-        <!-- 默认使用方式 -->
-        <UploadImg :src="formData.pageAdImg" @change="onUpload" tip="尺寸规格：750px * 391px" />
-        ...一些其他标签
-        <UserHK :show="showUserHK" @close="closeUserHK" :pageType="pageType" @update="getHkUsers" />
-        ...一些其他标签
-        <UserKCH :show="showUserKCH" @close="closeUserKCH" :pageType="typeKCH" @update="getKchUsers" :info="infoUserKCH" />
-        ...一些其他标签
-    </div>
+  <div>
+    ...一些其他标签
+    <!-- 默认使用方式 -->
+    <UploadImg :src="formData.pageAdImg" @change="onUpload" tip="尺寸规格：750px * 391px" />
+    ...一些其他标签
+    <UserHK :show="showUserHK" @close="closeUserHK" :pageType="pageType" @update="getHkUsers" />
+    ...一些其他标签
+    <UserKCH :show="showUserKCH" @close="closeUserKCH" :pageType="typeKCH" @update="getKchUsers" :info="infoUserKCH" />
+    ...一些其他标签
+  </div>
 </template>
 
 <script lang="ts">
@@ -56,12 +56,12 @@ import UserHK from './components/UserHK/index.vue';
 import UserKCH from './components/UserKCH/index.vue';
 
 export default defineComponent({
-    components: {
-        UploadImg,
-        UserHK,
-        UserKCH
-    },
-    ...more
+  components: {
+    UploadImg,
+    UserHK,
+    UserKCH
+  },
+  ...more
 })
 </script>
 ```
@@ -77,11 +77,11 @@ export default defineComponent({
 
 ```json
 {
-    "editor.detectIndentation": false,
-    "editor.tabSize": 4,
-    "vetur.format.options.tabSize": 4,
-    "typescript.updateImportsOnFileMove.enabled": "always",
-    "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "vetur.format.options.tabSize": 2,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always",
 }
 ```
 

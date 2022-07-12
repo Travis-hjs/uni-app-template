@@ -17,17 +17,17 @@
 ```ts
 /** 选择器`item`数据 */
 interface PickerSelectItem<T = string | number> {
-    /** 展示字段 */
-    label: string
-    /** 对应的值 */
-    value: T
-    /**
-     * 下级数据
-     * @description 最多三层，选择器栏目数根据当前下级动态显示
-     */
-    children?: Array<PickerSelectItem<T>>
-    /** 其他携带的值 */
-    [key: string]: any
+  /** 展示字段 */
+  label: string
+  /** 对应的值 */
+  value: T
+  /**
+   * 下级数据
+   * @description 最多三层，选择器栏目数根据当前下级动态显示
+   */
+  children?: Array<PickerSelectItem<T>>
+  /** 其他携带的值 */
+  [key: string]: any
 }
 ```
 
@@ -35,12 +35,12 @@ interface PickerSelectItem<T = string | number> {
 
 ```html
 <template>
-    <view>
-        <view>{{ selectLabel || "请选择" }}</view>
-        <button @click="openPicker()">打开选择器</button>
+  <view>
+    <view>{{ selectLabel || "请选择" }}</view>
+    <button @click="openPicker()">打开选择器</button>
 
-        <ThePicker :show="showPicker" @cancel="closePicker" @confirm="onPicker" :list="options" />
-    </view>
+    <ThePicker :show="showPicker" @cancel="closePicker" @confirm="onPicker" :list="options" />
+  </view>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue";
@@ -48,50 +48,50 @@ import ThePicker from "@/components/Picker/index.vue";
 import { PickerSelectItem } from "@/types";
 
 export default defineComponent({
-    components: {
-        ThePicker
-    },
-    setup() {
-        const options = [
-            { label: "选项一", value: 1 },
-            { label: "选项二", value: 2 },
-            {
-                label: "两级选项", value: 3,
-                children: [
-                    { label: "二级-1", value: 1 },
-                    { label: "二级-2", value: 2 },
-                ]
-            },
+  components: {
+    ThePicker
+  },
+  setup() {
+    const options = [
+      { label: "选项一", value: 1 },
+      { label: "选项二", value: 2 },
+      {
+        label: "两级选项", value: 3,
+        children: [
+          { label: "二级-1", value: 1 },
+          { label: "二级-2", value: 2 },
         ]
+      },
+    ]
 
-        const showPicker = ref(false);
-        /** 展示的值 */
-        const selectLabel = ref("");
+    const showPicker = ref(false);
+    /** 展示的值 */
+    const selectLabel = ref("");
 
-        function openPicker() {
-            showPicker.value = true;
-        }
-
-        function closePicker() {
-            showPicker.value = false;
-        }
-
-        function onPicker(res: { id: string, value: Array<PickerSelectItem<number>> }) {
-            const values = res.value.map(item => item.value);
-            console.log("values >>", values)
-            selectLabel.value = res.value.map(item => item.label).join("-");
-            closePicker();
-        }
-
-        return {
-            options,
-            showPicker,
-            selectLabel,
-            openPicker,
-            closePicker,
-            onPicker
-        }
+    function openPicker() {
+      showPicker.value = true;
     }
+
+    function closePicker() {
+      showPicker.value = false;
+    }
+
+    function onPicker(res: { id: string, value: Array<PickerSelectItem<number>> }) {
+      const values = res.value.map(item => item.value);
+      console.log("values >>", values)
+      selectLabel.value = res.value.map(item => item.label).join("-");
+      closePicker();
+    }
+
+    return {
+      options,
+      showPicker,
+      selectLabel,
+      openPicker,
+      closePicker,
+      onPicker
+    }
+  }
 })
 </script>
 ```
@@ -113,49 +113,49 @@ export default defineComponent({
 
 ```html
 <template>
-    <view>
-        <view>{{ selectLabel || "请选择" }}</view>
-        <button @click="openPicker()">打开选择器</button>
-        <!-- 默认使用方式 -->
-        <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" />
+  <view>
+    <view>{{ selectLabel || "请选择" }}</view>
+    <button @click="openPicker()">打开选择器</button>
+    <!-- 默认使用方式 -->
+    <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" />
 
-        <!-- 设置范围和初始值 -->
-        <!-- <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" value="2020-06-08" startDate="2019-03-12" endDate="2021-02-04" /> -->
-    </view>
+    <!-- 设置范围和初始值 -->
+    <!-- <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" value="2020-06-08" startDate="2019-03-12" endDate="2021-02-04" /> -->
+  </view>
 </template>
 <script>
 import { defineComponent, ref } from "vue";
 import PickerDate from "@/components/Picker/Date.vue";
 
 export default defineComponent({
-    components: {
-        PickerDate
-    },
-    setup() {
-        const showPickerDate = ref(false);
-        const selectLabel = ref("");
+  components: {
+    PickerDate
+  },
+  setup() {
+    const showPickerDate = ref(false);
+    const selectLabel = ref("");
 
-        function openPickerDate() {
-            showPickerDate.value = true;
-        }
-
-        function closePickerDate() {
-            showPickerDate.value = false;
-        }
-
-        function onPickerDate(val: string) {
-            selectLabel.value = val;
-            closePickerDate();
-        }
-
-        return {
-            showPickerDate,
-            selectLabel,
-            openPickerDate,
-            closePickerDate,
-            onPickerDate
-        }
+    function openPickerDate() {
+      showPickerDate.value = true;
     }
+
+    function closePickerDate() {
+      showPickerDate.value = false;
+    }
+
+    function onPickerDate(val: string) {
+      selectLabel.value = val;
+      closePickerDate();
+    }
+
+    return {
+      showPickerDate,
+      selectLabel,
+      openPickerDate,
+      closePickerDate,
+      onPickerDate
+    }
+  }
 })
 </script>
 ```

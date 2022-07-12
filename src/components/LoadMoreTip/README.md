@@ -4,10 +4,10 @@
 
 ```html
 <template>
-    <view>
-        <view v-for="(item, index) in loadMoreData.list" :key="index">列表-item</view>
-        <LoadMoreTip :info="loadMoreData" />
-    </view>
+  <view>
+    <view v-for="(item, index) in loadMoreData.list" :key="index">列表-item</view>
+    <LoadMoreTip :info="loadMoreData" />
+  </view>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -17,48 +17,49 @@ import { getTestList } from "@/api/common";
 import { onLoad } from "@dcloudio/uni-app";
 
 export default defineComponent({
-    components: {
+  components: {
     LoadMoreTip
-    },
-    setup() {
-        const { loadMoreData, setRequestListFn, refreshData } = useLoadMore();
+  },
+  setup() {
+    const { loadMoreData, setRequestListFn, refreshData } = useLoadMore();
 
-        // 方式一：
-        setRequestListFn(function() {
-            return getTestList({
-            id: 12,
-            pageSize: loadMoreData.pageSize,
-            currentPage: loadMoreData.currentPage
-            })
-        });
+    // 方式一：
+    setRequestListFn(function () {
+      return getTestList({
+        id: 12,
+        pageSize: loadMoreData.pageSize,
+        currentPage: loadMoreData.currentPage
+      })
+    });
 
-        // 方式二：
-        // setRequestListFn(async function() {
-        //     const res = await getTestList({
-        //         id: 12,
-        //         pageSize: loadMoreData.pageSize,
-        //         currentPage: loadMoreData.currentPage
-        //     })
-        //     if (res.code === 1) {
-        //         // 这里可以做接口数据请求回调处理
-        //     }
-        //     return res;
-        // });
+    // 方式二：
+    // setRequestListFn(async function () {
+    //   const res = await getTestList({
+    //     id: 12,
+    //     pageSize: loadMoreData.pageSize,
+    //     currentPage: loadMoreData.currentPage
+    //   })
+    //   if (res.code === 1) {
+    //     // 这里可以做接口数据请求回调处理
+    //   }
+    //   return res;
+    // });
 
-        onLoad(function() {
-            refreshData();
-        })
+    onLoad(function () {
+      refreshData();
+    })
 
-        /** 主动点击刷新数据 */
-        function onClickRefresh() {
-            refreshData(function() {
-            console.log("请求数据回调 >>", loadMoreData.list);
-            });
-        }
+    /** 主动点击刷新数据 */
+    function onClickRefresh() {
+      refreshData(function () {
+        console.log("请求数据回调 >>", loadMoreData.list);
+      });
+    }
 
-        return {
-            loadMoreData
-        }
-    },
+    return {
+      loadMoreData
+    }
+  },
 });
+</script>
 ```

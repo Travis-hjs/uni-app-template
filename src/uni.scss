@@ -12,35 +12,39 @@ $blue: #2C72F3;
 
 // 溢出...显示
 @mixin ellipsis($number) {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: $number;
-    overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $number;
+  overflow: hidden;
 }
 
 @mixin button($color, $bg) {
-    font-size: 30rpx;
-    min-width: 160rpx;
-    padding: 0 20rpx;
-    border-radius: 2px;
-    height: 80rpx;
+  font-size: 30rpx;
+  min-width: 160rpx;
+  padding: 0 20rpx;
+  border-radius: 2px;
+  height: 80rpx;
+  background-color: $bg;
+  border-color: $bg;
+  color: $color;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after,
+  &::before {
+    border: none;
+    background-color: transparent;
+  }
+
+  &:hover {
     background-color: $bg;
     border-color: $bg;
     color: $color;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    &::after, &::before {
-        border: none;
-        background-color: transparent;
-    }
-    &:hover {
-        background-color: $bg;
-        border-color: $bg;
-        color: $color;
-    }
-    &:active {
-        opacity: 0.85;
-    }
+  }
+
+  &:active {
+    opacity: 0.85;
+  }
 }
