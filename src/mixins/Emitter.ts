@@ -15,7 +15,7 @@ export default class Emitter extends Vue {
     let name = parent.$options.name;
 
     while (parent && (!name || name !== componentName)) {
-      parent = parent.$parent;
+      parent = parent.$parent!;
       if (parent) {
         name = parent.$options.name;
       }
