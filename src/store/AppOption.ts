@@ -32,12 +32,12 @@ export default class ModuleAppOption {
    * 初始化`APP`操作信息
    * @description 最好放在`App.onLaunch`执行，因为这时才是页页面初始化完成，各个尺寸值会比较准确
    * @learn 条件编译 https://uniapp.dcloud.io/platform
-  */
+   */
   initAppOption() {
     const systemInfo = uni.getSystemInfoSync();
-
-    this.appOption.statusBarHeight = systemInfo.statusBarHeight!;
-    this.appOption.tabBarHeight = systemInfo.screenHeight - systemInfo.windowHeight - systemInfo.statusBarHeight!;
+    const barHeight = systemInfo.statusBarHeight!;
+    this.appOption.statusBarHeight = barHeight;
+    this.appOption.tabBarHeight = systemInfo.screenHeight - systemInfo.windowHeight - barHeight;
     this.appOption.windowHeight = systemInfo.windowHeight;
     this.appOption.windowWidth = systemInfo.windowWidth;
     this.appOption.screenWidth = systemInfo.screenWidth
@@ -55,9 +55,9 @@ export default class ModuleAppOption {
     // #ifdef MP
     const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
     // 导航栏高度 = 状态栏到胶囊的间距（胶囊距上距离-状态栏高度） * 2 + 胶囊高度 + 状态栏高度
-    this.appOption.navBarHeight = (menuButtonInfo.top - systemInfo.statusBarHeight!) * 2 + menuButtonInfo.height + systemInfo.statusBarHeight!;
+    this.appOption.navBarHeight = (menuButtonInfo.top - barHeight) * 2 + menuButtonInfo.height + barHeight;
     this.appOption.menuRight = systemInfo.screenWidth - menuButtonInfo.right;
-    this.appOption.menuBottom = menuButtonInfo.top - systemInfo.statusBarHeight!;
+    this.appOption.menuBottom = menuButtonInfo.top - barHeight;
     this.appOption.menuHeight = menuButtonInfo.height;
     this.appOption.menuWidth = menuButtonInfo.width;
     // #endif
