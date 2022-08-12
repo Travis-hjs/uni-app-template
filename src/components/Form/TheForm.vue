@@ -10,7 +10,8 @@ import { TheFormRules, TheFormValidateCallback } from "@/types";
 import { useFormProps } from "./hooks";
 import { getDeepLevelValue } from "@/utils";
 
-type ItemCtx = InstanceType<typeof TheFormItem>;
+/** `<TheFormItem>`实例类型 */
+type ItemInstance = InstanceType<typeof TheFormItem>;
 
 /** 一直累加的`formId`，需要时可以暴露给外部使用 */
 let formId = 1;
@@ -26,7 +27,7 @@ export default defineComponent({
     /** 表单校验规则 */
     rules: {
       type: Object as PropType<TheFormRules>,
-      default: () => { }
+      default: () => ({})
     },
     /** 是否需要验证时滚动到对应位置 */
     validateScroll: {
@@ -35,18 +36,18 @@ export default defineComponent({
     },
     ...useFormProps()
   },
-  setup(props, context) {
+  setup(props) {
     const currentId = formId;
     formId++;
 
     /** `model`原始数据，重置时用到 */
-    let beforeModel: BaseObj;
+    let beforeModel: BaseObj = {};
 
     /** `rules`原始数据，重置时用 */
-    let beforeRules: TheFormRules;
+    let beforeRules: TheFormRules = {};
 
     /** `<TheFormItem>`实例列表 */
-    const items: Array<ItemCtx> = [];
+    const items: Array<ItemInstance> = [];
 
     /**
      * 设置原始数据
@@ -77,13 +78,13 @@ export default defineComponent({
     }
 
     // 监听`<TheFormItem>`创建传进来的自身组件
-    uni.$on(eventMap.add, function (item: ItemCtx) {
+    uni.$on(eventMap.add, function (item: ItemInstance) {
       // console.log("addField >>", item, currentId);
       items.push(item);
     })
 
     // 监听对应的`<TheFormItem>`移除操作
-    uni.$on(eventMap.remove, function (item: ItemCtx) {
+    uni.$on(eventMap.remove, function (item: ItemInstance) {
       // console.log("removeField >>", item);
       item.prop && items.splice(items.indexOf(item), 1);
     })
@@ -132,7 +133,7 @@ export default defineComponent({
       if (!props.model) return console.warn(`表单验证缺少 "model" 对象`);
       if (!props.rules) return console.warn(`表单验证缺少 "rules" 对象，无法验证`);
       let rules: TheFormRules = {};
-      let failItems: Array<ItemCtx> = [];
+      let failItems: Array<ItemInstance> = [];
       let adopt = true;
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
@@ -163,7 +164,7 @@ export default defineComponent({
       if (!props.model) return console.warn(`表单验证缺少 "model" 对象`);
       if (!props.rules) return console.warn(`表单验证缺少 "rules" 对象，无法验证`);
       let rules: TheFormRules = {};
-      let failItems: Array<ItemCtx> = [];
+      let failItems: Array<ItemInstance> = [];
       let adopt = true;
       items.forEach(function (item) {
         item.validateField(function (prop, rule) {
