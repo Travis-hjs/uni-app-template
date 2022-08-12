@@ -97,15 +97,6 @@ export default class TheForm extends Emitter {
 
     if (forRules) {
       this.beforeRules = JSON.parse(JSON.stringify(forRules));
-      // 这里其实也是可以用上面的来深拷贝，考虑到后面可能有 function 或者其他类型，这样处理会比较好
-      // for (const key in forRules) {
-      //     const value = forRules[key];
-      //     if (checkType(value) === "array") {
-      //         this.beforeRules[key] = [...value as any];
-      //     } else {
-      //         this.beforeRules[key] = forRules[key];
-      //     }
-      // }
     }
   }
 
