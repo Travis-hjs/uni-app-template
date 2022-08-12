@@ -16,8 +16,8 @@ export interface TheFormRulesItem {
   type?: "number" | "array"
   /**
    * 自定义的校验规则（正则）
-   * @description 考虑到微信一些特殊的抽风机制，在微信小程序中，除 number|string|object 这几个基础类型外，其他类型是会被过滤掉，所以这里在写正则的时候，在末尾加上`.toString()`即可
-  */
+   * - 考虑到微信一些特殊的抽风机制，在微信小程序中，除`number|string|object|undefined|null`这几个基础类型外，其他类型是会被过滤掉，所以这里在写正则的时候，在末尾加上`.toString()`即可
+   */
   reg?: string // | RegExp
 }
 
