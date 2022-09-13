@@ -21,7 +21,7 @@ onHide(function () {
 });
 </script>
 <style lang="scss">
-// 每个页面公共样式，variable 和 mixins 这些在 uni.scss 中全局引用
+/* 每个页面公共样式，variable 和 mixins 这些在 uni.scss 中全局引用 */
 @import "./styles/index.scss";
 @import "./styles/loading.scss";
 /* 去除滚动条样式 */
