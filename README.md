@@ -2,7 +2,10 @@
 
 - [预览地址](http://huangjingsheng.gitee.io/hjs/uni-app)
 
-- [vue3 版本](https://github.com/Hansen-hjs/uni-app-template/tree/v3)
+| 分支 | 版本 | 说明 |
+|---|---|---|
+| [master](https://github.com/Hansen-hjs/uni-app-template) | vue 3.x + vite | 默认版本 |
+| [v2](https://github.com/Hansen-hjs/uni-app-template/tree/v2) | vue 2.6 + webpack | - |
 
 ## 模板说明：
 1. 基于`cli`创建的轻量化项目模板，只保留`vue`最基础的使用方式，保证打包到多端时不需要作太多判断处理
