@@ -27,92 +27,89 @@
   </view>
 </template>
 <script lang="ts">
+export default defineComponent({
+  name: "UploadImage"
+})
+</script>
+<script lang="ts" setup>
 import { defineComponent, ref } from "vue";
 import { showToast } from "@/utils/control";
 
-export default defineComponent({
-  name: "UploadImage",
-  props: {
-    minHeight: {
-      type: String,
-      default: "280rpx",
-    },
-    src: {
-      type: String,
-      default: "",
-    },
-    /** emit 时携带的 id */
-    uploadId: {
-      type: [String, Number],
-      default: "",
-    },
+const props = defineProps({
+  minHeight: {
+    type: String,
+    default: "280rpx",
   },
-  emits: ["change"],
-  setup(props, context) {
-    const loading = ref(false);
-
-    function uploadImage() {
-      if (loading.value) return;
-      uni.chooseImage({
-        count: 1,
-        sizeType: "compressed",
-        sourceType: ["album"],
-        success(res) {
-          // console.log(res);
-          const result = res.tempFilePaths as Array<string>;
-          // 模拟上传
-          loading.value = true;
-          setTimeout(() => {
-            loading.value = false;
-            context.emit("change", {
-              id: props.uploadId,
-              src: result[0],
-            });
-          }, 800);
-
-          // loading.value = true;
-          // uni.uploadFile({
-          //   url: "https://unidemo.dcloud.net.cn/upload",
-          //   filePath: result[0],
-          //   fileType: "image",
-          //   name: "data",
-          //   success(uploadResult) {
-          //     loading.value = false;
-          //     console.log("上传组件上传成功 >>", uploadResult.data);
-          //     context.emit("change", {
-          //       id: props.uploadId,
-          //       src: uploadResult.data
-          //     });
-          //   },
-          //   fail(uploadFail) {
-          //     loading.value = false;
-          //     console.log("上传组件上传失败 ！！！", uploadFail);
-          //     showToast(`上传失败 >> ${uploadFail.errMsg}`);
-          //   }
-          // });
-        },
-        fail(err) {
-          console.log("chooseImage fail >>", err);
-          showToast("读取图片失败！");
-        },
-      });
-    }
-
-    /** 清除图片 */
-    function removeImage() {
-      context.emit("change", {
-        id: props.uploadId,
-        src: "",
-      });
-    }
-
-    return {
-      loading,
-      uploadImage,
-      removeImage
-    };
-  }
+  src: {
+    type: String,
+    default: "",
+  },
+  /** emit 时携带的 id */
+  uploadId: {
+    type: [String, Number],
+    default: "",
+  },
 })
+
+const emit = defineEmits(["change"]);
+
+const loading = ref(false);
+
+function uploadImage() {
+  if (loading.value) return;
+  uni.chooseImage({
+    count: 1,
+    sizeType: "compressed",
+    sourceType: ["album"],
+    success(res) {
+      // console.log(res);
+      const result = res.tempFilePaths as Array<string>;
+      // 模拟上传
+      loading.value = true;
+      setTimeout(() => {
+        loading.value = false;
+        emit("change", {
+          id: props.uploadId,
+          src: result[0],
+        });
+      }, 800);
+
+      // loading.value = true;
+      // uni.uploadFile({
+      //   url: "https://unidemo.dcloud.net.cn/upload",
+      //   filePath: result[0],
+      //   fileType: "image",
+      //   name: "data",
+      //   success(uploadResult) {
+      //     loading.value = false;
+      //     console.log("上传组件上传成功 >>", uploadResult.data);
+      //     emit("change", {
+      //       id: props.uploadId,
+      //       src: uploadResult.data
+      //     });
+      //   },
+      //   fail(uploadFail) {
+      //     loading.value = false;
+      //     console.log("上传组件上传失败 ！！！", uploadFail);
+      //     showToast(`上传失败 >> ${uploadFail.errMsg}`);
+      //   }
+      // });
+    },
+    fail(err) {
+      console.log("chooseImage fail >>", err);
+      showToast("读取图片失败！");
+    },
+  });
+}
+
+/** 清除图片 */
+function removeImage() {
+  emit("change", {
+    id: props.uploadId,
+    src: "",
+  });
+}
+
 </script>
 <style lang="scss">
 .upload-image {

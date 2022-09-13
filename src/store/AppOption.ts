@@ -1,7 +1,9 @@
+import { reactive } from "vue";
+
 export default class ModuleAppOption {
 
   /** `APP`操作信息 */
-  readonly appOption = {
+  readonly appOption = reactive({
     /** `小程序`导航栏高度 */
     navBarHeight: 0,
     /** `小程序`胶囊距右方间距（方保持左、右间距一致） */
@@ -26,7 +28,7 @@ export default class ModuleAppOption {
     screenHeight: 0,
     /** 是否为`iPhoneX`系列（做底部`UI`判断） */
     isIPhoneX: false
-  }
+  })
 
   /** 
    * 初始化`APP`操作信息

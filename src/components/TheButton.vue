@@ -9,46 +9,40 @@
     <slot></slot>
   </button>
 </template>
-<script lang="ts">
-import { computed, defineComponent } from "vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 
-/** 自定义按钮，包含 loading、disabled 等状态 */
-export default defineComponent({
-  name: "TheButton",
-  emits: ["click"],
-  props: {
-    /** 按钮颜色 */
-    color: { type: String, default: "#40a9ff" },
-    /** 按钮文字颜色 */
-    textColor: { type: String, default: "#fff" },
-    /** 按钮高度`rpx` */
-    height: { type: Number, default: 90 },
-    /** 是否圆角按钮 */
-    round: { type: Boolean, default: false },
-    /** 加载状态 */
-    loading: { type: Boolean, default: false },
-    /** 是否禁用状态 */
-    disabled: { type: Boolean, default: false },
-  },
-  setup(props, context) {
-    const radius = computed(function () {
-      let value = "2px";
-      if (props.round) {
-        value = `${props.height / 2}rpx`;
-      }
-      return value;
-    });
+// =========== 自定义按钮，包含 loading、disabled 等状态 ===========
 
-    function onClick() {
-      context.emit("click");
-    }
+const emit = defineEmits(["click"]);
 
-    return {
-      radius,
-      onClick,
-    };
-  },
+const props = defineProps({
+  /** 按钮颜色 */
+  color: { type: String, default: "#40a9ff" },
+  /** 按钮文字颜色 */
+  textColor: { type: String, default: "#fff" },
+  /** 按钮高度`rpx` */
+  height: { type: Number, default: 90 },
+  /** 是否圆角按钮 */
+  round: { type: Boolean, default: false },
+  /** 加载状态 */
+  loading: { type: Boolean, default: false },
+  /** 是否禁用状态 */
+  disabled: { type: Boolean, default: false },
+})
+
+const radius = computed(function () {
+  let value = "2px";
+  if (props.round) {
+    value = `${props.height / 2}rpx`;
+  }
+  return value;
 });
+
+function onClick() {
+  emit("click");
+}
+
 </script>
 <style lang="scss">
 $time: 0.3s all;

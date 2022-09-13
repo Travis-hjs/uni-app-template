@@ -11,29 +11,17 @@
     <UploadImage :src="formData.avatar" @change="onUpload" />
   </view>
 </template>
-<script lang="ts">
-import { defineComponent, reactive } from "vue";
+<script lang="ts" setup>
+import { reactive } from "vue";
 import UploadImage from "@/components/Upload/Image.vue";
 import { UploadImageRes } from "@/types";
 
-export default defineComponent({
-  components: {
-    UploadImage
-  },
-  setup() {
-    const formData = reactive({
-      avatar: ""
-    })
-
-    function onUpload(res: UploadImageRes) {
-      formData.avatar = res.src;
-    }
-
-    return {
-      formData,
-      onUpload
-    }
-  }
+const formData = reactive({
+  avatar: ""
 })
+
+function onUpload(res: UploadImageRes) {
+  formData.avatar = res.src;
+}
 </script>
 ```

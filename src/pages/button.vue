@@ -14,29 +14,18 @@
     <TheButton color="#020202" textColor="#f04e7d" :loading="loading" @click="setLoading(4)">自定义字体颜色 加载 4 秒</TheButton>
 </view>
 </template>
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script lang="ts" setup>
+import { ref } from "vue";
 import TheButton from "@/components/TheButton.vue";
 
-export default defineComponent({
-  components: {
-    TheButton,
-  },
-  setup(props, context) {
-    const loading = ref(false);
+const loading = ref(false);
 
-    function setLoading(val: number) {
-      // console.log("执行");
-      loading.value = true;
-      setTimeout(() => (loading.value = false), val * 1000);
-    }
+function setLoading(val: number) {
+  // console.log("执行");
+  loading.value = true;
+  setTimeout(() => (loading.value = false), val * 1000);
+}
 
-    return {
-      loading,
-      setLoading,
-    };
-  },
-});
 </script>
 <style lang="scss">
 .page-button {

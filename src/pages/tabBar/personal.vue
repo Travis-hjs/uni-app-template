@@ -4,22 +4,14 @@
     <button class="button-pink" @click="clearUserInfo()">清空`userInfo`</button>
   </view>
 </template>
-<script lang="ts">
+<script lang="ts" setup>
 import store from "@/store";
-import { defineComponent } from "vue";
 
-export default defineComponent({
-  setup() {
-    function clearUserInfo() {
-      store.user.reset();
-    }
+const userInfo = store.user.info;
 
-    return {
-      clearUserInfo,
-      userInfo: store.user.info,
-    };
-  },
-});
+function clearUserInfo() {
+  store.user.reset();
+}
 </script>
 <style lang="scss">
 .personal {

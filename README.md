@@ -9,13 +9,7 @@
 | [master](https://github.com/Hansen-hjs/uni-app-template) | vue 3.x + vite | 默认版本 |
 | [v2](https://github.com/Hansen-hjs/uni-app-template/tree/v2) | vue 2.6 + webpack | - |
 
-## 关于`<script setup></script>`写法说明
-
-当前项目不使用该语法糖，详情看[我为什么在 vue3 中不使用 setup 语法糖](https://juejin.cn/post/7114511843229433863)
-
 ## 功能清单
-
-**同步vue2模板中的所有功能**
 
 1. `http`请求封装，具体使用看`api/common.ts`的几个示例。
 

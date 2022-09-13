@@ -42,57 +42,41 @@ interface PickerSelectItem<T = string | number> {
     <ThePicker :show="showPicker" @cancel="closePicker" @confirm="onPicker" :list="options" />
   </view>
 </template>
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script lang="ts" setup>
+import { ref } from "vue";
 import ThePicker from "@/components/Picker/index.vue";
 import { PickerSelectItem } from "@/types";
 
-export default defineComponent({
-  components: {
-    ThePicker
-  },
-  setup() {
-    const options = [
-      { label: "选项一", value: 1 },
-      { label: "选项二", value: 2 },
-      {
-        label: "两级选项", value: 3,
-        children: [
-          { label: "二级-1", value: 1 },
-          { label: "二级-2", value: 2 },
-        ]
-      },
+const options = [
+  { label: "选项一", value: 1 },
+  { label: "选项二", value: 2 },
+  {
+    label: "两级选项", value: 3,
+    children: [
+      { label: "二级-1", value: 1 },
+      { label: "二级-2", value: 2 },
     ]
+  },
+]
 
-    const showPicker = ref(false);
-    /** 展示的值 */
-    const selectLabel = ref("");
+const showPicker = ref(false);
+/** 展示的值 */
+const selectLabel = ref("");
 
-    function openPicker() {
-      showPicker.value = true;
-    }
+function openPicker() {
+  showPicker.value = true;
+}
 
-    function closePicker() {
-      showPicker.value = false;
-    }
+function closePicker() {
+  showPicker.value = false;
+}
 
-    function onPicker(res: { id: string, value: Array<PickerSelectItem<number>> }) {
-      const values = res.value.map(item => item.value);
-      console.log("values >>", values)
-      selectLabel.value = res.value.map(item => item.label).join("-");
-      closePicker();
-    }
-
-    return {
-      options,
-      showPicker,
-      selectLabel,
-      openPicker,
-      closePicker,
-      onPicker
-    }
-  }
-})
+function onPicker(res: { id: string, value: Array<PickerSelectItem<number>> }) {
+  const values = res.value.map(item => item.value);
+  console.log("values >>", values)
+  selectLabel.value = res.value.map(item => item.label).join("-");
+  closePicker();
+}
 </script>
 ```
 
@@ -123,39 +107,26 @@ export default defineComponent({
     <!-- <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" value="2020-06-08" startDate="2019-03-12" endDate="2021-02-04" /> -->
   </view>
 </template>
-<script>
-import { defineComponent, ref } from "vue";
+<script lang="ts" setup>
+import { ref } from "vue";
 import PickerDate from "@/components/Picker/Date.vue";
 
-export default defineComponent({
-  components: {
-    PickerDate
-  },
-  setup() {
-    const showPickerDate = ref(false);
-    const selectLabel = ref("");
+const showPickerDate = ref(false);
 
-    function openPickerDate() {
-      showPickerDate.value = true;
-    }
+const selectLabel = ref("");
 
-    function closePickerDate() {
-      showPickerDate.value = false;
-    }
+function openPickerDate() {
+  showPickerDate.value = true;
+}
 
-    function onPickerDate(val: string) {
-      selectLabel.value = val;
-      closePickerDate();
-    }
+function closePickerDate() {
+  showPickerDate.value = false;
+}
 
-    return {
-      showPickerDate,
-      selectLabel,
-      openPickerDate,
-      closePickerDate,
-      onPickerDate
-    }
-  }
-})
+function onPickerDate(val: string) {
+  selectLabel.value = val;
+  closePickerDate();
+}
+
 </script>
 ```

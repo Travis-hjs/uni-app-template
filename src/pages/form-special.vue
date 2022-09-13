@@ -13,77 +13,61 @@
     <TheButton color="#07c160" @click="onSubmit()">提交表单</TheButton>
   </view>
 </template>
-<script lang="ts">
-import { defineComponent, reactive, ref, watch } from "vue";
+<script lang="ts" setup>
+import { reactive, ref, watch } from "vue";
 import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import TheButton from "@/components/TheButton.vue";
 import { showToast } from "@/utils/control";
 import { TheFormRules } from "@/types";
 
-export default defineComponent({
-  components: {
-    TheForm,
-    TheFormItem,
-    TheButton
-  },
-  setup(props, context) {
-    const formData = reactive({
-      userName: "",
-      nickname: ""
-    })
+const formData = reactive({
+  userName: "",
+  nickname: ""
+})
 
-    const formRules: TheFormRules = {
-      userName: [
-        { required: true, message: "请输入用户名" }
-      ],
-      nickname: [
-        { required: true, message: "请输入昵称" }
-      ],
-    }
+const formRules: TheFormRules = {
+  userName: [
+    { required: true, message: "请输入用户名" }
+  ],
+  nickname: [
+    { required: true, message: "请输入昵称" }
+  ],
+}
 
-    /** 是否需求监听昵称 */
-    let checkNickname = false;
+/** 是否需求监听昵称 */
+let checkNickname = false;
 
-    const theForm = ref<InstanceType<typeof TheForm>>();
+const theForm = ref<InstanceType<typeof TheForm>>();
 
-    const itemNickname = ref<InstanceType<typeof TheFormItem>>();
+const itemNickname = ref<InstanceType<typeof TheFormItem>>();
 
-    function onSubmit() {
-      theForm.value!.validate((valid, reuls) => {
-        if (valid) {
-          // 一些特殊情况需要处理两个值不能为相同时处理
-          if (formData.nickname && formData.userName === formData.nickname) {
-            itemNickname.value!.showValidateField("“用户名” 与 “昵称” 不能相同");
-            checkNickname = true;
-            return;
-          }
-          showToast("验证通过，在控制台可以查看表单数据");
-          console.log("表单数据 >>", JSON.stringify(formData, null, "\t"));
-        } else {
-          const keys = Object.keys(reuls);
-          const firstProp = keys[0];
-          showToast(`${reuls[firstProp][0].message}`);
-        }
-      })
-    }
-
-    watch(() => formData.nickname, function () {
-      if (checkNickname) {
-        theForm.value!.resetField("nickname");
-        checkNickname = false;
+function onSubmit() {
+  theForm.value!.validate((valid, reuls) => {
+    if (valid) {
+      // 一些特殊情况需要处理两个值不能为相同时处理
+      if (formData.nickname && formData.userName === formData.nickname) {
+        itemNickname.value!.showValidateField("“用户名” 与 “昵称” 不能相同");
+        checkNickname = true;
+        return;
       }
-    })
-
-    return {
-      formData,
-      formRules,
-      theForm,
-      itemNickname,
-      onSubmit,
+      showToast("验证通过，在控制台可以查看表单数据");
+      console.log("表单数据 >>", JSON.stringify(formData, null, "\t"));
+    } else {
+      const keys = Object.keys(reuls);
+      const firstProp = keys[0];
+      showToast(`${reuls[firstProp][0].message}`);
     }
+  })
+}
+
+watch(() => formData.nickname, function () {
+  if (checkNickname) {
+    theForm.value!.resetField("nickname");
+    checkNickname = false;
   }
 })
+
 </script>
 <style lang="scss">
 .form-special {

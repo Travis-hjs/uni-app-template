@@ -29,39 +29,39 @@
   </view>
 </template>
 <script lang="ts">
+/** 加载更多数据底部提示组件 */
+export default defineComponent({
+  name: "LoadMoreTip"
+})
+</script>
+<script lang="ts" setup>
 import { defineComponent } from "vue";
 import { useLoadMoreData } from "@/hooks/loadMore";
 import store from "@/store";
 
-/** 加载更多数据底部提示组件 */
-export default defineComponent({
-  name: "LoadMoreTip",
-  props: {
-    info: {
-      type: Object,
-      default() {
-        return useLoadMoreData();
-      },
-    },
-    noneDataText: {
-      type: String,
-      default: "没有数据了",
-    },
-    finishText: {
-      type: String,
-      default: "数据已全部加载完",
-    },
-    paddingBottom: {
-      type: [String, Number],
-      default: "",
+defineProps({
+  info: {
+    type: Object,
+    default() {
+      return useLoadMoreData();
     },
   },
-  setup() {
-    return {
-      imageInfo: store.imageInfo,
-    }
-  }
-})
+  noneDataText: {
+    type: String,
+    default: "没有数据了",
+  },
+  finishText: {
+    type: String,
+    default: "数据已全部加载完",
+  },
+  paddingBottom: {
+    type: [String, Number],
+    default: "",
+  },
+});
+
+const imageInfo = store.imageInfo;
+
 </script>
 <style lang="scss">
 .load-more-tip {

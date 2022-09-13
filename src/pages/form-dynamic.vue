@@ -33,8 +33,8 @@
     </TheForm>
   </view>
 </template>
-<script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+<script lang="ts" setup>
+import { reactive, ref } from "vue";
 import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import TheButton from "@/components/TheButton.vue";
@@ -52,107 +52,82 @@ interface FormDataDynamic extends FormDataType {
   [key: string]: string | Array<{ value: string }>
 }
 
-export default defineComponent({
-  components: {
-    TheForm,
-    TheFormItem,
-    TheButton
-  },
-  setup(props, context) {
-    const formData = reactive<FormDataDynamic>({
-      title: "",
-      email: "",
-      list: []
-    })
-
-    const formRules = reactive<TheFormRules>({
-      title: [
-        { required: true, message: "请输入标题" },
-      ],
-      email: [
-        { required: true, message: "请输入邮箱" },
-        { reg: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.toString(), message: "邮箱地址不正确" },
-      ],
-      list: [
-        { required: true, message: "列表不能为空" },
-      ]
-    })
-
-    function getListItemRules(label: string) {
-      const rules: Array<TheFormRulesItem> = [
-        { required: true, message: "请输入" + label },
-      ]
-      return rules;
-    }
-
-    const theForm = ref<InstanceType<typeof TheForm>>();
-
-    function onSubmit() {
-      theForm.value!.validate((valid, reuls) => {
-        if (valid) {
-          console.log("表单数据 >>", formData);
-        } else {
-          const keys = Object.keys(reuls);
-          const firstProp = keys[0];
-          showToast(`${reuls[firstProp][0].message}`);
-        }
-      })
-    }
-
-    function onReset() {
-      theForm.value!.resetFields((data, rules) => {
-        modifyData(formData, data);
-        modifyData(formRules, rules); // 这里因为有动态添加的表单规则，所以需要重置，默认不用
-        addItems.value = [];
-      });
-    }
-
-    /** 动态表单添加列表 */
-    const addItems = ref<Array<string>>([]);
-
-    function addFormItem() {
-      const key = `add${Date.now()}`;
-      formData[key] = "";
-      formRules[key] = [{ required: true, message: `请输入 ${key}` }];
-      addItems.value.push(key);
-    }
-
-    function removeFormItem(index: number) {
-      const key = addItems.value[index];
-      delete formData[key];
-      delete formRules[key];
-      addItems.value.splice(index, 1);
-    }
-
-    function addListItem() {
-      formData.list.push({
-        label: Math.random().toString(36).slice(2),
-        value: ""
-      })
-    }
-
-    function removeListItem(index: number) {
-      formData.list.splice(index, 1);
-    }
-
-    return {
-      formData,
-      formRules,
-
-      getListItemRules,
-
-      theForm,
-      onSubmit,
-      onReset,
-
-      addItems,
-      addFormItem,
-      removeFormItem,
-      addListItem,
-      removeListItem
-    }
-  }
+const formData = reactive<FormDataDynamic>({
+  title: "",
+  email: "",
+  list: []
 })
+
+const formRules = reactive<TheFormRules>({
+  title: [
+    { required: true, message: "请输入标题" },
+  ],
+  email: [
+    { required: true, message: "请输入邮箱" },
+    { reg: /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.toString(), message: "邮箱地址不正确" },
+  ],
+  list: [
+    { required: true, message: "列表不能为空" },
+  ]
+})
+
+function getListItemRules(label: string) {
+  const rules: Array<TheFormRulesItem> = [
+    { required: true, message: "请输入" + label },
+  ]
+  return rules;
+}
+
+const theForm = ref<InstanceType<typeof TheForm>>();
+
+function onSubmit() {
+  theForm.value!.validate((valid, reuls) => {
+    if (valid) {
+      console.log("表单数据 >>", formData);
+    } else {
+      const keys = Object.keys(reuls);
+      const firstProp = keys[0];
+      showToast(`${reuls[firstProp][0].message}`);
+    }
+  })
+}
+
+function onReset() {
+  theForm.value!.resetFields((data, rules) => {
+    modifyData(formData, data);
+    modifyData(formRules, rules); // 这里因为有动态添加的表单规则，所以需要重置，默认不用
+    addItems.value = [];
+  });
+}
+
+/** 动态表单添加列表 */
+const addItems = ref<Array<string>>([]);
+
+function addFormItem() {
+  const key = `add${Date.now()}`;
+  formData[key] = "";
+  formRules[key] = [{ required: true, message: `请输入 ${key}` }];
+  addItems.value.push(key);
+}
+
+function removeFormItem(index: number) {
+  const key = addItems.value[index];
+  delete formData[key];
+  delete formRules[key];
+  addItems.value.splice(index, 1);
+}
+
+function addListItem() {
+  formData.list.push({
+    label: Math.random().toString(36).slice(2),
+    value: ""
+  })
+}
+
+function removeListItem(index: number) {
+  formData.list.splice(index, 1);
+}
+
 </script>
 <style lang="scss">
 .form-dynamic {

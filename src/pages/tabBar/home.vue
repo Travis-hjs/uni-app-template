@@ -14,48 +14,40 @@
     </view>
   </view>
 </template>
-<script lang="ts">
+<script lang="ts" setup>
 import store from "@/store";
-import { defineComponent, reactive } from "vue";
 
-export default defineComponent({
-  setup(props, context) {
-    const menuList = [
-      { label: "ui-按钮组件", path: "/pages/button" },
-      { label: "form-表单组件", path: "/pages/form" },
-      { label: "form-表单组件（动态表单）", path: "/pages/form-dynamic" },
-      { label: "form-表单组件（特殊/边缘处理）", path: "/pages/form-special" },
-      { label: "加载更多列表", path: "/pages/load-more-list" },
-      { label: "cavans-生成海报", path: "/pages/cavans-creater" },
-      { label: "滚动tab居中示例", path: "/pages/scroll-tab" },
-    ];
+const menuList = [
+  { label: "ui-按钮组件", path: "/pages/button" },
+  { label: "form-表单组件", path: "/pages/form" },
+  { label: "form-表单组件（动态表单）", path: "/pages/form-dynamic" },
+  { label: "form-表单组件（特殊/边缘处理）", path: "/pages/form-special" },
+  { label: "加载更多列表", path: "/pages/load-more-list" },
+  { label: "cavans-生成海报", path: "/pages/cavans-creater" },
+  { label: "滚动tab居中示例", path: "/pages/scroll-tab" },
+];
 
-    let count = 0;
+let count = 0;
 
-    function setUserInfo() {
-      count++;
-      store.user.update({
-        id: count,
-        phone: Date.now(),
-        token: Math.random().toString(36).slice(2),
-      });
-    }
+function setUserInfo() {
+  count++;
+  store.user.update({
+    id: count,
+    phone: Date.now(),
+    token: Math.random().toString(36).slice(2),
+  });
+}
 
-    function openMenu(path: string) {
-      uni.navigateTo({
-        url: path,
-      });
-    }
+function openMenu(path: string) {
+  uni.navigateTo({
+    url: path,
+  });
+}
 
-    return {
-      menuList,
-      userInfo: store.user.info,
-      imageInfo: store.imageInfo,
-      setUserInfo,
-      openMenu,
-    };
-  },
-});
+const imageInfo = store.imageInfo;
+
+const userInfo = store.user.info;
+
 </script>
 <style lang="scss">
 .home {

@@ -256,3 +256,13 @@ export function randomText(min: number, max: number) {
   }
   return str;
 }
+
+// /**
+//  * 获取`/static/`目录下的图片路径
+//  * @param name 图片或文件路径名，需要带后缀
+//  * @returns 
+//  */
+// export function getIamgeByName(name: string) {
+//   console.log(name, import.meta.url);
+//   return new URL(`/static/${name}`, import.meta.url).href;
+// }
