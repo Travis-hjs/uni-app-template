@@ -15,229 +15,206 @@
   </view>
 </template>
 <script lang="ts">
-import { Component, Prop, Inject } from "vue-property-decorator";
 import TheForm from "./TheForm.vue";
-import Emitter from "@/mixins/Emitter";
-import { TheFormRulesItem, LabelPosition } from "@/types";
+import { useFormProps } from "./hooks";
+import { TheFormRulesItem } from "@/types";
+import { computed, defineComponent, getCurrentInstance, inject, onMounted, onUnmounted, PropType, ref } from "vue";
 import { checkType, getDeepLevelValue } from "@/utils";
 
-@Component({
-  name: "TheFormItem"
-})
-export default class TheFormItem extends Emitter {
-  @Prop({
-    type: String,
-    default: ""
-  })
-  label!: string;
+export default defineComponent({
+  name: "TheFormItem",
+  props: {
+    label: {
+      type: String,
+      default: ""
+    },
+    /** `<TheFormItem prop="表单数据的键值" >` */
+    prop: {
+      type: String,
+      default: ""
+    },
+    rules: {
+      type: Array as PropType<Array<TheFormRulesItem>>,
+      default: () => []
+    },
+    ...useFormProps(true)
+  },
+  setup(props) {
+    const instance = getCurrentInstance();
+    /** 父组件注入的对象 */
+    const parentProvide = inject("theFormComponent") as InstanceType<typeof TheForm>;
+    /** 父组件`props` */
+    const parentProps = parentProvide.$props;
 
-  /** `<TheFormItem prop="表单数据的键值" >` */
-  @Prop({
-    type: String,
-    default: ""
-  })
-  prop!: string;
-
-  /** 表单字段宽度，这里使用字符串，因为可能是`px`或者`rpx` */
-  @Prop({
-    type: String,
-    default: ""
-  })
-  labelWidth!: string;
-
-  /** 是否需要显示底部边框 */
-  @Prop({
-    type: [Boolean, String],
-    default: "-", // 微信小程序抽风会把空字符串转成 boolean 所以这里随便给个字符串
-  })
-  border!: boolean;
-
-  /** 表单字段排版 */
-  @Prop({
-    type: String,
-    default: ""
-  })
-  labelPosition!: LabelPosition;
-
-  /** 表单规则 */
-  @Prop({
-    type: Array,
-    default: () => []
-  })
-  rules!: Array<TheFormRulesItem>;
-
-  /** 父组件实例 */
-  @Inject("theFormComponent")
-  private parentComponent!: TheForm;
-
-  /** 是否验证 */
-  get isRequired() {
-    let result = false;
-    // 父组件的规则
-    const rules = this.parentComponent.rules;
-    if (rules && rules[this.prop] && rules[this.prop].length) {
-      result = rules[this.prop].some(item => item.required);
-    }
-    // 自身组件的规则
-    if (this.rules && this.rules.length > 0) {
-      result = this.rules.some(item => item.required);
-    }
-    return result;
-  }
-
-  /** 视图中使用的定位属性值 */
-  get usePosition() {
-    return this.labelPosition || this.parentComponent.labelPosition;
-  }
-
-  /** 视图中使用的`label`宽度值 */
-  get useLabelWidth() {
-    return this.labelWidth || this.parentComponent.labelWidth;
-  }
-
-  /** 视图中使用的`border`值 */
-  get useBorder() {
-    return checkType(this.border) === "boolean" ? this.border : this.parentComponent.border;
-  }
-
-  mounted() {
-    if (this.prop) {
-      this.dispatch("TheForm", "addTheFormItem", [this]);
-    }
-  }
-
-  beforeDestroy() {
-    this.dispatch("TheForm", "removeTheFormItem", [this]);
-  }
-
-  /**
-   * 验证提示文字
-   * @description 这个值不要给空，因为要撑开元素的高度，为空的话没有结束过渡动画
-   */
-  private validateText = "-";
-
-  /** 是否显示验证提示 */
-  private showValidate = false;
-
-  /** 重置当前验证提示 */
-  resetField() {
-    this.showValidate = false;
-  }
-
-  /**
-   * 验证当前`item`
-   * @description 暴露给外部调用的方法
-   * @param callback 校验回调
-   */
-  validateField(callback: (prop: string, rules: Array<TheFormRulesItem>) => void) {
-    let info = null;
-    /** 父组件的规则列表 */
-    const parentRules = this.parentComponent.rules;
-    const model = this.parentComponent.model;
-    const value = getDeepLevelValue(model, this.prop);
-    const tip = "校验不通过";
-
-    // console.log("this.prop >>", this.prop);
-    // console.log("parentRules >>", parentRules);
-    // console.log("model >>", model);
-    // console.log("value >>", value);
-    // console.log(this.parentComponent);
-
-    if (this.isRequired && this.prop) {
-      /** 自身规则列表 */
-      const selfRules = this.rules;
-      /** 要校验的规则列表 */
-      const rulesList = [];
-      // 先判断父组件有没有校验规则
-      if (parentRules && parentRules[this.prop]) {
-        rulesList.push(...parentRules[this.prop]);
+    /** 是否验证 */
+    const isRequired = computed(function () {
+      let result = false;
+      const rules = parentProps.rules;
+      if (rules && rules[props.prop] && rules[props.prop].length) {
+        result = rules[props.prop].some(item => item.required);
       }
-      // 然后把自身的规则列表加进去
-      if (selfRules && selfRules.length > 0) {
-        rulesList.push(...selfRules);
+      // 自身组件的规则
+      if (props.rules && props.rules.length > 0) {
+        result = props.rules.some(item => item.required);
       }
-      // 最后遍历检测
-      for (let i = 0; i < rulesList.length; i++) {
-        const item = rulesList[i];
-        if (item.type) {
-          if (checkType(value) !== item.type) {
-            info = item;
-            this.validateText = item.message || tip;
-            this.showValidate = true;
-            break;
-          }
-          this.showValidate = false;
+      return result;
+    })
+
+    /** 视图中使用的定位属性值 */
+    const usePosition = computed(() => props.labelPosition || parentProps.labelPosition);
+
+    /** 视图中使用的`label`宽度值 */
+    const useLabelWidth = computed(() => props.labelWidth || parentProps.labelWidth);
+
+    /** 视图中使用的`border`值 */
+    const useBorder = computed(() => checkType(props.border) === "boolean" ? !!props.border : !!parentProps.border);
+
+    /** 
+     * 验证提示文字
+     * - 这个值不要给空，因为要撑开元素的高度，为空的话没有结束过渡动画
+     */
+    const validateText = ref("-");
+    /** 是否显示验证提示 */
+    const showValidate = ref(false);
+    /**
+     * 重置当前验证提示
+     * @public 暴露给外部组件调用
+     */
+    function resetField() {
+      showValidate.value = false;
+    }
+    /**
+     * 验证当前`item`
+     * @public 暴露给外部组件调用
+     * @param callback 校验回调
+     */
+    function validateField(callback: (prop: string, rules: Array<TheFormRulesItem>) => void) {
+      let info;
+      const currentProp = props.prop;
+      const parentRules = parentProps.rules;
+      const model = parentProps.model;
+      const value = getDeepLevelValue(model, currentProp);
+      const tip = "校验不通过";
+      if (isRequired.value && currentProp) {
+
+        /** 自身规则列表 */
+        const selfRules = props.rules;
+        /** 要校验的规则列表 */
+        const rulesList = [];
+        // 先判断父组件有没有校验规则
+        if (parentRules && parentRules[currentProp]) {
+          rulesList.push(...parentRules[currentProp]);
         }
-        if (item.reg) {
-          // const reg = new RegExp(item.reg.replace(/\//g, ""));
-          const reg = new RegExp(item.reg.slice(1, item.reg.length - 1));
-
-          if (checkType(reg) === "regexp") {
-            if (!reg.test(value.toString())) {
+        // 然后把自身的规则列表加进去
+        if (selfRules && selfRules.length > 0) {
+          rulesList.push(...selfRules);
+        }
+        // 最后遍历检测
+        for (let i = 0; i < rulesList.length; i++) {
+          const item = rulesList[i];
+          if (item.type) {
+            if (checkType(value) !== item.type) {
               info = item;
-              this.validateText = item.message || tip;
-              this.showValidate = true;
+              validateText.value = item.message || tip;
+              showValidate.value = true;
               break;
             }
-            this.showValidate = false;
-          } else {
-            console.warn("validateField >> ruls 传入的 reg 非正则，已跳过验证");
+            showValidate.value = false;
           }
+          if (item.reg) {
+            // const reg = new RegExp(item.reg.replace(/\//g, ""));
+            const reg = new RegExp(item.reg.slice(1, item.reg.length - 1));
+
+            if (checkType(reg) === "regexp") {
+              if (!reg.test(value.toString())) {
+                info = item;
+                validateText.value = item.message || tip;
+                showValidate.value = true;
+                break;
+              }
+              showValidate.value = false;
+            } else {
+              console.warn("validateField >> ruls 传入的 reg 非正则，已跳过验证");
+            }
+          }
+          // 最后判断是否为空值
+          if (value === "" || value === null || value === undefined || value.length === 0) {
+            info = item;
+            validateText.value = item.message || tip;
+            showValidate.value = true;
+            break;
+          }
+          showValidate.value = false;
         }
-        // 最后判断是否为空值
-        if (value === "" || value === null || value === undefined || value.length === 0) {
-          info = item;
-          this.validateText = item.message || tip;
-          this.showValidate = true;
-          break;
-        }
-        this.showValidate = false;
       }
+
+      callback(currentProp || "", info ? [info] : []);
+    }
+    /**
+     * 滚动到视图可见位置
+     * @public 暴露给外部调用的方法
+     */
+    function scrollIntoView() {
+      let scrollTop = 0;
+      uni.createSelectorQuery().in(instance).selectViewport().scrollOffset(res => {
+        // console.log(res);
+        scrollTop = res.scrollTop!;
+      }).select(".the-form-item").boundingClientRect(res => {
+        // console.log(res);
+        const top = scrollTop + res.top!;
+        uni.pageScrollTo({
+          scrollTop: top - 50, // 这里 50 是顶部导航高度
+          duration: 100
+        });
+      }).exec();
     }
 
-    callback(this.prop || "", info ? [info] : []);
-  }
+    /**
+     * 设置验证提示
+     * @public 暴露给外部调用的方法，与`resetField`是相反的功能
+     * @param message 要显示验证的内容，不传则用原来的提示文字
+     */
+    function showValidateField(message?: string) {
+      if (message) {
+        validateText.value = message;
+      }
+      showValidate.value = true;
+      parentProps.validateScroll && scrollIntoView();
+    }
 
-  /**
-   * 滚动到视图可见位置
-   * @description 暴露给外部调用的方法
-   */
-  scrollIntoView() {
-    // #ifdef H5
-    const top = (this.$el as HTMLElement).offsetTop;
-    uni.pageScrollTo({
-      scrollTop: top - 50, // 这里 50 是顶部导航高度
-      duration: 100
-    });
-    // #endif
+    /** 暴露自身属性给父组件 */
+    const provideSelf = {
+      ...props,
+      resetField,
+      validateField,
+      scrollIntoView,
+      showValidateField
+    }
 
-    // #ifndef H5
-    let scrollTop = 0;
-    uni.createSelectorQuery().in(this).selectViewport().scrollOffset(res => {
-      // console.log(res);
-      scrollTop = res.scrollTop!;
-    }).select(".the-form-item").boundingClientRect(res => {
-      // console.log(res);
-      const top = scrollTop + res.top!;
-      uni.pageScrollTo({
-        scrollTop: top - 50, // 这里 50 是顶部导航高度
-        duration: 100
-      });
-    }).exec();
-    // #endif
-  }
+    onMounted(function () {
+      if (props.prop) {
+        uni.$emit(parentProvide.eventMap.add, provideSelf);
+      }
+    })
 
-  /**
-   * 设置验证提示
-   * @description 暴露给外部调用的方法，与`resetField`是相反的功能
-   * @param message 要显示验证的内容，不传则用原来的提示文字
-   */
-  showValidateField(message?: string) {
-    message && (this.validateText = message);
-    this.showValidate = true;
-    this.parentComponent.validateScroll && this.scrollIntoView();
+    onUnmounted(function () {
+      uni.$emit(parentProvide.eventMap.remove, provideSelf);
+    })
+
+    return {
+      isRequired,
+      usePosition,
+      useLabelWidth,
+      useBorder,
+      showValidate,
+      validateText,
+      resetField,
+      validateField,
+      scrollIntoView,
+      showValidateField
+    }
   }
-}
+})
 </script>
 <style lang="scss">
 $height: 80rpx;

@@ -29,41 +29,39 @@
   </view>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { LoadMoreInfo, useLoadMoreData } from "@/mixins/LoadMore";
+import { defineComponent } from "vue";
+import { useLoadMoreData } from "@/hooks/loadMore";
 import store from "@/store";
 
-/** 触底加载更多提示组件 */
-@Component({})
-export default class LoadMoreTip extends Vue {
-  @Prop({
-    type: Object,
-    default() {
-      return useLoadMoreData();
+/** 加载更多数据底部提示组件 */
+export default defineComponent({
+  name: "LoadMoreTip",
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return useLoadMoreData();
+      },
     },
-  })
-  info!: LoadMoreInfo;
-
-  @Prop({
-    type: String,
-    default: "没有数据了",
-  })
-  noneDataText!: string;
-
-  @Prop({
-    type: String,
-    default: "数据已全部加载完",
-  })
-  finishText!: string;
-
-  @Prop({
-    type: [String, Number],
-    default: "",
-  })
-  paddingBottom!: string | number;
-
-  readonly imageInfo = store.imageInfo;
-}
+    noneDataText: {
+      type: String,
+      default: "没有数据了",
+    },
+    finishText: {
+      type: String,
+      default: "数据已全部加载完",
+    },
+    paddingBottom: {
+      type: [String, Number],
+      default: "",
+    },
+  },
+  setup() {
+    return {
+      imageInfo: store.imageInfo,
+    }
+  }
+})
 </script>
 <style lang="scss">
 .load-more-tip {

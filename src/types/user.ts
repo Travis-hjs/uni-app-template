@@ -1,6 +1,4 @@
-/**
- * 用户信息类型
- */
+/** 用户信息类型 */
 export interface UserInfo {
   /** 登录凭据 */
   token: string

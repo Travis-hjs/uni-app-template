@@ -9,7 +9,6 @@ $dark: #222;
 $red: #fa2d2d;
 $pink: #f04e7d;
 $blue: #2C72F3;
-$duration: 0.3s all;
 
 // 溢出...显示
 @mixin ellipsis($number) {
@@ -19,18 +18,31 @@ $duration: 0.3s all;
   overflow: hidden;
 }
 
-@mixin button {
+@mixin button($color, $bg) {
   font-size: 30rpx;
   min-width: 160rpx;
   padding: 0 20rpx;
   border-radius: 2px;
   height: 80rpx;
-  background-color: #eee;
-  color: $dark;
+  background-color: $bg;
+  border-color: $bg;
+  color: $color;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &::after,
+  &::before {
+    border: none;
+    background-color: transparent;
+  }
+
+  &:hover {
+    background-color: $bg;
+    border-color: $bg;
+    color: $color;
+  }
 
   &:active {
     opacity: 0.85;

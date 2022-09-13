@@ -190,9 +190,9 @@ export function getQueryParam(name?: string, target?: string) {
  * @example 
  * ```js
  * const info = {
- *     list: [
- *         { value: "hjs" }
- *     ]
+ *   list: [
+ *     { value: "hjs" }
+ *   ]
  * }
  * getDeepLevelValue(info, "list.0.value"); // => "hjs"
  * ```

@@ -216,7 +216,7 @@ function loadImage(url: string, callback: (val: string) => void, fail: (error: a
 
   // #ifdef MP-WEIXIN
   // 微信端不能直接加载`base64`的图片数据，必需要转为本地路径
-  wx.getImageInfo({
+  uni.getImageInfo({
     src: url,
     success(res) {
       callback(res.path);

@@ -4,244 +4,232 @@
   </view>
 </template>
 <script lang="ts">
-import { Component, Prop, Watch } from "vue-property-decorator";
-import Emitter from "@/mixins/Emitter";
 import TheFormItem from "./TheFormItem.vue";
-import { TheFormRules, LabelPosition, TheFormValidateCallback } from "@/types";
+import { defineComponent, PropType, provide, watch, onUnmounted } from "vue";
+import { TheFormRules, TheFormValidateCallback } from "@/types";
+import { useFormProps } from "./hooks";
 import { getDeepLevelValue } from "@/utils";
 
-@Component({
+/** `<TheFormItem>`实例类型 */
+type ItemInstance = InstanceType<typeof TheFormItem>;
+
+/** 一直累加的`formId`，需要时可以暴露给外部使用 */
+let formId = 1;
+
+export default defineComponent({
   name: "TheForm",
-  provide() {
-    return {
-      theFormComponent: this
-    }
-  }
-})
-export default class TheForm extends Emitter {
+  props: {
+    /** 表单数据对象 */
+    model: {
+      type: Object as PropType<BaseObj>,
+      required: true
+    },
+    /** 表单校验规则 */
+    rules: {
+      type: Object as PropType<TheFormRules>,
+      default: () => ({})
+    },
+    /** 是否需要验证时滚动到对应位置 */
+    validateScroll: {
+      type: Boolean,
+      default: true
+    },
+    ...useFormProps()
+  },
+  setup(props) {
+    const currentId = formId;
+    formId++;
 
-  /** 是否需要验证时滚动到对应位置 */
-  @Prop({
-    type: Boolean,
-    default: true
-  })
-  validateScroll!: boolean;
+    /** `model`原始数据，重置时用到 */
+    let beforeModel: BaseObj = {};
 
-  /** 表单字段宽度，这里使用字符串，因为可能是`px`或者`rpx` */
-  @Prop({
-    type: String,
-    default: ""
-  })
-  labelWidth!: string;
+    /** `rules`原始数据，重置时用 */
+    let beforeRules: TheFormRules = {};
 
-  /** 表单字段排版 */
-  @Prop({
-    type: String,
-    default: "left"
-  })
-  labelPosition!: LabelPosition;
+    /** `<TheFormItem>`实例列表 */
+    const items: Array<ItemInstance> = [];
 
-  /** 是否需要显示底部边框 */
-  @Prop({
-    type: Boolean,
-    default: false
-  })
-  border!: boolean;
+    /**
+     * 设置原始数据
+     * @param formData 设置的表单数据
+     * @param formRules 设置的表单规则
+     */
+    function setBeforeData(formData: BaseObj, forRules: TheFormRules) {
+      // 先初始化对象
+      beforeModel = {};
+      beforeRules = {};
 
-  /** 表单数据对象 */
-  @Prop({
-    type: Object,
-    required: true
-  })
-  model!: any;
+      if (formData) {
+        // 这里可以直接暴力深拷贝，因为表单字段类型只能是常用那几个
+        beforeModel = JSON.parse(JSON.stringify(formData));
+      }
 
-  /**
-   * `model`原始数据，重置时用到
-   * @description 非响应式
-  */
-  private beforeModel!: any;
-
-  /** 表单校验规则 */
-  @Prop({
-    type: Object,
-    default: {}
-  })
-  rules!: TheFormRules;
-
-  /**
-   * `rules`原始数据，重置时用
-   * @description 非响应式
-   */
-  private beforeRules!: TheFormRules;
-
-  /**
-   * `<TheFromItem>`实例列表
-   * @description 非响应式
-  */
-  private items!: Array<TheFormItem>;
-
-  /**
-   * 设置原始数据
-   * @param formData 设置的表单数据
-   * @param formRules 设置的表单规则
-   */
-  setBeforeData<T>(formData: T, forRules: T) {
-    // 先初始化对象
-    this.beforeModel = {};
-    this.beforeRules = {};
-
-    if (formData) {
-      // 这里可以直接暴力深拷贝，因为表单字段类型只能是常用那几个
-      this.beforeModel = JSON.parse(JSON.stringify(formData));
-    }
-
-    if (forRules) {
-      this.beforeRules = JSON.parse(JSON.stringify(forRules));
-    }
-  }
-
-  created() {
-    this.setBeforeData(this.model, this.rules || {});
-
-    // 初始化设置值
-    this.items = [];
-
-    // 监听`<TheFromItem>`创建传进来的自身组件
-    this.$on("addTheFormItem", (item: TheFormItem) => {
-      // console.log("addField >>", item);
-      this.items.push(item);
-    })
-
-    // 监听对应的`<TheFromItem>`移除操作
-    this.$on("removeTheFormItem", (item: TheFormItem) => {
-      // console.log("removeField >>", item);
-      item.prop && this.items.splice(this.items.indexOf(item), 1);
-    })
-  }
-
-  /** 执行验证之后，储存的对象 */
-  private validateInfo: { [key: string]: boolean } = {};
-
-  // 监听验证不通过，之后有值变动且验证通过后就移除验证提示
-  @Watch("model", {
-    deep: true
-  })
-  private onModelChange(res: any) {
-    const keys = Object.keys(this.validateInfo);
-    if (keys.length) {
-      for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        const value = getDeepLevelValue(res, key);
-        if (value !== "" && value !== null && value !== undefined && value.length !== 0) {
-          this.validateField(key, isValid => {
-            if (isValid) {
-              delete this.validateInfo[key];
-            }
-          }, true);
-        }
+      if (forRules) {
+        beforeRules = JSON.parse(JSON.stringify(forRules));
       }
     }
-  }
 
-  /**
-   * 表单验证
-   * @description 暴露给外部调用的
-   * @param callback 验证回调操作
-  */
-  validate(callback?: TheFormValidateCallback) {
-    if (!this.model) return console.warn(`表单验证缺少 "model" 对象`);
-    if (!this.rules) return console.warn(`表单验证缺少 "rules" 对象，无法验证`);
-    let rules: TheFormRules = {};
-    let failItems: Array<TheFormItem> = [];
-    let adopt = true;
-    this.items.forEach(item => {
-      item.validateField((prop, rule) => {
-        if (prop && rule.length > 0) {
-          rules[prop] = rule;
-          adopt = false;
-          failItems.push(item);
-          this.validateInfo[prop] = true;
-        }
-      })
-    });
-    if (this.validateScroll && failItems.length > 0) {
-      failItems[0].scrollIntoView();
+    setBeforeData(props.model, props.rules || {});
+
+    /** 传给子组件的事件表 */
+    const eventMap = {
+      add: `add-the-form-item-${currentId}`,
+      remove: `remove-the-form-item-${currentId}`
     }
-    callback && callback(adopt, rules);
-  }
 
-  /** 
-   * 指定验证某个值
-   * @param prop 要验证的字段
-   * @param isWatch 是否内部 `watch` 方法调用
-   */
-  validateField(prop: string, callback?: TheFormValidateCallback, isWatch = false) {
-    if (!this.model) return console.warn(`表单验证缺少 "model" 对象`);
-    if (!this.rules) return console.warn(`表单验证缺少 "rules" 对象，无法验证`);
-    let rules: TheFormRules = {};
-    let failItems: Array<TheFormItem> = [];
-    let adopt = true;
-    for (let i = 0; i < this.items.length; i++) {
-      const item = this.items[i];
-      if (((this.rules && this.rules[prop]) || (item.rules && item.rules.length)) && item.prop === prop) {
-        item.validateField((prop, rule) => {
+    // 监听`<TheFormItem>`创建传进来的自身组件
+    uni.$on(eventMap.add, function (item: ItemInstance) {
+      // console.log("addField >>", item, currentId);
+      items.push(item);
+    })
+
+    // 监听对应的`<TheFormItem>`移除操作
+    uni.$on(eventMap.remove, function (item: ItemInstance) {
+      // console.log("removeField >>", item);
+      item.prop && items.splice(items.indexOf(item), 1);
+    })
+
+    // 组件卸载后移除监听事件
+    onUnmounted(function () {
+      uni.$off([eventMap.add, eventMap.remove]);
+    })
+
+    provide("theFormComponent", {
+      eventMap,
+      // TODO: 这里使用 $props 作为注入的 key 原因是因为不想写接口声明，
+      // InstanceType<typeof TheForm> 默认就可以动态识别 $props 中的动态类型
+      // 节省了定义类型的代码操作，TheFormItem 那边传过来没有用 $props 作为 key
+      // 是因为用到的数据都是一次性只读，非响应式，所以不需要用 $props 作为 key
+      $props: props
+    })
+
+    /** 执行验证之后，储存的对象 */
+    let validateInfo: BaseObj<boolean> = {};
+
+    watch(() => props.model, function (res: BaseObj<string | number>) {
+      const keys = Object.keys(validateInfo);
+      if (keys.length) {
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i];
+          const value = getDeepLevelValue(res, key);
+          if (value !== "" && value !== null && value !== undefined && value.length !== 0) {
+            validateField(key, isValid => {
+              if (isValid) {
+                delete validateInfo[key];
+              }
+            }, true);
+          }
+        }
+      }
+    }, { deep: true });
+
+    /** 
+     * 指定验证某个值
+     * @param prop 要验证的字段
+     * @param callback 验证回调
+     * @param isWatch 是否内部 `watch` 方法调用
+     */
+    function validateField(prop: string, callback?: TheFormValidateCallback, isWatch = false) {
+      if (!props.model) return console.warn(`表单验证缺少 "model" 对象`);
+      if (!props.rules) return console.warn(`表单验证缺少 "rules" 对象，无法验证`);
+      let rules: TheFormRules = {};
+      let failItems: Array<ItemInstance> = [];
+      let adopt = true;
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (((props.rules && props.rules[prop]) || (item.rules && item.rules.length)) && item.prop === prop) {
+          item.validateField(function (prop, rule) {
+            if (prop && rule.length > 0) {
+              rules[prop] = rule;
+              adopt = false;
+              failItems.push(item);
+              validateInfo[prop] = true;
+            }
+          });
+          break;
+        }
+      }
+      if (props.validateScroll && !isWatch && failItems.length > 0) {
+        failItems[0].scrollIntoView();
+      }
+      callback && callback(adopt, rules);
+    }
+
+    /**
+     * 表单验证
+     * @public 暴露给外部调用的
+     * @param callback 验证回调操作
+     */
+    function validate(callback?: TheFormValidateCallback) {
+      if (!props.model) return console.warn(`表单验证缺少 "model" 对象`);
+      if (!props.rules) return console.warn(`表单验证缺少 "rules" 对象，无法验证`);
+      let rules: TheFormRules = {};
+      let failItems: Array<ItemInstance> = [];
+      let adopt = true;
+      items.forEach(function (item) {
+        item.validateField(function (prop, rule) {
           if (prop && rule.length > 0) {
             rules[prop] = rule;
             adopt = false;
             failItems.push(item);
-            this.validateInfo[prop] = true;
+            validateInfo[prop] = true;
           }
-        });
-        break;
+        })
+      });
+      if (props.validateScroll && failItems.length > 0) {
+        failItems[0].scrollIntoView();
       }
+      callback && callback(adopt, rules);
     }
-    if (this.validateScroll && !isWatch && failItems.length > 0) {
-      failItems[0].scrollIntoView();
-    }
-    callback && callback(adopt, rules);
-  }
 
-  /**
-   * 移除所有校验
-   * @description 暴露给外部调用的
-   * @param callback 校验回调（同步），携带了原始数据：表单 和 规则
-   */
-  resetFields(callback?: (formData: any, rules: TheFormRules) => void) {
-    if (!this.model) return console.warn(`表单验证缺少 "model" 对象`);
-    // console.log(this.model, this.beforeModel);
-    // 清空验证对象，减少`watch`的性能开销
-    this.validateInfo = {};
+    /**
+     * 移除所有校验
+     * @description 暴露给外部调用的
+     * @param callback 校验回调（同步），携带了原始数据：表单 和 规则
+     */
+    function resetFields(callback?: (formData: any, rules: TheFormRules) => void) {
+      if (!props.model) return console.warn(`表单验证缺少 "model" 对象`);
+      // 清空验证对象，减少`watch`的性能开销
+      validateInfo = {};
 
-    // 方式一：
-    // 直接修改对象的引用值，这种方式在微信小程序里面会失效，原因是微信把所有数据都 JSON 格式化了，导致某些引用终端，而且传参类型也只能是 string | number | object
-    // modifyData(this.model, this.beforeModel);
+      // 方式一：
+      // 直接修改对象的引用值，这种方式在微信小程序里面会失效，原因是微信把所有数据都 JSON 格式化了，导致某些引用终端，而且传参类型也只能是 string | number | object
+      // modifyData(this.model, this.beforeModel);
 
-    this.items.forEach(item => {
-      item.resetField();
-    })
-
-    // 方式二：单向事件触发父组件更新数据，性能最优
-    callback && callback(JSON.parse(JSON.stringify(this.beforeModel)), JSON.parse(JSON.stringify(this.beforeRules)));
-  }
-
-  /**
-   * 移除某个验证
-   * @param prop 指定值
-   */
-  resetField(prop: string) {
-    for (let i = 0; i < this.items.length; i++) {
-      const item = this.items[i];
-      if (item.prop === prop) {
-        if (Object.prototype.hasOwnProperty.call(this.validateInfo, prop)) {
-          delete this.validateInfo[prop];
-        }
+      items.forEach(item => {
         item.resetField();
-        break;
+      })
+
+      // 方式二：单向事件触发父组件更新数据，性能最优
+      callback && callback(JSON.parse(JSON.stringify(beforeModel)), JSON.parse(JSON.stringify(beforeRules)));
+    }
+
+    /**
+     * 移除某个验证
+     * @param prop 指定值
+     */
+    function resetField(prop: string) {
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (item.prop === prop) {
+          if (Object.prototype.hasOwnProperty.call(validateInfo, prop)) {
+            delete validateInfo[prop];
+          }
+          item.resetField();
+          break;
+        }
       }
     }
-  }
 
-}
+    return {
+      eventMap,
+      validate,
+      validateField,
+      resetFields,
+      resetField
+    }
+  }
+})
 </script>
 <style lang="scss">
 .the-form {

@@ -1,7 +1,7 @@
 import { PickerSelectItem } from "@/types";
 
-/** 创建城市数据 */
-export function createCityData(): Array<PickerSelectItem> {
+/** 城市数据 */
+export function useCityData(): Array<PickerSelectItem> {
   return [
     {
       label: "广东省",

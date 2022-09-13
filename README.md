@@ -1,77 +1,94 @@
 # uni-app 通用模板
 
+> 基于[官方脚手架](https://uniapp.dcloud.io/quickstart-cli.html#%E5%88%9B%E5%BB%BAuni-app)创建。
+
 - [预览地址](http://huangjingsheng.gitee.io/hjs/uni-app)
 
-- [vue3 版本](https://github.com/Hansen-hjs/uni-app-template/tree/v3)
+| 分支 | 版本 | 说明 |
+|---|---|---|
+| [master](https://github.com/Hansen-hjs/uni-app-template) | vue 3.x + vite | 默认版本 |
+| [v2](https://github.com/Hansen-hjs/uni-app-template/tree/v2) | vue 2.6 + webpack | - |
 
-## 模板说明：
-1. 基于`cli`创建的轻量化项目模板，只保留`vue`最基础的使用方式，保证打包到多端时不需要作太多判断处理
+## 关于`<script setup></script>`写法说明
 
-2. 状态管理不建议使用`vuex`，因为会导致代码变得冗余，而且在编辑器中失去代码静态追踪和提示“[被忽略的官方说明](https://vuex.vuejs.org/zh/#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E6%88%91%E5%BA%94%E8%AF%A5%E4%BD%BF%E7%94%A8-vuex%EF%BC%9F)”使用方式可参考：[你不需要vuex](https://juejin.im/post/5d425a83f265da03d8719cb8) 
+当前项目不使用该语法糖，详情看[我为什么在 vue3 中不使用 setup 语法糖](https://juejin.cn/post/7114511843229433863)
 
-3. 模板为了轻量化只保留了常用的组件，需要其他组件自行添加，[官方扩展组件](https://uniapp.dcloud.io/component/README?id=uniui)，这里不推荐使用除官方外的扩展组件，因为打包成多端可能会有兼容问题，所以我习惯自己写，这样代码会更少
+## 功能清单
 
-4. 已经配置好在`manifest.json`文件中h5端请求代理，不需要可剔除
+**同步vue2模板中的所有功能**
 
-5. 预装了`sass`，部分注意事项请看`uni.scss`代码注释
+1. `http`请求封装，具体使用看`api/common.ts`的几个示例。
 
-6. 封装了一些项目必用功能：`http`请求、上传图片组件、触底加载更多组件、`iPhone X`系列底部兼容组件（头部刘海导航参照这个即可）、表单组件（使用方式基本和`element-ui`一致）
+2. `scss`使用，全局样式`styles/index.scss`的自动导入；注意：建立其他`全局样式`文件时，在`styles/index.scss`里面`@import xxx.scss`即可，部分注意事项请看`uni.scss`代码注释
 
-**注意：`vue.config.js` 中配置的 `css.loaderOptions` 是无法在当前项目生效的，可能是`uni-app`项目设定和标准`vue-cli`项目设定不一样导致的，需要在`uni.scss`文件全局引入即可，具体看代码**
+3. 内置了一些常用的工具函数`utils/index.ts`。
 
-## 目录说明
+4. 表单验证组件
 
-**首字母大写的均是`class`模块**
+5. 触底加载更多组件
 
-> `api` 所有接口模块目录
+6. 弹出选择器
 
-> `components` 通用组件目录
 
-> `mixins` vue 混入目录，等价于基类
+后面有新功能再补充
 
-> `pages` 主程序页面目录，需要分包自行新建其他页面目录
+## 自定义组件使用大写+驼峰
 
-> `static` 图片或一些静态文件目录
+在`<template>`中，自己写的组件建议使用大写的方式，理由有两点
 
-> `store` 各个状态管理类模块目录
+1. 便于区分一些第三方库或者框架类的组件，这些就用小写+`-`连接，自定义的组件使用大写+驼峰式；
 
-> `utils` 实用工具模块目录
+2. 页面标签很多时，能快速定位组件和排查组件问题所在，因为`import`进来使用的时候，就是大写+驼峰式，所以直接双击变量然后`ctrl + D`就可以找到对应位置了，而且编辑器颜色对大写开头的组件也有颜色区分；
 
-> `styles` 不说了...
+示例：
 
-## 项目初始化
+```html
+<template>
+  <div>
+    ...一些其他标签
+    <!-- 默认使用方式 -->
+    <UploadImg :src="formData.pageAdImg" @change="onUpload" tip="尺寸规格：750px * 391px" />
+    ...一些其他标签
+    <UserHK :show="showUserHK" @close="closeUserHK" :pageType="pageType" @update="getHkUsers" />
+    ...一些其他标签
+    <UserKCH :show="showUserKCH" @close="closeUserKCH" :pageType="typeKCH" @update="getKchUsers" :info="infoUserKCH" />
+    ...一些其他标签
+  </div>
+</template>
 
-```bash
-npm install
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import UploadImg from '@/components/UploadImg/index.vue';
+import UserHK from './components/UserHK/index.vue';
+import UserKCH from './components/UserKCH/index.vue';
+
+export default defineComponent({
+  components: {
+    UploadImg,
+    UserHK,
+    UserKCH
+  },
+  ...more
+})
+</script>
 ```
-## 开发运行
+**这里有个细节：导入的组件带上完整路径和后缀，才能使用`ctrl + 鼠标点击`跳转到对应组件目录**
 
-```bash
-npm run dev
+## 项目配置相关
+
+当前项目所有配置全部集中写在`utils/config.js`文件中，不用再处理各种配置文件，过于复杂，不利于代理组织和维护，动态配置也应该在该文件集中处理。
+
+项目不使用`eslint`，理由是这个工具不够灵活，电脑性能不好的话可能每次改动代码都要等上不少时间，之后可以根据团队小组约定使用。
+
+默认`vscode`配置代码风格约束：
+
+```json
+{
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "vetur.format.options.tabSize": 2,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+}
 ```
 
-## 打包构建
-
-```bash
-npm run build
-```
-
-## npm 镜像设置
-
-**sass 安装失败时先执行以下命令再初始化**
-
-```bash
-set sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
-```
-
-**设置 npm 为淘宝镜像，注意不是设置为 cnpm 使用，依然是使用 npm**
-
-```bash
-npm config set registry http://registry.npm.taobao.org/
-```
-
-**还原 npm 镜像，要发布自己的 npm 包用**
-
-```bash
-npm config set registry http://registry.npmjs.org/
-```

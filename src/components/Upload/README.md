@@ -12,24 +12,28 @@
   </view>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { defineComponent, reactive } from "vue";
 import UploadImage from "@/components/Upload/Image.vue";
+import { UploadImageRes } from "@/types";
 
-@Component({
+export default defineComponent({
   components: {
-    LoadMoreTip
+    UploadImage
+  },
+  setup() {
+    const formData = reactive({
+      avatar: ""
+    })
+
+    function onUpload(res: UploadImageRes) {
+      formData.avatar = res.src;
+    }
+
+    return {
+      formData,
+      onUpload
+    }
   }
 })
-export default class Demo extends Vue {
-    
-  formData = {
-    avatar: ""
-  }
-
-  onUpload(res: { id: string, src: string }) {
-    this.formData.avatar = res.src;
-  }
-
-}
 </script>
 ```

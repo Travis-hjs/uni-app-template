@@ -49,7 +49,7 @@
 ```html
 <template>
   <view>
-    <TheForm :model="formData" :rules="formRules" labelWidth="160rpx" labelPosition="left" ref="the-form">
+    <TheForm :model="formData" :rules="formRules" labelWidth="160rpx" labelPosition="left" ref="theForm">
       <TheFormItem prop="userName" label="用户名">
         <input class="the-input" type="text" v-model="formData.userName" :placeholder="formRules.userName[0].message">
       </TheFormItem>
@@ -68,85 +68,88 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { defineComponent, reactive, ref } from "vue";
 import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import UploadImage from "@/components/Upload/Image.vue";
 import { showToast } from "@/utils/control";
+import { TheFormRules, UploadImageRes } from "@/types";
 
-interface FormDataType {
-  userName: string,
-  phone: "" | number,
-  avatar: string
-}
-
-@Component({
+export default defineComponent({
   components: {
     TheForm,
     TheFormItem,
     UploadImage
+  },
+  setup() {
+    const hasBorder = ref(true);
+
+    const formData = reactive({
+      userName: "",
+      phone: "",
+      avatar: ""
+    })
+
+    const formRules: TheFormRules = {
+      userName: [
+        { required: true, message: "请输入用户名" }
+      ],
+      phone: [
+        { required: true, message: "请输入用户手机号" },
+        { reg: /^1[345678]\d{9}$/.toString(), message: "手机号不正确" }
+      ]
+    }
+
+    const theForm = ref<InstanceType<typeof TheForm>>();
+
+    function onUpload(res: UploadImageRes) {
+      formData.avatar = res.src;
+    }
+
+    function onSubmit() {
+      theForm.value!.validate((valid, reuls) => {
+        if (valid) {
+          console.log("表单数据 >>", formData);
+        } else {
+          const keys = Object.keys(reuls);
+          const firstProp = keys[0];
+          showToast(`${reuls[firstProp][0].message}`);
+        }
+      })
+    }
+
+    function onReset() {
+      theForm.value!.resetFields();
+    }
+
+    /** 验证手机号码 */
+    function validatePhone() {
+      theForm.value!.validateField("phone", (valid, rules) => {
+        if (valid) {
+          showToast("手机验证通过");
+        } else {
+          showToast(rules["phone"][0].message!);
+        }
+      })
+    }
+
+    /** 移除验证手机号 */
+    function resetPhone() {
+      theForm.value!.resetField("phone");
+    }
+
+    return {
+      hasBorder,
+      formData,
+      formRules,
+      theForm,
+      onUpload,
+      onSubmit,
+      onReset,
+      validatePhone,
+      resetPhone
+    }
   }
 })
-export default class Demo extends Vue {
-
-  hasBorder = true;
-
-  formData: FormDataType = {
-    userName: "",
-    phone: "",
-    avatar: ""
-  }
-
-  formRules: TheForm["rules"] = {
-    userName: [
-      { required: true, message: "请输入用户名" }
-    ],
-    phone: [
-      { required: true, message: "请输入用户手机号" },
-      { reg: /^1[345678]\d{9}$/.toString(), message: "手机号不正确" }
-    ]
-  }
-
-  onUpload(res: { id: string, src: string }) {
-    this.formData.avatar = res.src;
-  }
-
-  $refs!: {
-    "the-form": TheForm
-  }
-
-  onSubmit() {
-    this.$refs["the-form"].validate((valid, reuls) => {  
-      if (valid) {
-        console.log("表单数据 >>", this.formData);
-      } else {
-        const keys = Object.keys(reuls);
-        const firstProp = keys[0];
-        showToast(`${reuls[firstProp][0].message}`);
-      }
-    })
-  }
-
-  onReset() {
-    this.$refs["the-form"].resetFields();
-  }
-
-  /** 验证手机号码 */
-  validatePhone() {
-    this.$refs["the-form"].validateField("phone", (valid, rules) => {
-      if (valid) {
-        showToast("手机验证通过");
-      } else {
-        showToast(rules["phone"][0].message as string);
-      }
-    })
-  }
-
-  /** 移除验证手机号 */
-  resetPhone() {
-    this.$refs["the-form"].resetField("phone");
-  }
-    
-}
 </script>
 ```

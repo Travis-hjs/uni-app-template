@@ -9,8 +9,8 @@
     <image mode="widthFix" :src="src" v-if="src" />
     <!-- #endif -->
 
-    <view class="close" v-if="src" @click="removeImage"></view>
-    <view class="upload-icon" @click="uploadImage" v-if="!src && !loading" :style="{ 'min-height': minHeight }"></view>
+    <view class="close" v-if="src" @click="removeImage()"></view>
+    <view class="upload-icon" @click="uploadImage()" v-if="!src && !loading" :style="{ 'min-height': minHeight }"></view>
     <view class="fvc" v-if="!src && loading" :style="{ 'min-height': minHeight }">
       <view class="preloader">
         <view class="preloader-inner">
@@ -27,103 +27,154 @@
   </view>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { defineComponent, ref } from "vue";
 import { showToast } from "@/utils/control";
 
-@Component({})
-export default class UploadImage extends Vue {
-  @Prop({
-    type: String,
-    default: "280rpx"
-  })
-  minHeight!: string;
+export default defineComponent({
+  name: "UploadImage",
+  props: {
+    minHeight: {
+      type: String,
+      default: "280rpx",
+    },
+    src: {
+      type: String,
+      default: "",
+    },
+    /** emit 时携带的 id */
+    uploadId: {
+      type: [String, Number],
+      default: "",
+    },
+  },
+  emits: ["change"],
+  setup(props, context) {
+    const loading = ref(false);
 
-  @Prop({
-    type: String,
-    default: ""
-  })
-  src!: string;
+    function uploadImage() {
+      if (loading.value) return;
+      uni.chooseImage({
+        count: 1,
+        sizeType: "compressed",
+        sourceType: ["album"],
+        success(res) {
+          // console.log(res);
+          const result = res.tempFilePaths as Array<string>;
+          // 模拟上传
+          loading.value = true;
+          setTimeout(() => {
+            loading.value = false;
+            context.emit("change", {
+              id: props.uploadId,
+              src: result[0],
+            });
+          }, 800);
 
-  /** this.$emit 携带的id */
-  @Prop({
-    type: [String, Number],
-    default: ""
-  })
-  uploadId!: string;
+          // loading.value = true;
+          // uni.uploadFile({
+          //   url: "https://unidemo.dcloud.net.cn/upload",
+          //   filePath: result[0],
+          //   fileType: "image",
+          //   name: "data",
+          //   success(uploadResult) {
+          //     loading.value = false;
+          //     console.log("上传组件上传成功 >>", uploadResult.data);
+          //     context.emit("change", {
+          //       id: props.uploadId,
+          //       src: uploadResult.data
+          //     });
+          //   },
+          //   fail(uploadFail) {
+          //     loading.value = false;
+          //     console.log("上传组件上传失败 ！！！", uploadFail);
+          //     showToast(`上传失败 >> ${uploadFail.errMsg}`);
+          //   }
+          // });
+        },
+        fail(err) {
+          console.log("chooseImage fail >>", err);
+          showToast("读取图片失败！");
+        },
+      });
+    }
 
-  /** 是否上传中 */
-  loading = false
+    /** 清除图片 */
+    function removeImage() {
+      context.emit("change", {
+        id: props.uploadId,
+        src: "",
+      });
+    }
 
-  /** 上传图片 */
-  uploadImage() {
-    if (this.loading) return;
-    const THAT = this;
-    uni.chooseImage({
-      count: 1,
-      sizeType: "compressed",
-      sourceType: ["album"],
-      success(res) {
-        // console.log(res);
-        const result = res.tempFilePaths as Array<string>;
-        // 模拟上传
-        THAT.loading = true;
-        setTimeout(() => {
-          THAT.loading = false;
-          THAT.$emit("change", {
-            id: THAT.uploadId,
-            src: result[0]
-          });
-        }, 800);
-
-        // THAT.loading = true;
-        // uni.uploadFile({
-        //   url: "https://unidemo.dcloud.net.cn/upload",
-        //   filePath: result[0],
-        //   fileType: "image",
-        //   name: "data",
-        //   success(uploadResult) {
-        //     THAT.loading = false;
-        //     console.log("上传组件上传成功 >>", uploadResult.data);
-        //     THAT.$emit("change", {
-        //       id: THAT.uploadId,
-        //       src: uploadResult.data
-        //     });
-        //   },
-        //   fail(uploadFail) {
-        //     THAT.loading = false;
-        //     console.log("上传组件上传失败 ！！！", uploadFail);
-        //     showToast(`上传失败 >> ${uploadFail.errMsg}`);
-        //   }
-        // });
-      },
-      fail(err) {
-        console.log("chooseImage fail >>", err);
-        showToast("读取图片失败！");
-      }
-    })
+    return {
+      loading,
+      uploadImage,
+      removeImage
+    };
   }
-
-  /** 清除图片 */
-  removeImage() {
-    this.$emit("change", {
-      id: this.uploadId,
-      src: ""
-    });
-  }
-}
+})
 </script>
 <style lang="scss">
-.upload-image{ 
-  width: 100%; position: relative; 
+.upload-image {
+  width: 100%;
+  position: relative;
   .close {
-    width: 70rpx; height: 70rpx; background-color: rgba(0,0,0,0.45); border-radius: 50%; position: absolute; top: 16rpx; right: 16rpx; 
-    &::before{ content: ""; width: 64%; height: 2px; background-color: #eee; border-radius: 1px; position: absolute; top: 50%; left: 18%; transform: translateY(-50%) rotate(45deg); }
-    &::after{ content: ""; width: 64%; height: 2px; background-color: #eee; border-radius: 1px; position: absolute; top: 50%; left: 18%; transform: translateY(-50%) rotate(-45deg); }
+    width: 70rpx;
+    height: 70rpx;
+    background-color: rgba(0, 0, 0, 0.45);
+    border-radius: 50%;
+    position: absolute;
+    top: 16rpx;
+    right: 16rpx;
+    &::before {
+      content: "";
+      width: 64%;
+      height: 2px;
+      background-color: #eee;
+      border-radius: 1px;
+      position: absolute;
+      top: 50%;
+      left: 18%;
+      transform: translateY(-50%) rotate(45deg);
+    }
+    &::after {
+      content: "";
+      width: 64%;
+      height: 2px;
+      background-color: #eee;
+      border-radius: 1px;
+      position: absolute;
+      top: 50%;
+      left: 18%;
+      transform: translateY(-50%) rotate(-45deg);
+    }
   }
   .upload-icon {
-    width: 100%; height: 100%; position: relative; 
-    &::before{ content: ""; width: 100rpx; height: 2px; background-color: #999; border-radius: 1px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);}
-    &::after{ content: ""; width: 100rpx; height: 2px; background-color: #999; border-radius: 1px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-90deg); }
+    width: 100%;
+    height: 100%;
+    position: relative;
+    &::before {
+      content: "";
+      width: 100rpx;
+      height: 2px;
+      background-color: #999;
+      border-radius: 1px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    &::after {
+      content: "";
+      width: 100rpx;
+      height: 2px;
+      background-color: #999;
+      border-radius: 1px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-90deg);
+    }
   }
 }
 </style>

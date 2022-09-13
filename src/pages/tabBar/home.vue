@@ -1,90 +1,69 @@
 <template>
   <view class="home">
-    <view class="pdl_30 pdr_30 mgb_30">
-      <button class="button-pink mgb_40" @click="addCount">当前页面`count`：{{ count }}</button>
-      <view class="mgb_40" style="font-size: 30rpx">userInfo: {{ JSON.stringify(userInfo, null, 4) }}</view>
-      <button class="button-dark" @click="setUserInfo()">修改`userInfo`</button>
-      <view class="line"></view>
+    <view class="pdl_30 pdr_30 pdt_30 mgb_30">
       <image class="logo" :src="imageInfo.logo"></image>
       <view class="line"></view>
-      <!-- 这样写：/static/xxx.png 不能兼容小程序端（ios不行，Android可以）和生产环境（开发环境可以，应该是环境路径问题），必需require(`@/static/xxx.png`) -->
-      <!-- <view class="bg fvc" :style="{ 'background-image': `url(${imageInfo.logo})` }">背景图测试</view> -->
-      <!-- 这样配合 css 设置背景图可以兼容任何环境 -->
-      <view class="bg fvc">背景图测试</view>
+      <view style="margin-bottom: 40rpx; font-size: 30rpx">userInfo: {{ JSON.stringify(userInfo, null, 4) }}</view>
+      <button class="button-dark" @click="setUserInfo()">修改`userInfo`</button>
     </view>
     <view class="cell">
       <view class="cell-item fvertical" v-for="(item, index) in menuList" :key="index" @click="openMenu(item.path)">
         <view class="f1">{{ item.label }}</view>
-        <image class="cell-icon" :src="imageInfo.iconArrowRight"></image>
+        <img class="cell-icon" :src="imageInfo.iconArrowRight">
       </view>
     </view>
   </view>
 </template>
-
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
 import store from "@/store";
+import { defineComponent, reactive } from "vue";
 
-@Component({})
-export default class Home extends Vue {
-  imageInfo = store.imageInfo;
+export default defineComponent({
+  setup(props, context) {
+    const menuList = [
+      { label: "ui-按钮组件", path: "/pages/button" },
+      { label: "form-表单组件", path: "/pages/form" },
+      { label: "form-表单组件（动态表单）", path: "/pages/form-dynamic" },
+      { label: "form-表单组件（特殊/边缘处理）", path: "/pages/form-special" },
+      { label: "加载更多列表", path: "/pages/load-more-list" },
+      { label: "cavans-生成海报", path: "/pages/cavans-creater" },
+      { label: "滚动tab居中示例", path: "/pages/scroll-tab" },
+    ];
 
-  readonly userInfo = store.user.info;
+    let count = 0;
 
-  menuList = [
-    { label: "ui-按钮组件", path: "/pages/button" },
-    { label: "form-表单组件", path: "/pages/form" },
-    { label: "form-表单组件（动态表单）", path: "/pages/form-dynamic" },
-    { label: "form-表单组件（特殊/边缘处理）", path: "/pages/form-special" },
-    { label: "加载更多列表", path: "/pages/list" },
-    { label: "cavans-生成海报", path: "/pages/cavans-creater" },
-    { label: "滚动tab居中示例", path: "/pages/scroll-tab" },
-  ];
+    function setUserInfo() {
+      count++;
+      store.user.update({
+        id: count,
+        phone: Date.now(),
+        token: Math.random().toString(36).slice(2),
+      });
+    }
 
-  count = 0;
+    function openMenu(path: string) {
+      uni.navigateTo({
+        url: path,
+      });
+    }
 
-  onLoad() {
-    // console.log("执行");
-  }
-
-  setUserInfo() {
-    store.user.update({
-      id: this.count,
-      phone: Date.now(),
-      token: Math.random().toString(36).slice(2),
-    });
-  }
-
-  addCount() {
-    this.count++;
-  }
-
-  openMenu(path: string) {
-    uni.navigateTo({
-      url: path,
-    });
-  }
-}
+    return {
+      menuList,
+      userInfo: store.user.info,
+      imageInfo: store.imageInfo,
+      setUserInfo,
+      openMenu,
+    };
+  },
+});
 </script>
-
 <style lang="scss">
 .home {
-  padding: 30rpx 0 40rpx;
   .logo {
     width: 100px;
     height: 100px;
     margin: 0 auto;
     display: block;
-  }
-  .bg {
-    width: 140px;
-    height: 100px;
-    background-size: cover;
-    margin: 0 auto;
-    font-size: 32rpx;
-    color: $pink;
-    background-position: center center;
-    background-image: url("@/static/logo.png");
   }
   .cell {
     width: 100%;

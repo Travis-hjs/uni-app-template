@@ -1,6 +1,6 @@
-// ========================= 控件模块 =========================
+import { nextTick } from "vue";
 
-import Vue from "vue";
+// ========================= 控件模块 =========================
 
 /**
  * 打开其他应用
@@ -139,9 +139,15 @@ export function copyText(value: string, success?: () => void) {
   // #endif
 }
 
-interface ScrollviewOption {
-  /** 当前实例 */
-  ctx: Vue
+interface ScrollviewCenterOptions<T = any> {
+  /**
+   * 当前实例
+   * ```js
+   * import { getCurrentInstance } from "vue";
+   * getCurrentInstance();
+   * ```
+   */
+  ctx: T,
   /** 要滚动的目标节点`id` */
   id: string
   /** `<scrollview>`的宽度，默认是屏幕宽度 */
@@ -151,16 +157,16 @@ interface ScrollviewOption {
   /** 是否主动设置偏移到中心位置，设置值时，`event`不需要传入 */
   scrollValue?: number
   /** 回调 */
-  callback?(left: number, node: UniApp.NodeInfo): void
+  callback?: (left: number, info: UniApp.NodeInfo) => void
 }
 
 /**
  * 监听`<scrollview>`组件指定元素滚动到视图中心的偏移值
  * @param option 配置参数
  */
-export function onScrollviewCenter(option: ScrollviewOption) {
+export function onScrollviewCenter(option: ScrollviewCenterOptions) {
   const width = option.wrapWidth || uni.getSystemInfoSync().windowWidth;
-  option.ctx.$nextTick(function () {
+  nextTick(function () {
     const node = uni.createSelectorQuery().in(option.ctx).select(`#${option.id}`);
     const left = option.event ? (option.event.currentTarget as any).offsetLeft : 0;
     node.boundingClientRect(function (nodeInfo) {

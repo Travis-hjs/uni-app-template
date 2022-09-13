@@ -5,35 +5,35 @@
   </view>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import store from "../store";
+import store from "@/store";
+import { defineComponent } from "vue";
 
 /** 兼容`iPhoneX`系列底部兼容处理组件 */
-@Component({})
-export default class TheFooter extends Vue {
-  /** 是否需要定位 */
-  @Prop({
-    type: Boolean,
-    default: true,
-  })
-  isFixed!: boolean;
-
-  /** 定位层级 */
-  @Prop({
-    type: [Number, String],
-    default: 10,
-  })
-  zIndex!: number | string;
-
-  /** 背景颜色 */
-  @Prop({
-    type: String,
-    default: "transparent",
-  })
-  background!: string;
-
-  appOption = store.appOption;
-}
+export default defineComponent({
+  name: "TheFooter",
+  props: {
+    /** 是否需要定位 */
+    isFixed: {
+      type: Boolean,
+      default: true,
+    },
+    /** 定位层级 */
+    zIndex: {
+      type: [Number, String],
+      default: 10,
+    },
+    /** 背景颜色 */
+    background: {
+      type: String,
+      default: "transparent",
+    },
+  },
+  setup() {
+    return {
+      appOption: store.appOption,
+    }
+  }
+})
 </script>
 <style lang="scss">
 .the-footer {

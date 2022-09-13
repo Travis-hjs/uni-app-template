@@ -1,5 +1,7 @@
-import { randomText, ranInt } from "@/utils";
-import request from "@/utils/request";
+import { randomText, ranInt } from '@/utils';
+import request from '@/utils/request';
+
+// ============================= 常用接口模块 =============================
 
 /**
  * 用户登录

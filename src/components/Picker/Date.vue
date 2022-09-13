@@ -1,5 +1,5 @@
 <template>
-  <view :class="['the-picker flex', { 'the-picker-show': show }]">
+  <view :class="['the-picker fwrap', { 'the-picker-show': show }]">
     <view class="f1" @click="onCancel()"></view>
     <view class="picker-content">
       <!-- 操作栏 -->
@@ -11,22 +11,21 @@
 
       <picker-view class="picker-view" indicator-style="height: 36px;" @change="pickerChange" :value="selectIndexs">
         <picker-view-column v-if="type === 'Y-M-D' || type === 'Y-M' || type === 'Y'">
-          <view class="picker-item ellipsis_1" v-for="(item, index) in yearList" :key="index">{{item}}</view>
+          <view class="picker-item ellipsis_1" v-for="(item, index) in yearList" :key="index">{{ item }}</view>
         </picker-view-column>
         <picker-view-column v-if="type === 'Y-M-D' || type === 'Y-M'">
-          <view class="picker-item ellipsis_1" v-for="(item, index) in monthList" :key="index">{{item}}</view>
+          <view class="picker-item ellipsis_1" v-for="(item, index) in monthList" :key="index">{{ item }}</view>
         </picker-view-column>
         <picker-view-column v-if="type === 'Y-M-D'">
-          <view class="picker-item ellipsis_1" v-for="(item, index) in dayList" :key="index">{{item}}</view>
+          <view class="picker-item ellipsis_1" v-for="(item, index) in dayList" :key="index">{{ item }}</view>
         </picker-view-column>
       </picker-view>
     </view>
   </view>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { defineComponent, ref, watch, nextTick, PropType, onMounted } from "vue";
 import { checkType, findIndex } from "@/utils";
-
 
 /** 当前时间 */
 const now = new Date();
@@ -36,7 +35,7 @@ const now = new Date();
  * @param val
  */
 function formatDateToList(val: string) {
-  return val.split("-").map(item => Number(item));
+  return val.split("-").map((item) => Number(item));
 }
 
 /**
@@ -55,176 +54,167 @@ function getFormatList(start: number, total: number) {
 /**
  * 日期选择组件
  */
-@Component({})
-export default class PickerDate extends Vue {
-  @Prop({
-    type: Boolean,
-    default: false
-  })
-  show!: boolean;
+export default defineComponent({
+  name: "PickerDate",
+  props: {
+    show: {
+      type: Boolean,
+      default: false,
+    },
+    title: {
+      type: [String, Number],
+      default: "",
+    },
+    /** 绑定的值（索引）,非双向绑定 */
+    value: {
+      type: String,
+      default: "",
+    },
+    /** 选择类型 */
+    type: {
+      type: String as PropType<"Y-M-D" | "Y-M" | "Y">,
+      default: "Y-M-D",
+    },
+    /** 开始日期（Y-M-D） */
+    startDate: {
+      type: String,
+      default: `${now.getFullYear() - 10}-01-01`,
+    },
+    /** 结束日期（Y-M-D） */
+    endDate: {
+      type: String,
+      default: `${now.getFullYear()}-12-${new Date(now.getFullYear(), 12, 0).getDate()}`,
+    },
+  },
+  setup(props, context) {
+    /** 年份列表 */
+    const yearList = ref<Array<number>>([]);
+    /** 月份列表 */
+    const monthList = ref<Array<string>>([]);
+    /** 天数列表 */
+    const dayList = ref<Array<string>>([]);
+    /** 选中索引 */
+    const selectIndexs = ref<Array<number>>([]);
+    /** 上一次选中的索引，做优化判断用 */
+    let beforeSelectIndexs: Array<number>;
 
-  /** 选择器标题 */
-  @Prop({
-    type: String,
-    default: ""
-  })
-  title!: string;
-
-  /** 选择类型 */
-  @Prop({
-    type: String,
-    default: "Y-M-D"
-  })
-  type!: "Y-M-D" | "Y-M" | "Y"
-
-  /** 开始日期（Y-M-D） */
-  @Prop({
-    type: String,
-    default: `${now.getFullYear() - 10}-01-01`
-  })
-  startDate!: string;
-
-  /** 结束日期（Y-M-D） */
-  @Prop({
-    type: String,
-    default: `${now.getFullYear()}-12-${new Date(now.getFullYear(), 12, 0).getDate()}`
-  })
-  endDate!: string;
-
-  /** 绑定的值 */
-  @Prop({
-    type: String,
-    default: ""
-  })
-  value!: string;
-
-  /** 是否要实时监听`value`的变动 */
-  @Prop({
-    type: Boolean,
-    default: false
-  })
-  watchValue!: boolean;
-
-  /** 年份列表 */
-  yearList: Array<number> = [];
-  /** 月份列表 */
-  monthList: Array<string> = [];
-  /** 天数列表 */
-  dayList: Array<string> = [];
-  /** 选中索引 */
-  selectIndexs: Array<number> = [0, 0, 0];
-  /** 上一次选中的索引，做优化判断用 */
-  beforeSelectIndexs!: Array<number>;
-
-  /** 使用的索引值 */
-  getUseIndexs() {
-    let indexs = [this.yearList.length - 1, 0, 0];
-    if (this.value && this.value.split("-").length) {
-      const list = this.value.split("-");
-      const index = findIndex(this.yearList, item => item === Number(list[0]));
-      indexs[0] = index > -1 ? index : 0;
-      if (list[1]) {
-        const second = Number(list[1]) - 1;
-        indexs[1] = second !== NaN ? second : 0;
-        if (list[2]) {
-          const third = Number(list[2]) - 1;
-          indexs[2] = third !== NaN ? third : 0;
+    /** 使用的索引值 */
+    function getUseIndexs() {
+      let indexs = [yearList.value.length - 1, 0, 0];
+      if (props.value && props.value.split("-").length) {
+        const list = props.value.split("-");
+        const index = findIndex(yearList.value, item => item === Number(list[0]));
+        indexs[0] = index > -1 ? index : 0;
+        if (list[1]) {
+          const second = Number(list[1]) - 1;
+          indexs[1] = second !== NaN ? second : 0;
+          if (list[2]) {
+            const third = Number(list[2]) - 1;
+            indexs[2] = third !== NaN ? third : 0;
+          }
         }
       }
+      return indexs;
     }
-    return indexs;
-  }
 
-  /** 更新日期数据 */
-  update() {
-    const years = [];
-    const startList = formatDateToList(this.startDate);
-    const endList = formatDateToList(this.endDate);
-    for (let i = startList[0]; i <= endList[0]; i++) {
-      years.push(i);
-    }
-    this.yearList = years;
-
-    if (this.type === "Y-M-D" || this.type === "Y-M") {
-      let start = 1;
-      let total = 12;
-      const selectYear = this.yearList[this.selectIndexs[0]];
-      if (selectYear === startList[0]) {
-        start = startList[1];
+    /** 更新日期数据 */
+    function update() {
+      const years = [];
+      const startList = formatDateToList(props.startDate);
+      const endList = formatDateToList(props.endDate);
+      for (let i = startList[0]; i <= endList[0]; i++) {
+        years.push(i);
       }
-      if (selectYear === endList[0]) {
-        total = endList[1]
+      yearList.value = years;
+
+      if (props.type === "Y-M-D" || props.type === "Y-M") {
+        let start = 1;
+        let total = 12;
+        const selectYear = yearList.value[selectIndexs.value[0]];
+        if (selectYear === startList[0]) {
+          start = startList[1];
+        }
+        if (selectYear === endList[0]) {
+          total = endList[1];
+        }
+        monthList.value = getFormatList(start, total);
       }
-      this.monthList = getFormatList(start, total);
-    }
 
-    if (this.type === "Y-M-D") {
-      const selectYear = this.yearList[this.selectIndexs[0]];
-      const selectMonth = Number(this.monthList[this.selectIndexs[1]]);
-      let start = 1;
-      let total = new Date(selectYear, selectMonth, 0).getDate();
-      if (selectYear === startList[0] && selectMonth === startList[1]) {
-        start = startList[2];
+      if (props.type === "Y-M-D") {
+        const selectYear = yearList.value[selectIndexs.value[0]];
+        const selectMonth = Number(monthList.value[selectIndexs.value[1]]);
+        let start = 1;
+        let total = new Date(selectYear, selectMonth, 0).getDate();
+        if (selectYear === startList[0] && selectMonth === startList[1]) {
+          start = startList[2];
+        }
+        if (selectYear === endList[0] && selectMonth === endList[1]) {
+          total = endList[2];
+        }
+        dayList.value = getFormatList(start, total);
       }
-      if (selectYear === endList[0] && selectMonth === endList[1]) {
-        total = endList[2];
+    }
+
+    function pickerChange(e: UniAppChangeEvent<Array<number>>) {
+      const list = e.detail.value;
+      const val1 = checkType(list[0]) === "number" ? list[0] : 0;
+      const val2 = checkType(list[1]) === "number" ? list[1] : 0;
+      const val3 = checkType(list[2]) === "number" ? list[2] : 0;
+      selectIndexs.value = [val1, val2, val3];
+      update();
+    }
+
+    function onCancel() {
+      // 还原上一次选中的状态
+      if (props.value && beforeSelectIndexs.toString() !== selectIndexs.value.toString()) {
+        setData();
       }
-      this.dayList = getFormatList(start, total);
+      context.emit("cancel");
     }
-  }
 
-  pickerChange(e: UniAppChangeEvent<Array<number>>) {
-    const list = e.detail.value;
-    const val1 = checkType(list[0]) === "number" ? list[0] : 0;
-    const val2 = checkType(list[1]) === "number" ? list[1] : 0;
-    const val3 = checkType(list[2]) === "number" ? list[2] : 0;
-    this.selectIndexs = [val1, val2, val3];
-    this.update();
-  }
-
-  onCancel() {
-    // 还原上一次选中的状态
-    if (this.value && this.beforeSelectIndexs.toString() !== this.selectIndexs.toString()) {
-      this.setData();
+    function onConfirm() {
+      let result = yearList.value[selectIndexs.value[0]].toString();
+      if (props.type === "Y-M-D" || props.type === "Y-M") {
+        result = `${result}-${monthList.value[selectIndexs.value[1]]}`;
+      }
+      if (props.type === "Y-M-D") {
+        result = `${result}-${dayList.value[selectIndexs.value[2]]}`;
+      }
+      context.emit("confirm", result);
     }
-    this.$emit("cancel");
-  }
 
-  onConfirm() {
-    let result = this.yearList[this.selectIndexs[0]].toString();
-    if (this.type === "Y-M-D" || this.type === "Y-M") {
-      result = `${result}-${this.monthList[this.selectIndexs[1]]}`;
+    /** 设置数据并更新 */
+    function setData() {
+      selectIndexs.value = getUseIndexs();
+      beforeSelectIndexs = selectIndexs.value;
+      update();
     }
-    if (this.type === "Y-M-D") {
-      result = `${result}-${this.dayList[this.selectIndexs[2]]}`;
-    }
-    this.$emit("confirm", result);
-  }
 
-  @Watch("value")
-  onValue(now: string, before: string) {
-    if (now && now != before) {
-      this.setData();
-    }
-  }
-
-  /** 设置数据并更新 */
-  setData() {
-    this.selectIndexs = this.getUseIndexs();
-    this.beforeSelectIndexs = this.selectIndexs;
-    this.update();
-  }
-
-  created() {
     // 先输出日期选择数据
-    this.update();
-  }
+    update();
 
-  mounted() {
-    // 再更新选中状态
-    this.setData();
-  }
-}
+    onMounted(function () {
+      // 再更新选中状态
+      setData();
+    });
+
+    watch(() => props.value, function (now, before) {
+      if (now && now != before) {
+        setData();
+      }
+    });
+
+    return {
+      yearList,
+      monthList,
+      dayList,
+      selectIndexs,
+      pickerChange,
+      onCancel,
+      onConfirm,
+    };
+  },
+});
 </script>
 <style lang="scss">
 @import "./picker.scss";

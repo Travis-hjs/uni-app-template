@@ -10,7 +10,7 @@ input::after, input::before, button::after, button::before { border: none; @incl
 // h5默认是100vh,即使页面没有内容也会滚动，这里取消这个设定
 // 注意：scss 条件编译必须以 css 注释为标准才能条件编译
 /* #ifdef H5 */
-uni-page-body{ min-height: auto !important; }
+uni-page-body { min-height: auto !important; }
 /* #endif */
 
 /* flex布局 */
@@ -48,10 +48,10 @@ uni-page-body{ min-height: auto !important; }
   overflow: hidden;
 }
 
-.button { @include button(); }
-.button-dark { @include button(); background-color: $dark; color: #e3b480; }
-.button-pink {  @include button(); background-color: $pink; border-color: $pink; color: $white; }
-.button-red { @include button(); background-color: $red; border-color: $red; color: $white; }
+.button { @include button($dark, #eee); }
+.button-dark { @include button(#e3b480, $dark); }
+.button-pink {  @include button($white, $pink); }
+.button-red { @include button($white, $red); }
 
 .line { width: 100%; padding-top: 40rpx; margin-bottom: 40rpx; border-bottom: solid 1px #eee; }
 
