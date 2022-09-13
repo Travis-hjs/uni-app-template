@@ -1,6 +1,13 @@
-# uni-app-vue3 模板
+# uni-app 通用模板
 
-基于[官方脚手架](https://uniapp.dcloud.io/quickstart-cli.html#%E5%88%9B%E5%BB%BAuni-app)创建。
+> 基于[官方脚手架](https://uniapp.dcloud.io/quickstart-cli.html#%E5%88%9B%E5%BB%BAuni-app)创建。
+
+- [预览地址](http://huangjingsheng.gitee.io/hjs/uni-app)
+
+| 分支 | 版本 | 说明 |
+|---|---|---|
+| [master](https://github.com/Hansen-hjs/uni-app-template) | vue 3.x + vite | 默认版本 |
+| [v2](https://github.com/Hansen-hjs/uni-app-template/tree/v2) | vue 2.6 + webpack | - |
 
 ## 关于`<script setup></script>`写法说明
 
