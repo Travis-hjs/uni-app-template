@@ -24,16 +24,9 @@
   </view>
 </template>
 <script lang="ts">
-/**
- * 日期选择组件
- */
-export default defineComponent({
-  name: "PickerDate"
-})
-</script>
-<script lang="ts" setup>
-import { defineComponent, ref, watch, PropType, onMounted } from "vue";
-import { checkType, findIndex } from "@/utils";
+import { defineComponent } from "vue";
+
+const now = new Date();
 
 /**
  * 格式化日期成列表
@@ -55,6 +48,17 @@ function getFormatList(start: number, total: number) {
   }
   return list;
 }
+
+/**
+ * 日期选择组件
+ */
+export default defineComponent({
+  name: "PickerDate"
+});
+</script>
+<script lang="ts" setup>
+import { ref, watch, PropType, onMounted } from "vue";
+import { checkType, findIndex } from "@/utils";
 
 const props = defineProps({
   show: {
@@ -78,12 +82,12 @@ const props = defineProps({
   /** 开始日期（Y-M-D） */
   startDate: {
     type: String,
-    default: `${new Date().getFullYear() - 10}-01-01`,
+    default: `${now.getFullYear() - 10}-01-01`,
   },
   /** 结束日期（Y-M-D） */
   endDate: {
     type: String,
-    default: `${new Date().getFullYear()}-12-${new Date(new Date().getFullYear(), 12, 0).getDate()}`,
+    default: `${now.getFullYear()}-12-${new Date(now.getFullYear(), 12, 0).getDate()}`,
   },
 });
 
