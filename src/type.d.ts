@@ -49,16 +49,16 @@ interface ApiResultList<T = any> extends PageInfo {
 interface RequestOptions {
   /**
    * 请求头配置（header 中不能设置 Referer。），会覆盖默认设置
-   * - 需要表单形式就`headers: { 'codeMode': 'form' }`;
+   * - 需要表单形式就`headers: { "codeMode": "form" }`;
    * - 其他头部设置自行定义
    */
   headers: BaseObj<string> & {
-    codeMode?: 'json' | 'form'
+    codeMode?: "json" | "form"
   },
   /** 请求数据类型 */
-  dataType: 'json' | 'text' | ''
+  dataType: "json" | "text" | ""
   /** 接口数据响应类型 */
-  responseType: 'json' | 'arraybuffer' | 'blob' | 'stream' | 'document' | 'text'
+  responseType: "json" | "arraybuffer" | "blob" | "stream" | "document" | "text"
   /** 是否在`res.code !== 1`的时候显示提示，默认`false`，传入`true`则用`res.msg`作为提示，也可以传入字符串作为提示内容 */
   showTip: string | boolean
 }

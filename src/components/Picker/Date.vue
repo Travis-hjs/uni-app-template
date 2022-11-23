@@ -113,10 +113,10 @@ function getUseIndexs() {
     indexs[0] = index > -1 ? index : 0;
     if (list[1]) {
       const second = Number(list[1]) - 1;
-      indexs[1] = second !== NaN ? second : 0;
+      indexs[1] = isNaN(second) ? 0 : second;
       if (list[2]) {
         const third = Number(list[2]) - 1;
-        indexs[2] = third !== NaN ? third : 0;
+        indexs[2] = isNaN(third) ? 0 : third;
       }
     }
   }
