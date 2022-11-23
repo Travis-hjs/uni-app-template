@@ -3,7 +3,7 @@ function moduleConfig() {
   const env = process.env.NODE_ENV === "development" ? "dev" : "prod";
 
   const url = {
-    dev: `${location.origin}/api`,
+    dev: `/api`,
     prod: "https://huangjingsheng.com/api"
   }
 
