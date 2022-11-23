@@ -34,6 +34,7 @@ export default defineComponent({
 <script lang="ts" setup>
 import { defineComponent, ref } from "vue";
 import { showToast } from "@/utils/control";
+import { UploadChange } from "@/types";
 
 const props = defineProps({
   minHeight: {
@@ -51,7 +52,9 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(["change"]);
+const emit = defineEmits<{
+  (event: "change", res: UploadChange): void
+}>();
 
 const loading = ref(false);
 

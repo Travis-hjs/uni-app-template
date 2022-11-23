@@ -12,7 +12,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 
-// =========== 自定义按钮，包含 loading、disabled 等状态 ===========
+// =========== 自定义按钮 ===========
 
 const emit = defineEmits(["click"]);
 

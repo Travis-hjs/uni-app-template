@@ -142,7 +142,7 @@ function validateField(callback: (prop: string, rules: Array<TheFormRulesItem>) 
         }
       }
       // 最后判断是否为空值
-      if (value === "" || value === null || value === undefined || value.length === 0) {
+      if (["", null, undefined].includes(value) || value.length === 0) {
         info = item;
         validateText.value = item.message || tip;
         showValidate.value = true;

@@ -14,13 +14,13 @@
 <script lang="ts" setup>
 import { reactive } from "vue";
 import UploadImage from "@/components/Upload/Image.vue";
-import { UploadImageRes } from "@/types";
+import { UploadChange } from "@/types";
 
 const formData = reactive({
   avatar: ""
 })
 
-function onUpload(res: UploadImageRes) {
+function onUpload(res: UploadChange) {
   formData.avatar = res.src;
 }
 </script>

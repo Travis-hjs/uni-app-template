@@ -63,7 +63,10 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["cancel", "confirm"]);
+const emit = defineEmits<{
+  (event: "cancel"): void
+  (event: "confirm", res: { id: number|string, value: Array<PickerSelectItem> }): void
+}>();
 
 /** 选中的索引列表 */
 let selectIndexs = [0, 0, 0];

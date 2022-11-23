@@ -71,7 +71,7 @@ import PickerDate from "@/components/Picker/Date.vue";
 import ThePicker from "@/components/Picker/index.vue";
 import { showToast } from "@/utils/control";
 import { useCityData } from "@/hooks";
-import { PickerSelectItem, TheFormRules, LabelPosition, UploadImageRes } from "@/types";
+import { PickerSelectItem, TheFormRules, LabelPosition, UploadChange } from "@/types";
 import { modifyData } from "@/utils";
 
 interface FormDataType {
@@ -214,7 +214,7 @@ function onRadio(e: UniAppChangeEvent<string>) {
   formData.radioValue = e.detail.value;
 }
 
-function onUpload(res: UploadImageRes) {
+function onUpload(res: UploadChange) {
   formData.avatar = res.src;
 }
 

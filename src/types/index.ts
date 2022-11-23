@@ -31,7 +31,7 @@
 // }
 
 /** 上传图片返回结果 */
-export interface UploadImageRes {
+export interface UploadChange {
   /** 和当前上传组件绑定的`id` */
   id: string | number
   /** 图片路径 */
@@ -78,7 +78,7 @@ export interface PickerSelectItem<T = string | number> {
   /**
    * 下级数据
    * @description 最多三层，选择器栏目数根据当前下级动态显示
-  */
+   */
   children?: Array<PickerSelectItem<T>>
   /** 其他携带的值 */
   [key: string]: any

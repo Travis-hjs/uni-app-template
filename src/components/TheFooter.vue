@@ -9,7 +9,7 @@ import store from "@/store";
 
 // =========== 兼容`iPhoneX`系列底部兼容处理组件 ===========
 
-const props = defineProps({
+defineProps({
   /** 是否需要定位 */
   isFixed: {
     type: Boolean,

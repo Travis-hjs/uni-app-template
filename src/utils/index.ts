@@ -264,5 +264,5 @@ export function randomText(min: number, max: number) {
 //  */
 // export function getIamgeByName(name: string) {
 //   console.log(name, import.meta.url);
-//   return new URL(`/static/${name}`, import.meta.url).href;
+//   return new URL(`../static/${name}`, import.meta.url).href;
 // }

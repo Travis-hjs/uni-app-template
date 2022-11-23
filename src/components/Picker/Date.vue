@@ -91,7 +91,10 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["cancel", "confirm"]);
+const emit = defineEmits<{
+  (event: "cancel"): void
+  (event: "confirm", res: string): void
+}>();
 
 /** 年份列表 */
 const yearList = ref<Array<number>>([]);
