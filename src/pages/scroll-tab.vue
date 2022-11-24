@@ -73,7 +73,7 @@ function onTab2(item: { value: number }, e?: Event) {
 onReady(function () {
   const node = uni.createSelectorQuery().in(instance).select("#list-2");
   node.boundingClientRect(function (info) {
-    list2Width = info.width!;
+    list2Width = Array.isArray(info) ? info[0].width! : info.width!;
   }).exec();
 
   // 页面初始化选中某个选项

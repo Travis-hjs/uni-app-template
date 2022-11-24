@@ -65,7 +65,7 @@ const props = defineProps({
 
 const emit = defineEmits<{
   (event: "cancel"): void
-  (event: "confirm", res: { id: number|string, value: Array<PickerSelectItem> }): void
+  (event: "confirm", res: { id: any, value: Array<PickerSelectItem<any>> }): void
 }>();
 
 /** 选中的索引列表 */
