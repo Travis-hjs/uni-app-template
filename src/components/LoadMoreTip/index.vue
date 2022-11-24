@@ -35,13 +35,13 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
-import { defineComponent } from "vue";
-import { useLoadMoreData } from "@/hooks/loadMore";
+import { defineComponent, PropType } from "vue";
+import { LoadMoreInfo, useLoadMoreData } from "@/hooks/loadMore";
 import store from "@/store";
 
 defineProps({
   info: {
-    type: Object,
+    type: Object as PropType<LoadMoreInfo>,
     default() {
       return useLoadMoreData();
     },
