@@ -9,7 +9,7 @@
         <view class="btn confirm" @click="clickConfirm()">确定</view>
       </view>
       <!-- 选择栏 -->
-      <picker-view class="picker-view" indicator-style="height: 36px;" @change="pickerChange">
+      <picker-view class="picker-view" indicator-style="height: 36px;" :value="selectIndexs" @change="pickerChange">
         <picker-view-column v-show="list.length > 0">
           <view class="picker-item ellipsis_1" v-for="(item, index) in list" :key="index">{{ item.label }}</view>
         </picker-view-column>
@@ -69,7 +69,7 @@ const emit = defineEmits<{
 }>();
 
 /** 选中的索引列表 */
-let selectIndexs = [0, 0, 0];
+const selectIndexs = ref([0, 0, 0]);
 /** 第二级列表 */
 const secondList = ref<Array<PickerSelectItem>>([]);
 /** 第三级列表 */
@@ -77,7 +77,7 @@ const thirdList = ref<Array<PickerSelectItem>>([]);
 
 function update() {
   const list = props.list;
-  const indexs = selectIndexs;
+  const indexs = selectIndexs.value;
   const column = props.column;
 
   const hasSecond = list.length && list[indexs[0]] && list[indexs[0]].children && list[indexs[0]].children!.length > 0;
@@ -108,12 +108,12 @@ function pickerChange(e: UniAppChangeEvent<Array<number>>) {
   const val1 = checkType(list[0]) === "number" ? list[0] : 0;
   const val2 = checkType(list[1]) === "number" ? list[1] : 0;
   const val3 = checkType(list[2]) === "number" ? list[2] : 0;
-  selectIndexs = [val1, val2, val3];
+  selectIndexs.value = [val1, val2, val3];
   update();
 }
 
 function clickConfirm() {
-  const indexs = selectIndexs;
+  const indexs = selectIndexs.value;
   const result = [props.list[indexs[0]]];
 
   if (secondList.value[indexs[1]]) {
@@ -135,6 +135,17 @@ watch(() => props.list, function () {
   })
 }, {
   immediate: true
+});
+
+defineExpose({
+  /**
+   * 设置当前选择器选中的位置，即索引
+   * @param indexs 
+   */
+  setIndexs(indexs: Array<number>) {
+    const current = selectIndexs.value;
+    selectIndexs.value = Object.assign(current, indexs);
+  }
 });
 
 </script>
