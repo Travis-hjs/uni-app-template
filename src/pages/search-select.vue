@@ -145,7 +145,7 @@ onPullDownRefresh(function () {
     z-index: 10;
   }
   .tips-box {
-    background-color: #fff;
+    // background-color: #fff;
     background: linear-gradient(180deg, #F8F8F8, #fff);
     padding: 30rpx 30rpx 10rpx;
     font-size: 0;
