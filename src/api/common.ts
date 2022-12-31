@@ -39,7 +39,7 @@ const testList = new Array(52).fill(0).map((_, index) => {
  * 模拟请求数据 
  * @param params
  */
-export function getTestList(params: PageInfo & { id: number }) {
+export function getTestList(params: PageInfo & { id?: number, keyword?: string }) {
   const delay = ranInt(200, 2000);
 
   const result: ApiResult<ApiResultList> = {
@@ -62,7 +62,17 @@ export function getTestList(params: PageInfo & { id: number }) {
         result.msg = "success";
         result.code = 1;
         const index = (params.currentPage - 1) * params.pageSize;
-        result.data.list = [...testList].splice(index, params.pageSize);
+        let list = [...testList].splice(index, params.pageSize);
+        if (params.keyword) {
+          list = list.map(item => {
+            return {
+              id: item.id,
+              name: `${params.keyword}:${item.name}`,
+              img: item.img
+            }
+          });
+        }
+        result.data.list = list;
         resolve(result);
       }
     }, delay)

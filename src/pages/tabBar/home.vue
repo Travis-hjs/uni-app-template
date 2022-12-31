@@ -12,10 +12,18 @@
         <img class="cell-icon" :src="imageInfo.iconArrowRight">
       </view>
     </view>
+    <view style="padding: 30rpx">
+      <view class="card" style="padding: 30rpx">
+        <view class="mgb_30">搜索选择页选中数据：</view>
+        <view>{{ JSON.stringify(selectValue) }}</view>
+      </view>
+    </view>
   </view>
 </template>
 <script lang="ts" setup>
 import store from "@/store";
+import { getTestList } from "@/api/common";
+import { ref } from "vue";
 
 const menuList = [
   { label: "ui-按钮组件", path: "/pages/button" },
@@ -25,6 +33,7 @@ const menuList = [
   { label: "加载更多列表", path: "/pages/load-more-list" },
   { label: "cavans-生成海报", path: "/pages/cavans-creater" },
   { label: "滚动tab居中示例", path: "/pages/scroll-tab" },
+  { label: "搜索选择页", path: "search-select" },
 ];
 
 let count = 0;
@@ -38,7 +47,32 @@ function setUserInfo() {
   });
 }
 
+const selectValue = ref<Partial<{id: number, name: string}>>({});
+
 function openMenu(path: string) {
+  if (path === "search-select") {
+    store.searchSelect.open({
+      title: '自定义标题',
+      type: 'default',
+      itemProps: {
+        title: 'name',
+        key: 'id'
+      },
+      keywordTips: ['广州', '深圳', '蚂蚁金融', '腾讯', '阿里', '特斯拉'],
+      request(searchInfo) {
+        return getTestList({
+          currentPage: searchInfo.currentPage,
+          pageSize: searchInfo.pageSize,
+          keyword: searchInfo.keyword
+        })
+      },
+      callback(res) {
+        console.log("选中项 >>", res);
+        selectValue.value = res;
+      }
+    });
+    return;
+  }
   uni.navigateTo({
     url: path,
   });

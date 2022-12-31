@@ -56,6 +56,12 @@
       "style": {
         "navigationBarTitleText": "滚动tab居中示例"
       }
+    },
+    {
+      "path": "pages/search-select",
+      "style": {
+        "navigationBarTitleText": "输入内容搜索并选择"
+      }
     }
   ],
   "globalStyle": {

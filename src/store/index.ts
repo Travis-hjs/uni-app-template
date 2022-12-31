@@ -1,4 +1,5 @@
 import ModuleAppOption from "./AppOption";
+import ModuleSearchSelect from "./SearchSelect";
 import ModuleUser from "./User";
 // import { getIamgeByName } from "@/utils";
 export class ModuleStore extends ModuleAppOption {
@@ -27,6 +28,11 @@ export class ModuleStore extends ModuleAppOption {
 
   /** 用户状态 */
   readonly user = new ModuleUser();
+
+  /**
+   * 搜索选择页状态
+   */
+  readonly searchSelect = new ModuleSearchSelect();
 
 }
 
