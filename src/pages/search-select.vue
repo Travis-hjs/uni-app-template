@@ -122,7 +122,7 @@ onUnload(function() {
 });
 
 onPullDownRefresh(function () {
-  if (pageData.keyword) return uni.stopPullDownRefresh();
+  if (!pageData.keyword) return uni.stopPullDownRefresh();
   refreshData(() => {
     uni.stopPullDownRefresh();
   });
