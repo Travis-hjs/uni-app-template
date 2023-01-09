@@ -68,11 +68,13 @@ interface ShowConfirmOptions {
   /** 标题 */
   title?: string
   /** 确认回调 */
-  callback?(): void
+  confirm?(): void
   /** 取消回调 */
   cancel?(): void
   /** 确认按钮文字 */
-  text?: string
+  confirmText?: string
+  /** 取消按钮文字，超过4个中文会报错 */
+  cancelText: string
 }
 
 /**
@@ -84,10 +86,11 @@ export function showConfirm(options: ShowConfirmOptions) {
     title: options.title || "操作提示",
     content: options.content,
     showCancel: true,
-    confirmText: options.text || "确认",
+    confirmText: options.confirmText || "确认",
+    cancelText: options.cancelText || "取消",
     success(res) {
       if (res.confirm) {
-        options.callback && options.callback();
+        options.confirm && options.confirm();
       } else if (res.cancel) {
         options.cancel && options.cancel();
       }
@@ -171,14 +174,14 @@ export function onScrollviewCenter(option: ScrollviewCenterOptions) {
     const left = option.event ? (option.event.currentTarget as any).offsetLeft : 0;
     node.boundingClientRect(function (nodeInfo) {
       let result = 0;
-      if (nodeInfo) {
+      if (nodeInfo && !Array.isArray(nodeInfo)) {
         if (typeof option.scrollValue === "number") {
           result = option.scrollValue + nodeInfo.left! + nodeInfo.width! / 2 - width / 2;
         } else {
           result = left + nodeInfo.width! / 2 - width / 2;
         }
       }
-      typeof option.callback === "function" && option.callback(result, nodeInfo);
+      typeof option.callback === "function" && option.callback(result, nodeInfo as any);
     }).exec();
   });
 }
