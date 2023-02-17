@@ -1,4 +1,4 @@
-import { checkType } from "./index";
+import { isType } from "./index";
 
 /** `cavans`生成器命名空间 */
 export namespace Cavans {
@@ -126,7 +126,7 @@ export namespace Cavans {
  * @param borderRadius 设置的圆角值
  */
 function computedRadius(width: number, height: number, borderRadius?: number) {
-  borderRadius = checkType(borderRadius) === "number" ? borderRadius! : 0;
+  borderRadius = isType<number>(borderRadius, "number") ? borderRadius : 0;
   /** 最小圆角值 */
   const minRadius = Math.min(width, height) / 2;
   /** 半径 */
@@ -141,15 +141,15 @@ function computedRadius(width: number, height: number, borderRadius?: number) {
  * @param wrap 
  */
 function computedPosition(item: Cavans.Position & Cavans.Rect, wrap: Cavans.Options) {
-  let left = checkType(item.left) === "number" ? item.left! : 0;
-  let top = checkType(item.top) === "number" ? item.top! : 0;
+  let left = isType<number>(item.left, "number") ? item.left : 0;
+  let top = isType<number>(item.top, "number") ? item.top : 0;
   // 判断并计算设置右边值
-  if (checkType(item.right) === "number") {
-    left = wrap.width - item.width - item.right!;
+  if (isType<number>(item.right, "number")) {
+    left = wrap.width - item.width - item.right;
   }
   // 判断并计算设置底部值
-  if (checkType(item.bottom) === "number") {
-    top = wrap.height - item.height - item.bottom!;
+  if (isType<number>(item.bottom, "number")) {
+    top = wrap.height - item.height - item.bottom;
   }
   return {
     left,

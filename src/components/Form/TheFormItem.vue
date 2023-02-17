@@ -25,7 +25,7 @@ import TheForm from "./TheForm.vue";
 import { useFormProps } from "./hooks";
 import { TheFormRulesItem } from "@/types";
 import { computed, getCurrentInstance, inject, onMounted, onUnmounted, PropType, ref } from "vue";
-import { checkType, getDeepLevelValue } from "@/utils";
+import { isType, getDeepLevelValue } from "@/utils";
 
 const props = defineProps({
   label: {
@@ -71,7 +71,7 @@ const usePosition = computed(() => props.labelPosition || parentProps.labelPosit
 const useLabelWidth = computed(() => props.labelWidth || parentProps.labelWidth);
 
 /** 视图中使用的`border`值 */
-const useBorder = computed(() => checkType(props.border) === "boolean" ? !!props.border : !!parentProps.border);
+const useBorder = computed(() => isType<boolean>(props.border, "boolean") ? !!props.border : !!parentProps.border);
 
 /** 
  * 验证提示文字
@@ -117,7 +117,7 @@ function validateField(callback: (prop: string, rules: Array<TheFormRulesItem>) 
     for (let i = 0; i < rulesList.length; i++) {
       const item = rulesList[i];
       if (item.type) {
-        if (checkType(value) !== item.type) {
+        if (!isType(value, item.type)) {
           info = item;
           validateText.value = item.message || tip;
           showValidate.value = true;
@@ -129,7 +129,7 @@ function validateField(callback: (prop: string, rules: Array<TheFormRulesItem>) 
         // const reg = new RegExp(item.reg.replace(/\//g, ""));
         const reg = new RegExp(item.reg.slice(1, item.reg.length - 1));
 
-        if (checkType(reg) === "regexp") {
+        if (isType<RegExp>(reg, "regexp")) {
           if (!reg.test(value.toString())) {
             info = item;
             validateText.value = item.message || tip;
@@ -162,9 +162,12 @@ function scrollIntoView() {
   let scrollTop = 0;
   uni.createSelectorQuery().in(instance).selectViewport().scrollOffset(res => {
     // console.log(res);
-    scrollTop = res.scrollTop!;
+    if (isType<UniApp.NodeInfo>(res, "object")) {
+      scrollTop = res.scrollTop!;
+    }
   }).select(".the-form-item").boundingClientRect(res => {
     // console.log(res);
+    if (isType<Array<any>>(res, "array")) return;
     const top = scrollTop + res.top!;
     uni.pageScrollTo({
       scrollTop: top - 50, // 这里 50 是顶部导航高度

@@ -58,7 +58,7 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 import { ref, watch, PropType, onMounted } from "vue";
-import { checkType, findIndex } from "@/utils";
+import { isType, findIndex } from "@/utils";
 
 const props = defineProps({
   show: {
@@ -166,9 +166,9 @@ function update() {
 
 function pickerChange(e: UniAppChangeEvent<Array<number>>) {
   const list = e.detail.value;
-  const val1 = checkType(list[0]) === "number" ? list[0] : 0;
-  const val2 = checkType(list[1]) === "number" ? list[1] : 0;
-  const val3 = checkType(list[2]) === "number" ? list[2] : 0;
+  const val1 = isType(list[0], "number") ? list[0] : 0;
+  const val2 = isType(list[1], "number") ? list[1] : 0;
+  const val3 = isType(list[2], "number") ? list[2] : 0;
   selectIndexs.value = [val1, val2, val3];
   update();
 }
