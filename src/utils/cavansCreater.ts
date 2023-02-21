@@ -1,3 +1,4 @@
+import store from "@/store";
 import { isType } from "./index";
 
 /** `cavans`生成器命名空间 */
@@ -254,6 +255,23 @@ function loadImage(url: string, callback: (val: string) => void, fail: (error: a
   // #endif
 }
 
+// TODO: 小程序的 旧版 canvas 接口 已经不再维护，本指南将指引如何迁移至新版 Canvas 2D 接口。
+// https://developers.weixin.qq.com/miniprogram/dev/framework/ability/canvas-legacy-migration.html
+// 迁移方式：https://developers.weixin.qq.com/miniprogram/dev/component/canvas.html
+
+// const query = uni.createSelectorQuery();
+// query.select(`#${params.cavansId}`).fields({ node: true, size: true } as any, function(res: any) {
+//   // console.log('回调 >>', res.node);
+//   const canvas = res.node as HTMLCanvasElement;
+//   const ctx = canvas.getContext('2d')!;
+//   const dpr = store.appOption.pixelRatio;
+//   canvas.width = res.width * dpr;
+//   canvas.height = res.height * dpr;
+//   ctx.scale(dpr, dpr);
+//   ctx.fillRect(0, 0, 100, 100);
+//   // console.log(canvas, ctx);
+// }).exec();
+
 /**
  * `cavans`生成器
  * @param params 传参配置
@@ -276,7 +294,6 @@ export default function cavansCreater(params: Cavans.Options) {
       // console.log("getImageInfo >>", res);
       // console.log("item >>", item);
       const { left, top } = computedPosition(item, params);
-
       context.save();
       if (item.borderRadius) {
         context.fill(); // 关键，这里必须要`fill`一下，不然下面`clip`会无效
@@ -285,17 +302,16 @@ export default function cavansCreater(params: Cavans.Options) {
       }
       context.drawImage(res, left, top, item.width, item.height);
       context.restore();
-      context.draw(true);
-
-      success();
+      context.draw(true, success);
     }, fail);
   }
 
   /**
    * 绘制容器
    * @param item 
+   * @param callback 绘制回调，把当前画布指定区域的内容导出生成指定大小的图片。在`draw()`回调里调用该方法才能保证图片导出成功。
    */
-  function drawBox(item: Cavans.Box) {
+  function drawBox(item: Cavans.Box, callback?: () => void) {
     const { left, top } = computedPosition(item, params);
     context.save();
     drawRoundRectPath(context, left, top, item.width, item.height, item.borderRadius);
@@ -305,10 +321,15 @@ export default function cavansCreater(params: Cavans.Options) {
     context.stroke();
     context.fill();
     context.restore();
-    context.draw(true);
+    context.draw(true, callback);
   }
 
-  function drawText(item: Cavans.Text) {
+  /**
+   * 绘制文字
+   * @param item 
+   * @param callback 绘制回调，把当前画布指定区域的内容导出生成指定大小的图片。在`draw()`回调里调用该方法才能保证图片导出成功。
+   */
+  function drawText(item: Cavans.Text, callback?: () => void) {
     // const height = item.width ? Math.ceil(item.fontSize * item.text.length / item.width) * item.fontSize : item.fontSize;
     const height = item.fontSize;
     const width = item.fontSize * item.text.length;
@@ -322,7 +343,7 @@ export default function cavansCreater(params: Cavans.Options) {
     context.fillText(item.text, _left, top);
     context.fill();
     context.restore();
-    context.draw(true);
+    context.draw(true, callback);
   }
 
   function start() {
@@ -331,20 +352,20 @@ export default function cavansCreater(params: Cavans.Options) {
       if (index === list.length - 1) {
         // context.draw(true);
         // 这里必需要加个延迟，不然在小程序端会有图片缺失的情况，估计是平台 canvas 渲染机制的问题
-        setTimeout(function () {
-          uni.canvasToTempFilePath({
-            fileType: params.fileType || "png",
-            canvasId: params.cavansId,
-            quality: 1,
-            success: params.success,
-            fail(err) {
-              params.fail && params.fail({
-                ...err,
-                type: "export"
-              })
-            }
-          })
-        }, 500);
+        // setTimeout(function () {
+        uni.canvasToTempFilePath({
+          fileType: params.fileType || "png",
+          canvasId: params.cavansId,
+          quality: 1,
+          success: params.success,
+          fail(err) {
+            params.fail && params.fail({
+              ...err,
+              type: "export"
+            })
+          }
+        });
+        // }, 500);
       } else {
         index++;
         start();
@@ -359,8 +380,7 @@ export default function cavansCreater(params: Cavans.Options) {
     }
     switch (item.type) {
       case "box":
-        drawBox(item);
-        success();
+        drawBox(item, success);
         break;
 
       case "img":
@@ -368,8 +388,7 @@ export default function cavansCreater(params: Cavans.Options) {
         break;
 
       case "text":
-        drawText(item);
-        success();
+        drawText(item, success);
         break;
     }
   }
