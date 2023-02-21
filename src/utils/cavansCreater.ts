@@ -1,4 +1,3 @@
-import store from "@/store";
 import { isType } from "./index";
 
 /** `cavans`生成器命名空间 */
