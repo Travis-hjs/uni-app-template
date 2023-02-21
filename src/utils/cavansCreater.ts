@@ -401,3 +401,186 @@ export default function cavansCreater(params: Cavans.Options) {
     console.warn("cavansCreater >> 没有可生成的列表数据");
   }
 }
+
+// /**
+//  * 获取`canvas`节点
+//  * - 因为微信小程序 [canvas旧版接口弃用](https://developers.weixin.qq.com/miniprogram/dev/framework/ability/canvas-legacy-migration.html) 导致和`h5`获取方式不同，所以该方法做了条件处理
+//  * @param id 指定节点`id`
+//  * @param callback 
+//  */
+// function getCanvas(id: string, callback?: (res: HTMLCanvasElement) => void) {
+//   // #ifdef MP
+//   uni.createSelectorQuery().select(`#$id`).fields({ node: true, size: true } as any, function(res: any) {
+//     const canvas: HTMLCanvasElement = res.node;
+//     callback && callback(canvas);
+//   }).exec();
+//   // #endif
+
+//   // #ifdef H5
+//   let canvas = document.getElementById(id) as HTMLCanvasElement;
+//   if (canvas.tagName.toLocaleLowerCase() !== "canvas") {
+//     canvas = canvas.querySelector("canvas") as HTMLCanvasElement;
+//   }
+//   callback && callback(canvas);
+//   // #endif
+// }
+
+// export function cavansDraw(params: Cavans.Options) {
+//   /** 绘制的内容列表 */
+//   const list = params.list.sort((a, b) => (a.zIndex || 0) - (b.zIndex || 0));
+//   /** 绘制的索引 */
+//   let index = 0;
+//   /** 获取的`canvas`对象 */
+//   let canvas: HTMLCanvasElement;
+//   /** `canvas`绘图上下文 */
+//   let context: CanvasRenderingContext2D;
+
+//   getCanvas(params.cavansId, function(node) {
+//     canvas = node;
+//     context = node.getContext("2d")!;
+//     if (list.length > 0) {
+//       // 先清空再绘制
+//       context.clearRect(0, 0, params.width, params.height);
+//       index = 0;
+//       start();
+//     } else {
+//       console.warn("cavansCreater >> 没有可生成的列表数据");
+//     }
+//   });
+
+//   /**
+//    * 加载图片
+//    * @param url 
+//    * @param success 
+//    * @param fail 
+//    */
+//   function _loadImage(url: string, success: (res: CanvasImageSource) => void, fail?: (err: any) => void) {
+//     let image: HTMLImageElement;
+//     // #ifdef MP
+//     image = (<any>canvas).createImage();
+//     // #endif
+
+//     // #ifdef H5
+//     image = new Image;
+//     image.setAttribute("crossOrigin", "Anonymous");
+//     // #endif
+
+//     image.onload = function() {
+//       success(image);
+//     }
+//     image.onerror = function(err) {
+//       fail && fail(err);
+//     }
+//     image.src = url;
+//   }
+
+//   /**
+//    * 绘制图片
+//    * @param item 
+//    */
+//   function drawImage(item: Cavans.Img, success: () => void, fail: (error: any) => void) {
+//     _loadImage(item.src, res => {
+//       // console.log("getImageInfo >>", res);
+//       // console.log("item >>", item);
+//       const { left, top } = computedPosition(item, params);
+//       context.save();
+//       if (item.borderRadius) {
+//         context.fill(); // 关键，这里必须要`fill`一下，不然下面`clip`会无效
+//         drawRoundRectPath(context, left, top, item.width, item.height, item.borderRadius);
+//         context.clip();
+//       }
+//       context.drawImage(res, left, top, item.width, item.height);
+//       context.restore();
+//       success();
+//     }, fail);
+//   }
+
+//   /**
+//    * 绘制容器
+//    * @param item 
+//    * @param callback 绘制回调，把当前画布指定区域的内容导出生成指定大小的图片。在`draw()`回调里调用该方法才能保证图片导出成功。
+//    */
+//   function drawBox(item: Cavans.Box, callback?: () => void) {
+//     const { left, top } = computedPosition(item, params);
+//     context.save();
+//     drawRoundRectPath(context, left, top, item.width, item.height, item.borderRadius);
+//     context.fillStyle = item.backgroundColor;
+//     context.lineWidth = item.borderWidth || 0;
+//     context.strokeStyle = item.borderColor || "rgba(0,0,0,0)";
+//     context.stroke();
+//     context.fill();
+//     context.restore();
+//     callback && callback();
+//   }
+
+//   /**
+//    * 绘制文字
+//    * @param item 
+//    * @param callback 绘制回调，把当前画布指定区域的内容导出生成指定大小的图片。在`draw()`回调里调用该方法才能保证图片导出成功。
+//    */
+//   function drawText(item: Cavans.Text, callback?: () => void) {
+//     // const height = item.width ? Math.ceil(item.fontSize * item.text.length / item.width) * item.fontSize : item.fontSize;
+//     const height = item.fontSize;
+//     const width = item.fontSize * item.text.length;
+//     const { left, top } = computedPosition({ ...item, width, height }, params);
+//     const _left = item.textAlign === "right" ? left + width : left;
+//     context.save();
+//     context.font = item.fontSize.toString();
+//     context.textAlign = item.textAlign || "left";
+//     context.textBaseline = (item.textBaseline || "normal") as CanvasTextBaseline;
+//     context.fillStyle = item.color;
+//     context.fillText(item.text, _left, top);
+//     context.fill();
+//     context.restore();
+//     callback && callback();
+//   }
+
+//   function start() {
+//     const item = list[index];
+//     function success() {
+//       if (index === list.length - 1) {
+//         // #ifdef MP
+//         uni.canvasToTempFilePath({
+//           fileType: params.fileType || "png",
+//           canvas: canvas,
+//           quality: 1,
+//           success: params.success,
+//           fail(err: any) {
+//             params.fail && params.fail({
+//               ...err,
+//               type: "export"
+//             })
+//           }
+//         } as any);
+//         // #endif
+
+//         // #ifdef H5
+//         params.success && params.success(canvas.toDataURL(`image/${params.fileType === "jpg" ? "jpeg": "png"}`));
+//         // #endif
+//       } else {
+//         index++;
+//         start();
+//       }
+//     }
+//     function fail(err: any) {
+//       params.fail && params.fail({
+//         ...err,
+//         info: item,
+//         type: "load"
+//       });
+//     }
+//     switch (item.type) {
+//       case "box":
+//         drawBox(item, success);
+//         break;
+
+//       case "img":
+//         drawImage(item, success, fail);
+//         break;
+
+//       case "text":
+//         drawText(item, success);
+//         break;
+//     }
+//   }
+// }
