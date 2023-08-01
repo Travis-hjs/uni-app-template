@@ -10,6 +10,10 @@ $red: #fa2d2d;
 $pink: #f04e7d;
 $blue: #2C72F3;
 
+$duration: .3s all;
+
+@mixin reset { margin: 0; padding: 0; box-sizing: border-box; }
+
 // 溢出...显示
 @mixin ellipsis($number) {
   display: -webkit-box;
