@@ -38,7 +38,7 @@ function getResultInfo(result: { statusCode: number, data: any }) {
  * @param data 请求参数
  * @param options 其他配置参数
  */
-export default function request<T>(method: "GET" | "POST" | "DELETE" | "PUT", path: string, data?: any, options: Partial<RequestOptions> = {}) {
+export default function request<T = any>(method: "GET" | "POST" | "DELETE" | "PUT", path: string, data?: any, options: Partial<RequestOptions> = {}) {
   const headers = options.headers || {};
   return new Promise<ApiResult<T>>(function (resolve, reject) {
     uni.request({
