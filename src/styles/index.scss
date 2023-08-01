@@ -1,7 +1,5 @@
 @import "../uni.scss";
 
-@mixin reset { margin: 0; padding: 0; box-sizing: border-box; }
-
 page { background-color: #fff; width: 100%; min-height: 100vh; @include reset(); }
 view, button, input, textarea { font-family: "Arial", "Helvetica Neue", "Helvetica", "sans-serif"; @include reset(); }
 image, input, textarea, picker { display: block; width: 100%; @include reset();}
