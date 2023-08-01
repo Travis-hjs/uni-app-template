@@ -74,7 +74,7 @@ interface ShowConfirmOptions {
   /** 确认按钮文字 */
   confirmText?: string
   /** 取消按钮文字，超过4个中文会报错 */
-  cancelText: string
+  cancelText?: string
 }
 
 /**
