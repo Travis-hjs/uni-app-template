@@ -12,8 +12,26 @@ export function checkType(target: any) {
  * 判断任意值的类型，作用与`checkType`一致，外加一个辅助功能：当函数返回值为`true`时，可以传入泛型来确定`target`的类型（类型收窄）
  * @param target 判断目标
  * @param type 判断的类型
+ * - 当要判断的类型为`object`时，需要传一个泛型去确定它的类型，因为在`ts`中`object`是一个特殊类型无法确定
+ * @example
+ * ```ts
+ * type User = {
+ *   id: number
+ *   name: string
+ * }
+ * 
+ * function setData(params: string | User | Array<User>) {
+ *   if (isType<User>(params, "object")) {
+ *     params.name = "xxx";
+ *   }
+ *   if (isType(params, "array")) {
+ *     params.push({ id: 1, name: "add" });
+ *   }
+ *   // ...do some
+ * }
+ * ```
  */
-export function isType<T>(target: any, type: JavaScriptTypes): target is T {
+export function isType<T>(target: any, type: T extends "object" ? T : JavaScriptTypes): target is T extends JavaScriptTypes ? JavaScriptType[T] : T {
   return checkType(target) === type;
 }
 

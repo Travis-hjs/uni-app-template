@@ -71,7 +71,7 @@ const usePosition = computed(() => props.labelPosition || parentProps.labelPosit
 const useLabelWidth = computed(() => props.labelWidth || parentProps.labelWidth);
 
 /** 视图中使用的`border`值 */
-const useBorder = computed(() => isType<boolean>(props.border, "boolean") ? !!props.border : !!parentProps.border);
+const useBorder = computed(() => isType(props.border, "boolean") ? !!props.border : !!parentProps.border);
 
 /** 
  * 验证提示文字
@@ -129,7 +129,7 @@ function validateField(callback: (prop: string, rules: Array<TheFormRulesItem>) 
         // const reg = new RegExp(item.reg.replace(/\//g, ""));
         const reg = new RegExp(item.reg.slice(1, item.reg.length - 1));
 
-        if (isType<RegExp>(reg, "regexp")) {
+        if (isType(reg, "regexp")) {
           if (!reg.test(value.toString())) {
             info = item;
             validateText.value = item.message || tip;
@@ -167,7 +167,7 @@ function scrollIntoView() {
     }
   }).select(".the-form-item").boundingClientRect(res => {
     // console.log(res);
-    if (isType<Array<any>>(res, "array")) return;
+    if (isType(res, "array")) return;
     const top = scrollTop + res.top!;
     uni.pageScrollTo({
       scrollTop: top - 50, // 这里 50 是顶部导航高度
