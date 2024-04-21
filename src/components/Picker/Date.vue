@@ -57,7 +57,7 @@ export default defineComponent({
 });
 </script>
 <script lang="ts" setup>
-import { ref, watch, PropType, onMounted } from "vue";
+import { ref, watch, type PropType, onMounted } from "vue";
 import { isType, findIndex } from "@/utils";
 
 const props = defineProps({

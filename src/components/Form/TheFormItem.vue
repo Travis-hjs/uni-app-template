@@ -23,8 +23,8 @@ export default defineComponent({
 <script lang="ts" setup>
 import TheForm from "./TheForm.vue";
 import { useFormProps } from "./hooks";
-import { TheFormRulesItem } from "@/types";
-import { computed, getCurrentInstance, inject, onMounted, onUnmounted, PropType, ref } from "vue";
+import type { TheFormRulesItem } from "@/types";
+import { computed, getCurrentInstance, inject, onMounted, onUnmounted, type PropType, ref } from "vue";
 import { isType, getDeepLevelValue } from "@/utils";
 
 const props = defineProps({

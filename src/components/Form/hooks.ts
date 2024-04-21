@@ -1,5 +1,5 @@
-import { PropType } from "vue";
-import { LabelPosition } from "@/types";
+import type { PropType } from "vue";
+import type { LabelPosition } from "@/types";
 
 /**
  * 表单相同`props`

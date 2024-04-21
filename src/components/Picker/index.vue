@@ -33,8 +33,8 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
-import { PropType, ref, watch, nextTick } from "vue";
-import { PickerSelectItem } from "@/types";
+import { type PropType, ref, watch, nextTick } from "vue";
+import type { PickerSelectItem } from "@/types";
 import { isType } from "@/utils";
 
 const props = defineProps({

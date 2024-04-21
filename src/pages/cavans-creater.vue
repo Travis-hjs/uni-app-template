@@ -5,7 +5,7 @@
     <TheButton color="#07c160" @click="createBanner()">生成 cavans 海报图</TheButton>
     <view :class="['img-mask flex', { 'img-mask-hide': !showMask }]">
       <view class="img-content">
-        <img class="img" :src="canvasUrl" :style="{ width: cavansSize.width + 'px', height: cavansSize.height + 'px' }">
+        <image  class="img" :src="canvasUrl" :style="{ width: cavansSize.width + 'px', height: cavansSize.height + 'px' }"></image>
         <!-- #ifndef H5 -->
         <view class="flex">
           <TheButton :round="true" class="f1" @click="closeMask()">关闭</TheButton>
@@ -98,7 +98,7 @@ function createBanner() {
       },
       {
         type: "img",
-        src: "https://muse-ui.org/img/img3.6e264e66.png",
+        src: "https://game.gtimg.cn/images/lol/act/img/skinloading/106000.jpg",
         // src: "../static/logo.png",
         width: 300,
         height: 217,

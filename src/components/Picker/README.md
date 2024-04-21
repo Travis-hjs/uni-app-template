@@ -51,7 +51,7 @@ interface PickerSelectItem<T = string | number> {
 <script lang="ts" setup>
 import { ref } from "vue";
 import ThePicker from "@/components/Picker/index.vue";
-import { PickerSelectItem } from "@/types";
+import type { PickerSelectItem } from "@/types";
 
 const options = [
   { label: "选项一", value: 1 },

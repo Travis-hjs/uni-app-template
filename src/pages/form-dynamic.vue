@@ -39,7 +39,7 @@ import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import TheButton from "@/components/TheButton.vue";
 import { showToast } from "@/utils/control";
-import { TheFormRules, TheFormRulesItem } from "@/types";
+import type { TheFormRules, TheFormRulesItem } from "@/types";
 import { modifyData } from "@/utils";
 
 interface FormDataType {

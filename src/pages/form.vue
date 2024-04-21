@@ -71,7 +71,7 @@ import PickerDate from "@/components/Picker/Date.vue";
 import ThePicker from "@/components/Picker/index.vue";
 import { showToast } from "@/utils/control";
 import { useCityData } from "@/hooks";
-import { PickerSelectItem, TheFormRules, LabelPosition, UploadChange } from "@/types";
+import type { PickerSelectItem, TheFormRules, LabelPosition, UploadChange } from "@/types";
 import { modifyData } from "@/utils";
 
 interface FormDataType {

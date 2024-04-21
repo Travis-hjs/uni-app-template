@@ -73,7 +73,7 @@ import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import UploadImage from "@/components/Upload/Image.vue";
 import { showToast } from "@/utils/control";
-import { TheFormRules, UploadChange } from "@/types";
+import type { TheFormRules, UploadChange } from "@/types";
 
 export default defineComponent({
   components: {

@@ -13,8 +13,8 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 import TheFormItem from "./TheFormItem.vue";
-import { PropType, provide, watch, onUnmounted } from "vue";
-import { TheFormRules, TheFormValidateCallback } from "@/types";
+import { type PropType, provide, watch, onUnmounted } from "vue";
+import type { TheFormRules, TheFormValidateCallback } from "@/types";
 import { useFormProps } from "./hooks";
 import { getDeepLevelValue } from "@/utils";
 
