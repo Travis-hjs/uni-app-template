@@ -22,7 +22,7 @@
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
-import { TheButton } from "@/components";
+import TheButton from "@/components/TheButton.vue";
 import canvasCreater from "@/utils/canvasCreater";
 import { showToast, showLoading, showAlert } from "@/utils/control";
 

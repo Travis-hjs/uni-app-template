@@ -16,7 +16,7 @@
 </template>
 <script lang="ts" setup>
 import { ref } from "vue";
-import { TheButton } from "@/components";
+import TheButton from "@/components/TheButton.vue";
 
 const loading = ref(false);
 

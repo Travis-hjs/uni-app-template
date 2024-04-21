@@ -1,5 +1,5 @@
-import TheButton from "@/components/TheButton.vue";
-import TheFooter from "@/components/TheFooter.vue";
+import TheButton from "./TheButton.vue";
+import TheFooter from "./TheFooter.vue";
 
 export {
   TheButton,

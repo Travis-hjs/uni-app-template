@@ -1,6 +1,6 @@
 import ModuleAppOption from "./AppOption";
 import ModuleUser from "./User";
-// import { getImageByName } from "@/utils";
+import { getImageByName } from "@/utils";
 export class ModuleStore extends ModuleAppOption {
   constructor() {
     super();
@@ -10,18 +10,18 @@ export class ModuleStore extends ModuleAppOption {
   get imageInfo() {
     // 需要用作背景图的可以用`import`引入
     return {
-      iconWx: "/static/logo_wx.png",
-      iconZfb: "/static/logo_zfb.png",
-      logo: "/static/logo.png",
-      defaultHead: "/static/default_head.png",
-      noneData: "/static/none_data.png",
-      iconArrowRight: "/static/arrow-right.png"
-      // iconWx: getImageByName("logo_wx.png"),
-      // iconZfb: getImageByName("logo_zfb.png"),
-      // logo: getImageByName("logo.png"),
-      // defaultHead: getImageByName("default_head.png"),
-      // noneData: getImageByName("none_data.png"),
-      // iconArrowRight: getImageByName("arrow-right.png")
+      // iconWx: "/static/logo_wx.png",
+      // iconZfb: "/static/logo_zfb.png",
+      // logo: "/static/logo.png",
+      // defaultHead: "/static/default_head.png",
+      // noneData: "/static/none_data.png",
+      // iconArrowRight: "/static/arrow-right.png"
+      iconWx: getImageByName("logo_wx.png"),
+      iconZfb: getImageByName("logo_zfb.png"),
+      logo: getImageByName("logo.png"),
+      defaultHead: getImageByName("default_head.png"),
+      noneData: getImageByName("none_data.png"),
+      iconArrowRight: getImageByName("arrow-right.png")
     }
   }
 

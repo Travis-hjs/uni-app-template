@@ -77,10 +77,16 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
-import { TheForm, TheFormItem } from "@/components/Form";
-import { UploadImage } from "@/components/Upload";
-import { TheButton } from "@/components";
-import { ThePicker, PickerDate } from "@/components/Picker";
+import TheForm from "@/components/Form/TheForm.vue";
+import TheFormItem from "@/components/Form/TheFormItem.vue";
+import UploadImage from "@/components/Upload/Image.vue";
+import ThePicker from "@/components/Picker/index.vue";
+import PickerDate from "@/components/Picker/Date.vue";
+import TheButton from "@/components/TheButton.vue";
+// import { TheForm, TheFormItem } from "@/components/Form";
+// import { UploadImage } from "@/components/Upload";
+// import { TheButton } from "@/components";
+// import { ThePicker, PickerDate } from "@/components/Picker";
 import { showToast } from "@/utils/control";
 import { useCityData } from "@/hooks";
 import type { PickerSelectItem, TheFormRules, LabelPosition, UploadChange } from "@/types";

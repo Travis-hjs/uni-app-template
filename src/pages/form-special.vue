@@ -15,8 +15,11 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref, watch } from "vue";
-import { TheForm, TheFormItem } from "@/components/Form";
-import { TheButton } from "@/components";
+import TheForm from "@/components/Form/TheForm.vue";
+import TheFormItem from "@/components/Form/TheFormItem.vue";
+import TheButton from "@/components/TheButton.vue";
+// import { TheForm, TheFormItem } from "@/components/Form";
+// import { TheButton } from "@/components";
 import { showToast } from "@/utils/control";
 import type { TheFormRules } from "@/types";
 

@@ -10,7 +10,9 @@
   </view>
 </template>
 <script lang="ts" setup>
-import { LoadMoreTip, useLoadMore } from "@/components/LoadMoreTip";
+import LoadMoreTip from "@/components/LoadMoreTip/index.vue";
+import useLoadMore from "@/hooks/loadMore";
+// import { LoadMoreTip, useLoadMore } from "@/components/LoadMoreTip/index"; // H5 端可以这样
 import { getTestList } from "@/api/common";
 import { onLoad, onPullDownRefresh } from "@dcloudio/uni-app";
 

@@ -284,12 +284,22 @@ export function randomText(min: number, max: number) {
   return str;
 }
 
-// /**
-//  * 获取`/static/`目录下的图片路径
-//  * @param name 图片或文件路径名，需要带后缀
-//  * @returns 
-//  */
-// export function getImageByName(name: string) {
-//   console.log(name, import.meta.url);
-//   return new URL(`../static/${name}`, import.meta.url).href;
-// }
+/**
+ * 获取`/static/`目录下的图片路径
+ * @param name 图片或文件路径名，需要带后缀
+ * @returns 
+ */
+export function getImageByName(name: string) {
+  // const fileMap = import.meta.glob("../static/*", { eager: true });
+  // const filePath = `../static/${name}`;
+  // return fileMap[filePath];
+
+  // #ifdef H5
+  // console.log(name, import.meta.url);
+  return new URL(`../static/${name}`, import.meta.url).href;
+  // #endif
+
+  // #ifndef H5
+  return `/static/${name}`;
+  // #endif
+}
