@@ -15,9 +15,8 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref, watch } from "vue";
-import TheForm from "@/components/Form/TheForm.vue";
-import TheFormItem from "@/components/Form/TheFormItem.vue";
-import TheButton from "@/components/TheButton.vue";
+import { TheForm, TheFormItem } from "@/components/Form";
+import { TheButton } from "@/components";
 import { showToast } from "@/utils/control";
 import type { TheFormRules } from "@/types";
 
@@ -43,7 +42,7 @@ const theForm = ref<InstanceType<typeof TheForm>>();
 const itemNickname = ref<InstanceType<typeof TheFormItem>>();
 
 function onSubmit() {
-  theForm.value!.validate((valid, reuls) => {
+  theForm.value!.validate((valid, rules) => {
     if (valid) {
       // 一些特殊情况需要处理两个值不能为相同时处理
       if (formData.nickname && formData.userName === formData.nickname) {
@@ -54,9 +53,9 @@ function onSubmit() {
       showToast("验证通过，在控制台可以查看表单数据");
       console.log("表单数据 >>", JSON.stringify(formData, null, "\t"));
     } else {
-      const keys = Object.keys(reuls);
+      const keys = Object.keys(rules);
       const firstProp = keys[0];
-      showToast(`${reuls[firstProp][0].message}`);
+      showToast(`${rules[firstProp][0].message}`);
     }
   })
 }

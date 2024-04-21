@@ -13,7 +13,7 @@
 </template>
 <script lang="ts" setup>
 import { reactive } from "vue";
-import UploadImage from "@/components/Upload/Image.vue";
+import { UploadImage } from "@/components/Upload";
 import type { UploadChange } from "@/types";
 
 const formData = reactive({

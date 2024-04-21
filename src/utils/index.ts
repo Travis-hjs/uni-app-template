@@ -40,15 +40,15 @@ export function isType<T>(target: any, type: T extends "object" ? T : JavaScript
  * @param target 修改的目标
  * @param value 修改的内容
  */
-export function modifyData<T>(target: T, value: T) {
+export function modifyData<T>(target: T, value: DeepPartial<T>) {
   for (const key in value) {
     if (Object.prototype.hasOwnProperty.call(target, key)) {
-      // target[key] = value[key];
+      const item = value[key] as any;
       // 需要的话，深层逐个赋值
       if (checkType(target[key]) === "object") {
-        modifyData(target[key], value[key]);
+        modifyData(target[key], item);
       } else {
-        target[key] = value[key];
+        target[key] = item;
       }
     }
   }
@@ -289,7 +289,7 @@ export function randomText(min: number, max: number) {
 //  * @param name 图片或文件路径名，需要带后缀
 //  * @returns 
 //  */
-// export function getIamgeByName(name: string) {
+// export function getImageByName(name: string) {
 //   console.log(name, import.meta.url);
 //   return new URL(`../static/${name}`, import.meta.url).href;
 // }

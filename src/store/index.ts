@@ -1,6 +1,6 @@
 import ModuleAppOption from "./AppOption";
 import ModuleUser from "./User";
-// import { getIamgeByName } from "@/utils";
+// import { getImageByName } from "@/utils";
 export class ModuleStore extends ModuleAppOption {
   constructor() {
     super();
@@ -16,12 +16,12 @@ export class ModuleStore extends ModuleAppOption {
       defaultHead: "/static/default_head.png",
       noneData: "/static/none_data.png",
       iconArrowRight: "/static/arrow-right.png"
-      // iconWx: getIamgeByName("logo_wx.png"),
-      // iconZfb: getIamgeByName("logo_zfb.png"),
-      // logo: getIamgeByName("logo.png"),
-      // defaultHead: getIamgeByName("default_head.png"),
-      // noneData: getIamgeByName("none_data.png"),
-      // iconArrowRight: getIamgeByName("arrow-right.png")
+      // iconWx: getImageByName("logo_wx.png"),
+      // iconZfb: getImageByName("logo_zfb.png"),
+      // logo: getImageByName("logo.png"),
+      // defaultHead: getImageByName("default_head.png"),
+      // noneData: getImageByName("none_data.png"),
+      // iconArrowRight: getImageByName("arrow-right.png")
     }
   }
 

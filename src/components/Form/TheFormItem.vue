@@ -15,14 +15,13 @@
   </view>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({
+/** 表单`item`组件 */
+export default {
   name: "TheFormItem"
-})
+}
 </script>
 <script lang="ts" setup>
-import TheForm from "./TheForm.vue";
-import { useFormProps } from "./hooks";
+import { useFormProps, TheForm } from "./index";
 import type { TheFormRulesItem } from "@/types";
 import { computed, getCurrentInstance, inject, onMounted, onUnmounted, type PropType, ref } from "vue";
 import { isType, getDeepLevelValue } from "@/utils";

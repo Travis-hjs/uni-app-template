@@ -69,9 +69,8 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
-import TheForm from "@/components/Form/TheForm.vue";
-import TheFormItem from "@/components/Form/TheFormItem.vue";
-import UploadImage from "@/components/Upload/Image.vue";
+import { TheForm, TheFormItem } from "@/components/Form";
+import { UploadImage } from "@/components/Upload";
 import { showToast } from "@/utils/control";
 import type { TheFormRules, UploadChange } from "@/types";
 

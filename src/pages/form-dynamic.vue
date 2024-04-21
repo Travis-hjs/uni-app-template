@@ -35,9 +35,8 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
-import TheForm from "@/components/Form/TheForm.vue";
-import TheFormItem from "@/components/Form/TheFormItem.vue";
-import TheButton from "@/components/TheButton.vue";
+import { TheForm, TheFormItem } from "@/components/Form";
+import { TheButton } from "@/components";
 import { showToast } from "@/utils/control";
 import type { TheFormRules, TheFormRulesItem } from "@/types";
 import { modifyData } from "@/utils";
@@ -81,13 +80,13 @@ function getListItemRules(label: string) {
 const theForm = ref<InstanceType<typeof TheForm>>();
 
 function onSubmit() {
-  theForm.value!.validate((valid, reuls) => {
+  theForm.value!.validate((valid, rules) => {
     if (valid) {
       console.log("表单数据 >>", formData);
     } else {
-      const keys = Object.keys(reuls);
+      const keys = Object.keys(rules);
       const firstProp = keys[0];
-      showToast(`${reuls[firstProp][0].message}`);
+      showToast(`${rules[firstProp][0].message}`);
     }
   })
 }
