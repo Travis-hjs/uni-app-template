@@ -1,9 +1,12 @@
 <template>
   <view class="load-more-list">
     <view class="item card" v-for="item in loadMoreData.list" :key="item.id">
-      <view class="id">{{ item.name }}</view>
-      <image class="pic" mode="aspectFill" :src="item.img"></image>
-      <view class="value">ID: {{ item.id }}</view>
+      <view class="id">ID: {{ item.id }}</view>
+      <view class="flex">
+        <image class="pic mgr_20" mode="aspectFill" :src="item.icon"></image>
+        <view class="f1 value">描述：{{ item.content }}</view>
+      </view>
+      <view class="value">{{ item.name }}</view>
     </view>
     <view style="height: 30vh" v-if="loadMoreData.list.length === 0"></view>
     <LoadMoreTip :info="loadMoreData" />
@@ -13,10 +16,10 @@
 import LoadMoreTip from "@/components/LoadMoreTip/index.vue";
 import useLoadMore from "@/hooks/loadMore";
 // import { LoadMoreTip, useLoadMore } from "@/components/LoadMoreTip/index"; // H5 端可以这样
-import { getTestList } from "@/api/common";
+import { getTestList, type TestItem } from "@/api/common";
 import { onLoad, onPullDownRefresh } from "@dcloudio/uni-app";
 
-const { loadMoreData, setRequestListFn, refreshData } = useLoadMore();
+const { loadMoreData, setRequestListFn, refreshData } = useLoadMore<TestItem>();
 
 // 方式一：
 setRequestListFn(function () {
@@ -69,9 +72,9 @@ onPullDownRefresh(function () {
       color: #555;
     }
     .pic {
-      width: 100%;
-      height: 140px;
-      margin-bottom: 10px;
+      width: 140rpx;
+      height: 140rpx;
+      margin-bottom: 2px;
     }
   }
 }

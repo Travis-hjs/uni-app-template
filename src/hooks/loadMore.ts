@@ -32,7 +32,7 @@ export interface LoadMoreInfo<T = any> extends PageInfo {
 }
 
 /** 加载更多数据对象 */
-export function useLoadMoreData(): LoadMoreInfo {
+export function useLoadMoreData<T>(): LoadMoreInfo<T> {
   return {
     state: "wait",
     list: [],
@@ -46,10 +46,10 @@ export function useLoadMoreData(): LoadMoreInfo {
 /**
  * 加载更多-功能函数
  */
-export default function useLoadMore() {
+export default function useLoadMore<ListItem>() {
 
   /** 加载更多数据 */
-  const loadMoreData = reactive(useLoadMoreData());
+  const loadMoreData = reactive(useLoadMoreData<ListItem>());
 
   /** 请求函数 */
   let requestListFn: () => Promise<ApiResult<ApiResultList>>;
