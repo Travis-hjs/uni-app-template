@@ -12,6 +12,17 @@ export function getUserInfo(id: number | string) {
 }
 
 /**
+ * 获取超大数据量
+ * - 可以为单个接口设置超时时间
+ * @param params
+ */
+export function getMaxData(params: PageInfo) {
+  return request("GET", "/getMaxList", params, {
+    overtime: 20000
+  })
+}
+
+/**
  * 普通`post`json请求
  * @param params 
  */

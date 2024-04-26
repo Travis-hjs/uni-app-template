@@ -76,6 +76,8 @@ interface RequestOptions {
   responseType: "json" | "arraybuffer" | "blob" | "stream" | "document" | "text"
   /** 是否在`res.code !== 1`的时候显示提示，默认`false`，传入`true`则用`res.msg`作为提示，也可以传入字符串作为提示内容 */
   showTip: string | boolean
+  /** 单独为当前接口设置超时毫秒 */
+  overtime: number,
 }
 
 /** 页码信息 */

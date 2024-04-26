@@ -49,7 +49,7 @@ export default function request<T = any>(method: "GET" | "POST" | "DELETE" | "PU
       },
       url: config.apiUrl + path,
       data: data,
-      timeout: config.requestOvertime,
+      timeout: options.overtime || config.requestOvertime,
       success(res) {
         // console.log("request.success", res);
         const info = getResultInfo(res);

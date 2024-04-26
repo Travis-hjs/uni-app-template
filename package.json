@@ -1,6 +1,6 @@
 {
   "name": "uni-app-vue3",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "type-check": "vue-tsc --noEmit && uni",
     "dev:app": "uni -p app",
