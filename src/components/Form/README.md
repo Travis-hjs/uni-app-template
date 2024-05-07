@@ -1,6 +1,7 @@
 # from 表单组件
 
-**demo：[预览地址](http://huangjingsheng.gitee.io/hjs/uni-app/#/pages/form)**
+- [预览地址](http://huangjingsheng.gitee.io/hjs/uni-app/#/pages/form)
+- [备用预览地址](https://travis-hjs.github.io/uni-app/#/pages/form)
 
 这里只实现两个核心组件`<TheForm />`和`<TheFormItem />`；因为移动端样式变化比较灵活，如果把所有表单组件都封装成`element-ui`或者`vant-ui`这类型一体库的话，导致很多无用代码和性能开销，所以这里只提供必需的功能组件，其他表单组件根据实际情况定义，保证高度灵活性。
 

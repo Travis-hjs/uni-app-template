@@ -3,6 +3,7 @@
 > 基于[官方脚手架](https://uniapp.dcloud.io/quickstart-cli.html#%E5%88%9B%E5%BB%BAuni-app)创建。
 
 - [预览地址](http://huangjingsheng.gitee.io/hjs/uni-app)
+- [备用预览地址](https://travis-hjs.github.io/uni-app)
 
 | 分支 | 版本 | 说明 |
 |---|---|---|
