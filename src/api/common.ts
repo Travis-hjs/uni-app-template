@@ -45,7 +45,7 @@ export type TestItem = typeof testList[0];
 export function getTestList(params: PageInfo & { id: number }) {
   const delay = ranInt(20, 2000);
 
-  const result: ApiResult<ApiResultList<TestItem>> = {
+  const result: Api.Result<Api.List<TestItem>> = {
     code: -1,
     data: {
       currentPage: params.currentPage,

@@ -52,13 +52,13 @@ export default function useLoadMore<ListItem>() {
   const loadMoreData = reactive(useLoadMoreData<ListItem>());
 
   /** 请求函数 */
-  let requestListFn: () => Promise<ApiResult<ApiResultList>>;
+  let requestListFn: (() => Promise<Api.Result<Api.List>>) | null = null;
 
   /**
    * 设置请求函数
    * @param fn 
    */
-  function setRequestListFn(fn: () => Promise<ApiResult<ApiResultList>>) {
+  function setRequestListFn(fn: () => Promise<Api.Result<Api.List>>) {
     requestListFn = fn;
   }
 
