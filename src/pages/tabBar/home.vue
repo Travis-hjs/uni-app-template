@@ -7,7 +7,7 @@
       <button class="button-dark" @click="setUserInfo()">修改`userInfo`</button>
     </view>
     <view class="cell">
-      <view class="cell-item fvertical" v-for="(item, index) in menuList" :key="index" @click="openMenu(item.path)">
+      <view class="cell-item f-vertical" v-for="(item, index) in menuList" :key="index" @click="openMenu(item.path)">
         <view class="f1">{{ item.label }}</view>
         <img class="cell-icon" :src="imageInfo.iconArrowRight">
       </view>

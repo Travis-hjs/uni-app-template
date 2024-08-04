@@ -1,7 +1,7 @@
 <template>
   <view class="form-page">
     <radio-group class="grid-box" @change="onPosition">
-      <label class="fvertical" v-for="(item) in positionOptions" :key="item.value">
+      <label class="f-vertical" v-for="(item) in positionOptions" :key="item.value">
         <radio :value="item.value" :checked="item.value === position" />
         <view>{{ item.label }}</view>
       </label>
@@ -29,7 +29,7 @@
       </TheFormItem>
       <TheFormItem prop="multiple" label="多选项">
         <checkbox-group class="grid-box" @change="onMultiple">
-          <label class="fvertical" v-for="item in multipleOptions" :key="item.value">
+          <label class="f-vertical" v-for="item in multipleOptions" :key="item.value">
             <checkbox :value="item.value" :checked="formData.multiple.includes(item.value)" />
             <view>{{ item.label }}</view>
           </label>
@@ -37,7 +37,7 @@
       </TheFormItem>
       <TheFormItem prop="radioValue" label="单选项">
         <radio-group class="grid-box" @change="onRadio">
-          <label class="fvertical" v-for="(item) in radioOptions" :key="item.value">
+          <label class="f-vertical" v-for="(item) in radioOptions" :key="item.value">
             <radio :value="item.value" :checked="item.value === formData.radioValue" />
             <view>{{ item.label }}</view>
           </label>

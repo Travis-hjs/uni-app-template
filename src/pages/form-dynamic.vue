@@ -11,7 +11,7 @@
       <TheFormItem prop="list" label="列表">
         <TheButton @click="addListItem()">添加一条列表项</TheButton>
         <view class="mgb_20"></view>
-        <view class="fvertical" v-for="(item, index) in formData.list" :key="index">
+        <view class="f-vertical" v-for="(item, index) in formData.list" :key="index">
           <TheFormItem :prop="'list.' + index + '.value'" :label="item.label" labelWidth="100rpx" :rules="getListItemRules(item.label)">
             <input class="the-input mgb_20" type="text" v-model="item.value" :placeholder="getListItemRules(item.label)[0].message">
             <TheButton color="#f44336" :round="true" @click="removeListItem(index)">删除{{ item.label }}</TheButton>
