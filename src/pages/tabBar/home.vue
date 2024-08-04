@@ -1,6 +1,6 @@
 <template>
   <view class="home">
-    <view class="pdl_30 pdr_30 pdt_30 mgb_30">
+    <view class="pdl-30 pdr-30 pdt-30 mgb-30">
       <image class="logo" :src="imageInfo.logo"></image>
       <view class="line"></view>
       <view style="margin-bottom: 40rpx; font-size: 30rpx">userInfo: {{ JSON.stringify(userInfo, null, 4) }}</view>

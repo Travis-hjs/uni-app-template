@@ -1,7 +1,7 @@
 <template>
   <view class="scroll-tab">
 
-    <scroll-view scroll-x="true" scroll-with-animation :scroll-left="state.scrollLeft1" class="list-1 mgb_50">
+    <scroll-view scroll-x="true" scroll-with-animation :scroll-left="state.scrollLeft1" class="list-1 mgb-50">
       <view class="tab-box flex">
         <view :class="['tab-item fvc', { 'active': state.activeValue1 === item.value }]" v-for="item in list" @click="onTab1(item, $event)" :id="'one-' + item.value" :key="item.value">
           {{ item.label }}
