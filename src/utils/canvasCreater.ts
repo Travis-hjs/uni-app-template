@@ -1,8 +1,8 @@
 import { isType } from "./index";
 
-/** `cavans`生成器命名空间 */
-export namespace Cavans {
-  /** `cavans`位置类型 */
+/** `canvas`生成器命名空间 */
+export namespace Canvas {
+  /** `canvas`位置类型 */
   export interface Position {
     /** 距离顶部偏移值 */
     top?: number
@@ -16,7 +16,7 @@ export namespace Cavans {
     zIndex?: number
   }
 
-  /** `cavans`矩阵尺寸类型 */
+  /** `canvas`矩阵尺寸类型 */
   export interface Rect {
     /** 生成的图片宽度 */
     width: number
@@ -33,7 +33,7 @@ export namespace Cavans {
     borderColor?: string
   }
   
-  /** `cavans`图片属性 */
+  /** `canvas`图片属性 */
   export interface Img extends Position, Omit<Rect, "borderWidth" | "borderColor"> {
     type: "img"
     /**
@@ -41,7 +41,7 @@ export namespace Cavans {
      * 
      * - 网络图片地址，前提是这个图片可以跨域请求，微信小程序端需要配置`request`域名白名单
      * - （仅限H5端生效）本地相对路径地址
-     * - （仅限H5端生效）`base64`图片编码，例如：`data:image/jpge;base64,xxxxxxxx`
+     * - （仅限H5端生效）`base64`图片编码，例如：`data:image/jpeg;base64,xxxxxxxx`
      */
     src: string
   }
@@ -94,16 +94,16 @@ export namespace Cavans {
   /** `canvas`生成器传参配置 */
   export interface Options {
     /**
-     * `cavans`节点`id`
+     * `canvas`节点`id`
      * @example
      * ```html
-     * <cavans id="xxx" canvas-id="xxx"></cavans>
+     * <canvas id="xxx" canvas-id="xxx"></canvas>
      * ```
     */
-    cavansId: string
-    /** `cavans`整体宽度 */
+    canvasId: string
+    /** `canvas`整体宽度 */
     width: number
-    /** `cavans`整体高度 */
+    /** `canvas`整体高度 */
     height: number
     /** 生成的内容列表 */
     list: Array<Img | Box | Text>
@@ -126,7 +126,7 @@ export namespace Cavans {
  * @param borderRadius 设置的圆角值
  */
 function computedRadius(width: number, height: number, borderRadius?: number) {
-  borderRadius = isType<number>(borderRadius, "number") ? borderRadius : 0;
+  borderRadius = isType(borderRadius, "number") ? borderRadius : 0;
   /** 最小圆角值 */
   const minRadius = Math.min(width, height) / 2;
   /** 半径 */
@@ -140,15 +140,15 @@ function computedRadius(width: number, height: number, borderRadius?: number) {
  * @param item 
  * @param wrap 
  */
-function computedPosition(item: Cavans.Position & Cavans.Rect, wrap: Cavans.Options) {
-  let left = isType<number>(item.left, "number") ? item.left : 0;
-  let top = isType<number>(item.top, "number") ? item.top : 0;
+function computedPosition(item: Canvas.Position & Canvas.Rect, wrap: Canvas.Options) {
+  let left = isType(item.left, "number") ? item.left : 0;
+  let top = isType(item.top, "number") ? item.top : 0;
   // 判断并计算设置右边值
-  if (isType<number>(item.right, "number")) {
+  if (isType(item.right, "number")) {
     left = wrap.width - item.width - item.right;
   }
   // 判断并计算设置底部值
-  if (isType<number>(item.bottom, "number")) {
+  if (isType(item.bottom, "number")) {
     top = wrap.height - item.height - item.bottom;
   }
   return {
@@ -259,7 +259,7 @@ function loadImage(url: string, callback: (val: string) => void, fail: (error: a
 // 迁移方式：https://developers.weixin.qq.com/miniprogram/dev/component/canvas.html
 
 // const query = uni.createSelectorQuery();
-// query.select(`#${params.cavansId}`).fields({ node: true, size: true } as any, function(res: any) {
+// query.select(`#${params.canvasId}`).fields({ node: true, size: true } as any, function(res: any) {
 //   // console.log('回调 >>', res.node);
 //   const canvas = res.node as HTMLCanvasElement;
 //   const ctx = canvas.getContext('2d')!;
@@ -272,12 +272,12 @@ function loadImage(url: string, callback: (val: string) => void, fail: (error: a
 // }).exec();
 
 /**
- * `cavans`生成器
+ * `canvas`生成器
  * @param params 传参配置
  */
-export default function cavansCreater(params: Cavans.Options) {
+export default function canvasCreater(params: Canvas.Options) {
   /** `canvas`绘图上下文 */
-  const context = uni.createCanvasContext(params.cavansId);
+  const context = uni.createCanvasContext(params.canvasId);
   // console.log("context >>", context);
   const list = params.list.sort((a, b) => (a.zIndex || 0) - (b.zIndex || 0));
   // console.log("list >>", list);
@@ -288,7 +288,7 @@ export default function cavansCreater(params: Cavans.Options) {
    * 绘制图片
    * @param item 
    */
-  function drawImage(item: Cavans.Img, success: () => void, fail: (error: any) => void) {
+  function drawImage(item: Canvas.Img, success: () => void, fail: (error: any) => void) {
     loadImage(item.src, res => {
       // console.log("getImageInfo >>", res);
       // console.log("item >>", item);
@@ -310,7 +310,7 @@ export default function cavansCreater(params: Cavans.Options) {
    * @param item 
    * @param callback 绘制回调，把当前画布指定区域的内容导出生成指定大小的图片。在`draw()`回调里调用该方法才能保证图片导出成功。
    */
-  function drawBox(item: Cavans.Box, callback?: () => void) {
+  function drawBox(item: Canvas.Box, callback?: () => void) {
     const { left, top } = computedPosition(item, params);
     context.save();
     drawRoundRectPath(context, left, top, item.width, item.height, item.borderRadius);
@@ -328,7 +328,7 @@ export default function cavansCreater(params: Cavans.Options) {
    * @param item 
    * @param callback 绘制回调，把当前画布指定区域的内容导出生成指定大小的图片。在`draw()`回调里调用该方法才能保证图片导出成功。
    */
-  function drawText(item: Cavans.Text, callback?: () => void) {
+  function drawText(item: Canvas.Text, callback?: () => void) {
     // const height = item.width ? Math.ceil(item.fontSize * item.text.length / item.width) * item.fontSize : item.fontSize;
     const height = item.fontSize;
     const width = item.fontSize * item.text.length;
@@ -354,7 +354,7 @@ export default function cavansCreater(params: Cavans.Options) {
         // setTimeout(function () {
         uni.canvasToTempFilePath({
           fileType: params.fileType || "png",
-          canvasId: params.cavansId,
+          canvasId: params.canvasId,
           quality: 1,
           success: params.success,
           fail(err) {
@@ -398,7 +398,7 @@ export default function cavansCreater(params: Cavans.Options) {
     index = 0;
     start();
   } else {
-    console.warn("cavansCreater >> 没有可生成的列表数据");
+    console.warn("canvasCreater >> 没有可生成的列表数据");
   }
 }
 

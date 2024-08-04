@@ -1,6 +1,6 @@
 import { reactive } from "vue";
 import { modifyData } from "@/utils";
-import { UserInfo } from "@/types/user";
+import type { UserInfo } from "@/types/user";
 
 const cacheName = "user-info";
 

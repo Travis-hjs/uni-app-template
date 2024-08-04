@@ -51,7 +51,8 @@ interface PickerSelectItem<T = string | number> {
 <script lang="ts" setup>
 import { ref } from "vue";
 import ThePicker from "@/components/Picker/index.vue";
-import { PickerSelectItem } from "@/types";
+// import { ThePicker } from "@/components/Picker";
+import type { PickerSelectItem } from "@/types";
 
 const options = [
   { label: "选项一", value: 1 },
@@ -116,6 +117,7 @@ function onPicker(res: { id: string, value: Array<PickerSelectItem<number>> }) {
 <script lang="ts" setup>
 import { ref } from "vue";
 import PickerDate from "@/components/Picker/Date.vue";
+// import { PickerDate } from "@/components/Picker";
 
 const showPickerDate = ref(false);
 

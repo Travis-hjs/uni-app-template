@@ -42,7 +42,7 @@ export interface SearchSelectOption {
    * - 注意，接口返回的格式必需为`res.data.list`，如果不为该格式，需要自行组装格式然后返回
    * @param searchInfo 搜索对象
    */
-  request(searchInfo: PageInfo & { keyword: string }): Promise<ApiResult<ApiResultList>>
+  request(searchInfo: PageInfo & { keyword: string }): Promise<Api.Result<Api.List>>
   /**
    * 选中之后回调
    * @param selected 选中值，返回的是数据原始对象

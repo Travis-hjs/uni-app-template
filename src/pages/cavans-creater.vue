@@ -1,11 +1,11 @@
 <template>
-  <view class="cavans-creater">
-    <canvas class="banner-box" id="the-cavans" canvas-id="the-cavans" :width="cavansSize.width" :height="cavansSize.height"></canvas>
+  <view class="canvas-creater">
+    <canvas class="banner-box" id="the-canvas" canvas-id="the-canvas" :width="canvasSize.width" :height="canvasSize.height"></canvas>
     <view class="line"></view>
-    <TheButton color="#07c160" @click="createBanner()">生成 cavans 海报图</TheButton>
+    <TheButton color="#07c160" @click="createBanner()">生成 canvas 海报图</TheButton>
     <view :class="['img-mask flex', { 'img-mask-hide': !showMask }]">
       <view class="img-content">
-        <img class="img" :src="canvasUrl" :style="{ width: cavansSize.width + 'px', height: cavansSize.height + 'px' }">
+        <image  class="img" :src="canvasUrl" :style="{ width: canvasSize.width + 'px', height: canvasSize.height + 'px' }"></image>
         <!-- #ifndef H5 -->
         <view class="flex">
           <TheButton :round="true" class="f1" @click="closeMask()">关闭</TheButton>
@@ -23,10 +23,10 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import TheButton from "@/components/TheButton.vue";
-import cavansCreater from "@/utils/cavansCreater";
+import canvasCreater from "@/utils/canvasCreater";
 import { showToast, showLoading, showAlert } from "@/utils/control";
 
-const cavansSize = {
+const canvasSize = {
   width: 300,
   height: 500,
 };
@@ -36,10 +36,10 @@ const canvasUrl = ref("");
 
 function createBanner() {
   showLoading("生成中...");
-  cavansCreater({
-    cavansId: "the-cavans",
+  canvasCreater({
+    canvasId: "the-canvas",
     // fileType: "jpg",
-    ...cavansSize,
+    ...canvasSize,
     list: [
       {
         type: "box",
@@ -98,7 +98,7 @@ function createBanner() {
       },
       {
         type: "img",
-        src: "https://muse-ui.org/img/img3.6e264e66.png",
+        src: "https://game.gtimg.cn/images/lol/act/img/skinloading/106000.jpg",
         // src: "../static/logo.png",
         width: 300,
         height: 217,
@@ -132,7 +132,7 @@ function createBanner() {
         color: "green",
         textAlign: "right",
         fontSize: 16,
-        top: cavansSize.height / 2,
+        top: canvasSize.height / 2,
         right: 10,
         zIndex: 20,
       },
@@ -144,7 +144,7 @@ function createBanner() {
         textAlign: "center",
         textBaseline: "middle",
         bottom: 20,
-        left: cavansSize.width / 2,
+        left: canvasSize.width / 2,
       },
     ],
     success(res) {
@@ -184,7 +184,7 @@ function download() {
 
 </script>
 <style lang="scss">
-.cavans-creater {
+.canvas-creater {
   width: 100%;
   padding: 30rpx;
   .banner-box {

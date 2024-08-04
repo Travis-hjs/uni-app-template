@@ -2,7 +2,7 @@ import config from "./config";
 import store from "@/store";
 
 function getResultInfo(result: { statusCode: number, data: any }) {
-  const info: ApiResult = { code: -1, msg: "", data: null }
+  const info: Api.Result = { code: -1, msg: "", data: null }
   switch (result.statusCode) {
     case 999:
       info.msg = "网络出错了";
@@ -38,9 +38,14 @@ function getResultInfo(result: { statusCode: number, data: any }) {
  * @param data 请求参数
  * @param options 其他配置参数
  */
-export default function request<T = any>(method: "GET" | "POST" | "DELETE" | "PUT", path: string, data?: any, options: Partial<RequestOptions> = {}) {
+export default function request<T = any>(
+  method: "GET" | "POST" | "DELETE" | "PUT",
+  path: string,
+  data?: any,
+  options: Partial<Api.Options> = {}
+) {
   const headers = options.headers || {};
-  return new Promise<ApiResult<T>>(function (resolve, reject) {
+  return new Promise<Api.Result<T>>(function (resolve, reject) {
     uni.request({
       method: method,
       header: {
@@ -49,13 +54,14 @@ export default function request<T = any>(method: "GET" | "POST" | "DELETE" | "PU
       },
       url: config.apiUrl + path,
       data: data,
-      timeout: config.requestOvertime,
+      timeout: options.timeout || config.requestTimeout,
       success(res) {
         // console.log("request.success", res);
         const info = getResultInfo(res);
-        if (info.code !== 1 && options.showTip) {
+        const tip = options.showTip;
+        if (info.code !== 1 && tip) {
           uni.showToast({
-            title: typeof options.showTip === 'boolean' ? (info.msg || "操作失败") : options.showTip as string,
+            title: typeof tip === 'boolean' ? (info.msg || "操作失败") : tip,
             position: "bottom",
             icon: "none",
             duration: 2400

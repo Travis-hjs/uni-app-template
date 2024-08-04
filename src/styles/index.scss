@@ -13,30 +13,30 @@ uni-page-body { min-height: auto !important; }
 
 /* flex布局 */
 .flex { display: flex; flex-wrap: nowrap; }
-.fwrap { display: flex; flex-wrap: wrap; }
+.f-wrap { display: flex; flex-wrap: wrap; }
 .f1 { flex: 1; }
 .f2 { flex: 2; }
 .f3 { flex: 3; }
 /* 垂直居中 */
-.fvertical { display: flex; align-items: center; }
+.f-vertical { display: flex; align-items: center; }
 /* 水平居中 */
-.fcenter { display: flex; justify-content: center; }
+.f-center { display: flex; justify-content: center; }
 /* 水平+垂直居中 */
 .fvc { display: flex; align-items: center; justify-content: center; }
 /* 右对齐 */
-.fright { display: flex; justify-content: flex-end; }
+.f-right { display: flex; justify-content: flex-end; }
 /* 两端对齐 */
-.fbetween { display: flex; justify-content: space-between; }
+.f-between { display: flex; justify-content: space-between; }
 /* 靠底部对齐 */
-.fbottom { display: flex; align-items: flex-end; }
+.f-bottom { display: flex; align-items: flex-end; }
 
 /* 溢出...显示 当前节点生效 */
 .ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* 溢出...显示 子节点生效 */
-.ellipsis_1 { @include ellipsis(1); }
-.ellipsis_2 { @include ellipsis(2); }
-.ellipsis_3 { @include ellipsis(3); }
+.ellipsis-1 { @include ellipsis(1); }
+.ellipsis-2 { @include ellipsis(2); }
+.ellipsis-3 { @include ellipsis(3); }
 
 /* 卡片 */
 .card { 
@@ -55,28 +55,28 @@ uni-page-body { min-height: auto !important; }
 
 /* 上下左右边距 */
 @for $index from 1 through 5 {
-  .mgl_#{$index}0 {
+  .mgl-#{$index}0 {
     margin-left: 10rpx * $index;
   }
-  .mgr_#{$index}0 {
+  .mgr-#{$index}0 {
     margin-right: 10rpx * $index;
   }
-  .mgt_#{$index}0 {
+  .mgt-#{$index}0 {
     margin-top: 10rpx * $index;
   }
-  .mgb_#{$index}0 {
+  .mgb-#{$index}0 {
     margin-bottom: 10rpx * $index;
   }
-  .pdl_#{$index}0 {
+  .pdl-#{$index}0 {
     padding-left: 10rpx * $index;
   }
-  .pdr_#{$index}0 {
+  .pdr-#{$index}0 {
     padding-right: 10rpx * $index;
   }
-  .pdt_#{$index}0 {
+  .pdt-#{$index}0 {
     padding-top: 10rpx * $index;
   }
-  .pdb_#{$index}0 {
+  .pdb-#{$index}0 {
     padding-bottom: 10rpx * $index;
   }
 }

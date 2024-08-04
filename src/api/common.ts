@@ -1,6 +1,6 @@
 import { randomText, ranInt } from '@/utils';
 import request from '@/utils/request';
-
+import mockList from "./mock.json";
 // ============================= 常用接口模块 =============================
 
 /**
@@ -19,21 +19,24 @@ export function searchUserType(value: "admin" | "vip" | "normal") {
   return request("POST", "/user/searchType", { type: value });
 }
 
-const images = [
-  "https://muse-ui.org/img/img1.35d144b4.png",
-  "https://muse-ui.org/img/img2.9bd96df4.png",
-  "https://muse-ui.org/img/img3.6e264e66.png",
-  "https://muse-ui.org/img/sun.a646a52d.jpg",
-  "https://muse-ui.org/img/breakfast.f1098290.jpg"
-]
+/**
+ * 图片前缀
+ * [图片来源](https://lol.qq.com/data/info-heros.shtml)
+ */
+const photoPrefix = "https://game.gtimg.cn/images/lol/act/img/item/";
 
 const testList = new Array(52).fill(0).map((_, index) => {
+  const mock = mockList[ranInt(0, mockList.length - 1)];
   return {
-    id: index + 1,
-    name: randomText(6, 30),
-    img: images[ranInt(0, images.length - 1)]
+    id: mock.icon.replace(".png", ""),
+    content: randomText(6, 30),
+    icon: photoPrefix + mock.icon,
+    name: mock.name
   }
-})
+});
+
+/** 列表数据结构 */
+export type TestItem = typeof testList[0];
 
 /** 
  * 模拟请求数据 
@@ -42,7 +45,7 @@ const testList = new Array(52).fill(0).map((_, index) => {
 export function getTestList(params: PageInfo & { id?: number, keyword?: string }) {
   const delay = ranInt(200, 2000);
 
-  const result: ApiResult<ApiResultList> = {
+  const result: Api.Result<Api.List<TestItem>> = {
     code: -1,
     data: {
       currentPage: params.currentPage,
@@ -53,9 +56,9 @@ export function getTestList(params: PageInfo & { id?: number, keyword?: string }
     msg: ""
   }
 
-  return new Promise<ApiResult<ApiResultList>>(function (resolve, reject) {
+  return new Promise<typeof result>(function (resolve) {
     setTimeout(function () {
-      if (delay > 1500) {
+      if (delay > 1900) {
         result.msg = "接口查询超时"
         resolve(result);
       } else {
@@ -66,9 +69,8 @@ export function getTestList(params: PageInfo & { id?: number, keyword?: string }
         if (params.keyword) {
           list = list.map(item => {
             return {
-              id: item.id,
+              ...item,
               name: `${params.keyword}:${item.name}`,
-              img: item.img
             }
           });
         }

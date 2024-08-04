@@ -1,6 +1,7 @@
 # from 表单组件
 
-**demo：[预览地址](http://huangjingsheng.gitee.io/hjs/uni-app/#/pages/form)**
+- [预览地址](http://huangjingsheng.gitee.io/hjs/uni-app/#/pages/form)
+- [备用预览地址](https://travis-hjs.github.io/uni-app/#/pages/form)
 
 这里只实现两个核心组件`<TheForm />`和`<TheFormItem />`；因为移动端样式变化比较灵活，如果把所有表单组件都封装成`element-ui`或者`vant-ui`这类型一体库的话，导致很多无用代码和性能开销，所以这里只提供必需的功能组件，其他表单组件根据实际情况定义，保证高度灵活性。
 
@@ -67,89 +68,70 @@
   </view>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+<script setup lang="ts">
+import { reactive, ref } from "vue";
 import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import UploadImage from "@/components/Upload/Image.vue";
+// import { TheForm, TheFormItem } from "@/components/Form";
+// import { UploadImage } from "@/components/Upload";
 import { showToast } from "@/utils/control";
-import { TheFormRules, UploadChange } from "@/types";
+import type { TheFormRules, UploadChange } from "@/types";
 
-export default defineComponent({
-  components: {
-    TheForm,
-    TheFormItem,
-    UploadImage
-  },
-  setup() {
-    const hasBorder = ref(true);
+const hasBorder = ref(true);
 
-    const formData = reactive({
-      userName: "",
-      phone: "",
-      avatar: ""
-    })
-
-    const formRules: TheFormRules = {
-      userName: [
-        { required: true, message: "请输入用户名" }
-      ],
-      phone: [
-        { required: true, message: "请输入用户手机号" },
-        { reg: /^1[345678]\d{9}$/.toString(), message: "手机号不正确" }
-      ]
-    }
-
-    const theForm = ref<InstanceType<typeof TheForm>>();
-
-    function onUpload(res: UploadChange) {
-      formData.avatar = res.src;
-    }
-
-    function onSubmit() {
-      theForm.value!.validate((valid, reuls) => {
-        if (valid) {
-          console.log("表单数据 >>", formData);
-        } else {
-          const keys = Object.keys(reuls);
-          const firstProp = keys[0];
-          showToast(`${reuls[firstProp][0].message}`);
-        }
-      })
-    }
-
-    function onReset() {
-      theForm.value!.resetFields();
-    }
-
-    /** 验证手机号码 */
-    function validatePhone() {
-      theForm.value!.validateField("phone", (valid, rules) => {
-        if (valid) {
-          showToast("手机验证通过");
-        } else {
-          showToast(rules["phone"][0].message!);
-        }
-      })
-    }
-
-    /** 移除验证手机号 */
-    function resetPhone() {
-      theForm.value!.resetField("phone");
-    }
-
-    return {
-      hasBorder,
-      formData,
-      formRules,
-      theForm,
-      onUpload,
-      onSubmit,
-      onReset,
-      validatePhone,
-      resetPhone
-    }
-  }
+const formData = reactive({
+  userName: "",
+  phone: "",
+  avatar: ""
 })
+
+const formRules: TheFormRules = {
+  userName: [
+    { required: true, message: "请输入用户名" }
+  ],
+  phone: [
+    { required: true, message: "请输入用户手机号" },
+    { reg: /^1[345678]\d{9}$/.toString(), message: "手机号不正确" }
+  ]
+}
+
+const theForm = ref<InstanceType<typeof TheForm>>();
+
+function onUpload(res: UploadChange) {
+  formData.avatar = res.src;
+}
+
+function onSubmit() {
+  theForm.value!.validate((valid, reuls) => {
+    if (valid) {
+      console.log("表单数据 >>", formData);
+    } else {
+      const keys = Object.keys(reuls);
+      const firstProp = keys[0];
+      showToast(`${reuls[firstProp][0].message}`);
+    }
+  })
+}
+
+function onReset() {
+  theForm.value!.resetFields();
+}
+
+/** 验证手机号码 */
+function validatePhone() {
+  theForm.value!.validateField("phone", (valid, rules) => {
+    if (valid) {
+      showToast("手机验证通过");
+    } else {
+      showToast(rules["phone"][0].message!);
+    }
+  })
+}
+
+/** 移除验证手机号 */
+function resetPhone() {
+  theForm.value!.resetField("phone");
+}
 </script>
 ```

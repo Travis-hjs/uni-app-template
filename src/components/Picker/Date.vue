@@ -1,9 +1,9 @@
 <template>
-  <view :class="['the-picker fwrap', { 'the-picker-show': show }]">
+  <view :class="['the-picker f-wrap', { 'the-picker-show': show }]">
     <view class="f1" @click="onCancel()"></view>
     <view class="picker-content">
       <!-- 操作栏 -->
-      <view class="picker-option fvertical">
+      <view class="picker-option f-vertical">
         <view class="btn" @click="onCancel()">取消</view>
         <view class="f1 picker-title">{{ title }}</view>
         <view class="btn confirm" @click="onConfirm()">确定</view>
@@ -11,13 +11,13 @@
 
       <picker-view class="picker-view" indicator-style="height: 36px;" @change="pickerChange" :value="selectIndexs">
         <picker-view-column v-if="type === 'Y-M-D' || type === 'Y-M' || type === 'Y'">
-          <view class="picker-item ellipsis_1" v-for="(item, index) in yearList" :key="index">{{ item }}</view>
+          <view class="picker-item ellipsis-1" v-for="(item, index) in yearList" :key="index">{{ item }}</view>
         </picker-view-column>
         <picker-view-column v-if="type === 'Y-M-D' || type === 'Y-M'">
-          <view class="picker-item ellipsis_1" v-for="(item, index) in monthList" :key="index">{{ item }}</view>
+          <view class="picker-item ellipsis-1" v-for="(item, index) in monthList" :key="index">{{ item }}</view>
         </picker-view-column>
         <picker-view-column v-if="type === 'Y-M-D'">
-          <view class="picker-item ellipsis_1" v-for="(item, index) in dayList" :key="index">{{ item }}</view>
+          <view class="picker-item ellipsis-1" v-for="(item, index) in dayList" :key="index">{{ item }}</view>
         </picker-view-column>
       </picker-view>
     </view>
@@ -57,7 +57,7 @@ export default defineComponent({
 });
 </script>
 <script lang="ts" setup>
-import { ref, watch, PropType, onMounted } from "vue";
+import { ref, watch, type PropType, onMounted } from "vue";
 import { isType, findIndex } from "@/utils";
 
 const props = defineProps({

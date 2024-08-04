@@ -1,7 +1,7 @@
 <template>
   <view class="search-select-page">
-    <view class="header fvertical">
-      <view class="search-input fvertical">
+    <view class="header f-vertical">
+      <view class="search-input f-vertical">
         <input
           class="input f1"
           type="text"
@@ -15,8 +15,8 @@
     </view>
     <view v-if="pageData.keywordTips.length > 0 && loadMoreData.requestCount === 0 && loadMoreData.state === 'wait'" class="tips-box">
       <view class="tips-title">推荐搜索关键词</view>
-      <view class="fwrap">
-        <view class="tips fvertical" v-for="(item, index) in pageData.keywordTips" :key="'val-' + index" @click="onTips(item)">{{ item }}</view>
+      <view class="f-wrap">
+        <view class="tips f-vertical" v-for="(item, index) in pageData.keywordTips" :key="'val-' + index" @click="onTips(item)">{{ item }}</view>
       </view>
     </view>
     <view :class="['select-list', { 'has-list': loadMoreData.list.length > 0 }]">
@@ -45,7 +45,7 @@ import LoadMoreTip from "@/components/LoadMoreTip/index.vue";
 import useLoadMore from "@/hooks/loadMore";
 import Global from "@/store";
 import { onLoad, onPullDownRefresh, onUnload } from "@dcloudio/uni-app";
-import { SearchSelectOption } from "@/store/SearchSelect";
+import type { SearchSelectOption } from "@/store/SearchSelect";
 import { modifyData } from "@/utils";
 import { showToast } from "@/utils/control";
 
@@ -53,7 +53,7 @@ type Option = Required<SearchSelectOption>;
 
 const setting = Global.searchSelect.setting;
 
-const { loadMoreData, setRequestListFn, refreshData } = useLoadMore();
+const { loadMoreData, setRequestListFn, refreshData } = useLoadMore<BaseObj>();
 
 /** 页面数据 */
 const pageData = reactive<Omit<Option, "title"|"request"|"callback">>({

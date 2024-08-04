@@ -30,13 +30,13 @@
 </template>
 <script lang="ts">
 /** 加载更多数据底部提示组件 */
-export default defineComponent({
+export default {
   name: "LoadMoreTip"
-})
+}
 </script>
 <script lang="ts" setup>
-import { defineComponent, PropType } from "vue";
-import { LoadMoreInfo, useLoadMoreData } from "@/hooks/loadMore";
+import { type PropType } from "vue";
+import { type LoadMoreInfo, useLoadMoreData } from "@/hooks/loadMore";
 import store from "@/store";
 
 defineProps({

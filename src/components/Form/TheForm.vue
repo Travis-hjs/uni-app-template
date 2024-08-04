@@ -4,18 +4,18 @@
   </view>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
 /** 一直累加的`formId`，需要时可以暴露给外部使用 */
 let formId = 1;
-export default defineComponent({
+
+/** 表单包裹组件 */
+export default {
   name: "TheForm"
-})
+}
 </script>
 <script lang="ts" setup>
-import TheFormItem from "./TheFormItem.vue";
-import { PropType, provide, watch, onUnmounted } from "vue";
-import { TheFormRules, TheFormValidateCallback } from "@/types";
-import { useFormProps } from "./hooks";
+import { type PropType, provide, watch, onUnmounted } from "vue";
+import type { TheFormRules, TheFormValidateCallback } from "@/types";
+import { useFormProps, TheFormItem } from "./index";
 import { getDeepLevelValue } from "@/utils";
 
 /** `<TheFormItem>`实例类型 */

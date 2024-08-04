@@ -153,7 +153,7 @@ interface ScrollviewCenterOptions<T = any> {
   ctx: T,
   /** 要滚动的目标节点`id` */
   id: string
-  /** `<scrollview>`的宽度，默认是屏幕宽度 */
+  /** `<scroll-view>`的宽度，默认是屏幕宽度 */
   wrapWidth?: number
   /** 点击事件 */
   event?: Event
@@ -164,7 +164,7 @@ interface ScrollviewCenterOptions<T = any> {
 }
 
 /**
- * 监听`<scrollview>`组件指定元素滚动到视图中心的偏移值
+ * 监听`<scroll-view>`组件指定元素滚动到视图中心的偏移值
  * @param option 配置参数
  */
 export function onScrollviewCenter(option: ScrollviewCenterOptions) {

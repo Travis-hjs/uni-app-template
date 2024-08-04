@@ -1,7 +1,7 @@
 <template>
   <view class="form-page">
     <radio-group class="grid-box" @change="onPosition">
-      <label class="fvertical" v-for="(item) in positionOptions" :key="item.value">
+      <label class="f-vertical" v-for="(item) in positionOptions" :key="item.value">
         <radio :value="item.value" :checked="item.value === position" />
         <view>{{ item.label }}</view>
       </label>
@@ -29,7 +29,7 @@
       </TheFormItem>
       <TheFormItem prop="multiple" label="多选项">
         <checkbox-group class="grid-box" @change="onMultiple">
-          <label class="fvertical" v-for="item in multipleOptions" :key="item.value">
+          <label class="f-vertical" v-for="item in multipleOptions" :key="item.value">
             <checkbox :value="item.value" :checked="formData.multiple.includes(item.value)" />
             <view>{{ item.label }}</view>
           </label>
@@ -37,7 +37,7 @@
       </TheFormItem>
       <TheFormItem prop="radioValue" label="单选项">
         <radio-group class="grid-box" @change="onRadio">
-          <label class="fvertical" v-for="(item) in radioOptions" :key="item.value">
+          <label class="f-vertical" v-for="(item) in radioOptions" :key="item.value">
             <radio :value="item.value" :checked="item.value === formData.radioValue" />
             <view>{{ item.label }}</view>
           </label>
@@ -57,8 +57,22 @@
         </TheButton>
       </view>
     </TheForm>
-    <PickerDate :show="showPickerDate" @cancel="closePickerDate" @confirm="onPickerDate" :value="formData.date" startDate="2019-03-12" endDate="2021-06-04" title="请选择日期" />
-    <ThePicker :show="showPickerAddress" @cancel="closePickerAddress" @confirm="onPickerAddress" :list="addressList" title="动态层级变动" />
+    <PickerDate
+      :show="showPickerDate"
+      @cancel="closePickerDate"
+      @confirm="onPickerDate"
+      :value="formData.date"
+      startDate="2019-03-12"
+      endDate="2021-06-04"
+      title="请选择日期"
+    />
+    <ThePicker
+      :show="showPickerAddress"
+      @cancel="closePickerAddress"
+      @confirm="onPickerAddress"
+      :list="addressList"
+      title="动态层级变动"
+    />
   </view>
 </template>
 <script lang="ts" setup>
@@ -66,12 +80,16 @@ import { reactive, ref } from "vue";
 import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import UploadImage from "@/components/Upload/Image.vue";
-import TheButton from "@/components/TheButton.vue";
-import PickerDate from "@/components/Picker/Date.vue";
 import ThePicker from "@/components/Picker/index.vue";
+import PickerDate from "@/components/Picker/Date.vue";
+import TheButton from "@/components/TheButton.vue";
+// import { TheForm, TheFormItem } from "@/components/Form";
+// import { UploadImage } from "@/components/Upload";
+// import { TheButton } from "@/components";
+// import { ThePicker, PickerDate } from "@/components/Picker";
 import { showToast } from "@/utils/control";
 import { useCityData } from "@/hooks";
-import { PickerSelectItem, TheFormRules, LabelPosition, UploadChange } from "@/types";
+import type { PickerSelectItem, TheFormRules, LabelPosition, UploadChange } from "@/types";
 import { modifyData } from "@/utils";
 
 interface FormDataType {
@@ -221,14 +239,14 @@ function onUpload(res: UploadChange) {
 const theForm = ref<InstanceType<typeof TheForm>>();
 
 function onSubmit() {
-  theForm.value!.validate((valid, reuls) => {
+  theForm.value!.validate((valid, rules) => {
     if (valid) {
       showToast("验证通过，在控制台可以查看表单数据");
       console.log("表单数据 >>", JSON.stringify(formData, null, "\t"));
     } else {
-      const keys = Object.keys(reuls);
+      const keys = Object.keys(rules);
       const firstProp = keys[0];
-      showToast(`${reuls[firstProp][0].message}`);
+      showToast(`${rules[firstProp][0].message}`);
     }
   })
 }

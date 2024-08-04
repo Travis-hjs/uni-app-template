@@ -12,8 +12,26 @@ export function checkType(target: any) {
  * 判断任意值的类型，作用与`checkType`一致，外加一个辅助功能：当函数返回值为`true`时，可以传入泛型来确定`target`的类型（类型收窄）
  * @param target 判断目标
  * @param type 判断的类型
+ * - 当要判断的类型为`object`时，需要传一个泛型去确定它的类型，因为在`ts`中`object`是一个特殊类型无法确定
+ * @example
+ * ```ts
+ * type User = {
+ *   id: number
+ *   name: string
+ * }
+ * 
+ * function setData(params: string | User | Array<User>) {
+ *   if (isType<User>(params, "object")) {
+ *     params.name = "xxx";
+ *   }
+ *   if (isType(params, "array")) {
+ *     params.push({ id: 1, name: "add" });
+ *   }
+ *   // ...do some
+ * }
+ * ```
  */
-export function isType<T>(target: any, type: JavaScriptTypes): target is T {
+export function isType<T>(target: any, type: T extends "object" ? T : JavaScriptTypes): target is T extends JavaScriptTypes ? JavaScriptType[T] : T {
   return checkType(target) === type;
 }
 
@@ -22,15 +40,15 @@ export function isType<T>(target: any, type: JavaScriptTypes): target is T {
  * @param target 修改的目标
  * @param value 修改的内容
  */
-export function modifyData<T>(target: T, value: T) {
+export function modifyData<T>(target: T, value: DeepPartial<T>) {
   for (const key in value) {
     if (Object.prototype.hasOwnProperty.call(target, key)) {
-      // target[key] = value[key];
+      const item = value[key] as any;
       // 需要的话，深层逐个赋值
       if (checkType(target[key]) === "object") {
-        modifyData(target[key], value[key]);
+        modifyData(target[key], item);
       } else {
-        target[key] = value[key];
+        target[key] = item;
       }
     }
   }
@@ -266,12 +284,22 @@ export function randomText(min: number, max: number) {
   return str;
 }
 
-// /**
-//  * 获取`/static/`目录下的图片路径
-//  * @param name 图片或文件路径名，需要带后缀
-//  * @returns 
-//  */
-// export function getIamgeByName(name: string) {
-//   console.log(name, import.meta.url);
-//   return new URL(`../static/${name}`, import.meta.url).href;
-// }
+/**
+ * 获取`/static/`目录下的图片路径
+ * @param name 图片或文件路径名，需要带后缀
+ * @returns 
+ */
+export function getImageByName(name: string) {
+  // const fileMap = import.meta.glob("../static/*", { eager: true });
+  // const filePath = `../static/${name}`;
+  // return fileMap[filePath];
+
+  // #ifdef H5
+  // console.log(name, import.meta.url);
+  return new URL(`../static/${name}`, import.meta.url).href;
+  // #endif
+
+  // #ifndef H5
+  return `/static/${name}`;
+  // #endif
+}

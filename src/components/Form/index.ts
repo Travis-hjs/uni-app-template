@@ -1,5 +1,7 @@
-import { PropType } from "vue";
-import { LabelPosition } from "@/types";
+import type { PropType } from "vue";
+import type { LabelPosition } from "@/types";
+import TheForm from "./TheForm.vue";
+import TheFormItem from "./TheFormItem.vue";
 
 /**
  * 表单相同`props`
@@ -23,4 +25,9 @@ export function useFormProps(isItem?: boolean) {
       default: isItem ? "-" : false, // 微信小程序抽风会把空字符串转成 boolean 所以这里随便给个字符串
     },
   }
+}
+
+export {
+  TheForm,
+  TheFormItem
 }

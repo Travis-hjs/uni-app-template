@@ -34,7 +34,7 @@ export default defineComponent({
 <script lang="ts" setup>
 import { defineComponent, ref } from "vue";
 import { showToast } from "@/utils/control";
-import { UploadChange } from "@/types";
+import type { UploadChange } from "@/types";
 
 const props = defineProps({
   minHeight: {

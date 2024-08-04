@@ -1,9 +1,9 @@
 <template>
-  <view :class="['the-picker fwrap', { 'the-picker-show': show }]">
+  <view :class="['the-picker f-wrap', { 'the-picker-show': show }]">
     <view class="f1" @click="clickCancel()"></view>
     <view class="picker-content">
       <!-- 操作栏 -->
-      <view class="picker-option fvertical">
+      <view class="picker-option f-vertical">
         <view class="btn" @click="clickCancel()">取消</view>
         <view class="f1 picker-title">{{ title }}</view>
         <view class="btn confirm" @click="clickConfirm()">确定</view>
@@ -11,13 +11,13 @@
       <!-- 选择栏 -->
       <picker-view class="picker-view" indicator-style="height: 36px;" :value="selectIndexs" @change="pickerChange">
         <picker-view-column v-show="list.length > 0">
-          <view class="picker-item ellipsis_1" v-for="(item, index) in list" :key="index">{{ item.label }}</view>
+          <view class="picker-item ellipsis-1" v-for="(item, index) in list" :key="index">{{ item.label }}</view>
         </picker-view-column>
         <picker-view-column v-show="secondList.length > 0">
-          <view class="picker-item ellipsis_1" v-for="(item, index) in secondList" :key="index">{{ item.label }}</view>
+          <view class="picker-item ellipsis-1" v-for="(item, index) in secondList" :key="index">{{ item.label }}</view>
         </picker-view-column>
         <picker-view-column v-show="thirdList.length > 0">
-          <view class="picker-item ellipsis_1" v-for="(item, index) in thirdList" :key="index">{{ item.label }}</view>
+          <view class="picker-item ellipsis-1" v-for="(item, index) in thirdList" :key="index">{{ item.label }}</view>
         </picker-view-column>
       </picker-view>
     </view>
@@ -33,8 +33,8 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
-import { PropType, ref, watch, nextTick } from "vue";
-import { PickerSelectItem } from "@/types";
+import { type PropType, ref, watch, nextTick } from "vue";
+import type { PickerSelectItem } from "@/types";
 import { isType } from "@/utils";
 
 const props = defineProps({

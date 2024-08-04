@@ -8,7 +8,18 @@
  * @param id 
  */
 export function getUserInfo(id: number | string) {
-  return request('GET', '/getUserInfoById', { id })
+  return request("GET", "/getUserInfoById", { id })
+}
+
+/**
+ * 获取超大数据量
+ * - 可以为单个接口设置超时时间
+ * @param params
+ */
+export function getMaxData(params: PageInfo) {
+  return request("GET", "/getMaxList", params, {
+    overtime: 20000
+  })
 }
 
 /**
@@ -16,23 +27,23 @@ export function getUserInfo(id: number | string) {
  * @param params 
  */
 export function saveBannerInfo(params: { img: string, date: string, sort: number }) {
-  return request('POST', '/saveBannerInfo', params)
+  return request("POST", "/saveBannerInfo", params)
 }
 ```
 
 ## 表单请求
 
 ```ts
-import { jsonToFormData } from '@/utils';
+import { jsonToFormData } from "@/utils";
 
 /**
  * `post`表单请求
  * @param params
  */
 export function saveUserInfo(params: { account: string, password: string }) {
-  return request('POST', '/saveUserInfo', jsonToFormData(params), {
+  return request("POST", "/saveUserInfo", jsonToFormData(params), {
     headers: {
-      'codeMode': 'form'
+      "codeMode": "form"
     }
   })
 }
@@ -46,8 +57,8 @@ export function saveUserInfo(params: { account: string, password: string }) {
  * @param params
  */
 export function getBlob(params: { name: string }) {
-  return request('GET', '/getXlsxBlob', params, {
-    responseType: 'blob'
+  return request("GET", "/getXlsxBlob", params, {
+    responseType: "blob"
   })
 }
 ```

@@ -3,6 +3,7 @@
 > 基于[官方脚手架](https://uniapp.dcloud.io/quickstart-cli.html#%E5%88%9B%E5%BB%BAuni-app)创建。
 
 - [预览地址](http://huangjingsheng.gitee.io/hjs/uni-app)
+- [备用预览地址](https://travis-hjs.github.io/uni-app)
 
 | 分支 | 版本 | 说明 |
 |---|---|---|
@@ -50,39 +51,30 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, ref } from "vue";
 import UploadImg from '@/components/UploadImg/index.vue';
 import UserHK from './components/UserHK/index.vue';
 import UserKCH from './components/UserKCH/index.vue';
 
-export default defineComponent({
-  components: {
-    UploadImg,
-    UserHK,
-    UserKCH
-  },
-  ...more
-})
 </script>
 ```
-**这里有个细节：导入的组件带上完整路径和后缀，才能使用`ctrl + 鼠标点击`跳转到对应组件目录**
+**在H5中一些导出组件写法和其他端有差异，具体看[组件描述文件](./src/components/README.md);**
 
 ## 项目配置相关
 
-当前项目所有配置全部集中写在`utils/config.js`文件中，不用再处理各种配置文件，过于复杂，不利于代理组织和维护，动态配置也应该在该文件集中处理。
+当前项目所有配置全部集中写在`utils/config.js`文件中，不用再处理各种配置文件，过于复杂，不利于代码组织和维护，动态配置也应该在该文件集中处理。
 
-项目不使用`eslint`，理由是这个工具不够灵活，电脑性能不好的话可能每次改动代码都要等上不少时间，之后可以根据团队小组约定使用。
 
-默认`vscode`配置代码风格约束：
+## tsc 类型检查
+
+强烈建议在每个平台的开发环境中使用，理由可以全面检查一些遗漏的报红未处理操作，例如
 
 ```json
 {
-  "editor.detectIndentation": false,
-  "editor.tabSize": 2,
-  "vetur.format.options.tabSize": 2,
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "javascript.updateImportsOnFileMove.enabled": "always",
+  "scripts": {
+    // "dev:mp-weixin": "uni -p mp-weixin" // 没加 tsc 前
+    "dev:mp-weixin": "vue-tsc --noEmit && uni -p mp-weixin"
+  }
 }
 ```
-

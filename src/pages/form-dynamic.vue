@@ -11,7 +11,7 @@
       <TheFormItem prop="list" label="列表">
         <TheButton @click="addListItem()">添加一条列表项</TheButton>
         <view class="mgb_20"></view>
-        <view class="fvertical" v-for="(item, index) in formData.list" :key="index">
+        <view class="f-vertical" v-for="(item, index) in formData.list" :key="index">
           <TheFormItem :prop="'list.' + index + '.value'" :label="item.label" labelWidth="100rpx" :rules="getListItemRules(item.label)">
             <input class="the-input mgb_20" type="text" v-model="item.value" :placeholder="getListItemRules(item.label)[0].message">
             <TheButton color="#f44336" :round="true" @click="removeListItem(index)">删除{{ item.label }}</TheButton>
@@ -38,8 +38,10 @@ import { reactive, ref } from "vue";
 import TheForm from "@/components/Form/TheForm.vue";
 import TheFormItem from "@/components/Form/TheFormItem.vue";
 import TheButton from "@/components/TheButton.vue";
+// import { TheForm, TheFormItem } from "@/components/Form";
+// import { TheButton } from "@/components";
 import { showToast } from "@/utils/control";
-import { TheFormRules, TheFormRulesItem } from "@/types";
+import type { TheFormRules, TheFormRulesItem } from "@/types";
 import { modifyData } from "@/utils";
 
 interface FormDataType {
@@ -81,13 +83,13 @@ function getListItemRules(label: string) {
 const theForm = ref<InstanceType<typeof TheForm>>();
 
 function onSubmit() {
-  theForm.value!.validate((valid, reuls) => {
+  theForm.value!.validate((valid, rules) => {
     if (valid) {
       console.log("表单数据 >>", formData);
     } else {
-      const keys = Object.keys(reuls);
+      const keys = Object.keys(rules);
       const firstProp = keys[0];
-      showToast(`${reuls[firstProp][0].message}`);
+      showToast(`${rules[firstProp][0].message}`);
     }
   })
 }
