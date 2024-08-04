@@ -3,7 +3,7 @@
     <view class="item card" v-for="item in loadMoreData.list" :key="item.id">
       <view class="id">ID: {{ item.id }}</view>
       <view class="flex">
-        <image class="pic mgr_20" mode="aspectFill" :src="item.icon"></image>
+        <image class="pic mgr-20" mode="aspectFill" :src="item.icon"></image>
         <view class="f1 value">描述：{{ item.content }}</view>
       </view>
       <view class="value">{{ item.name }}</view>

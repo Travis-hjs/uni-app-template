@@ -30,7 +30,7 @@
           <view class="title">{{ item[pageData.itemProps.title] }}</view>
         </template>
         <template v-else-if="pageData.type === 'two-row'">
-          <view class="title mgb_10">{{ item[pageData.itemProps.title] }}</view>
+          <view class="title mgb-10">{{ item[pageData.itemProps.title] }}</view>
           <view class="desc">{{ item[pageData.itemProps.desc!] }}</view>
         </template>
       </view>
