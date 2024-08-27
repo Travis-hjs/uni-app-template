@@ -39,7 +39,7 @@
   </view>
 </template>
 <script lang="ts" setup>
-// ================= 通用搜索选择页，调用方式：store.searchSelect.open() =================
+// --------------- 通用搜索选择页，调用方式：store.searchSelect.open() ---------------
 import { reactive } from "vue";
 import LoadMoreTip from "@/components/LoadMoreTip/index.vue";
 import useLoadMore from "@/hooks/loadMore";
