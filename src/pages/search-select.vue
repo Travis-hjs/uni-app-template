@@ -39,11 +39,11 @@
   </view>
 </template>
 <script lang="ts" setup>
-// ================= 通用搜索选择页，调用方式：Global.searchSelect.open() =================
+// ================= 通用搜索选择页，调用方式：store.searchSelect.open() =================
 import { reactive } from "vue";
 import LoadMoreTip from "@/components/LoadMoreTip/index.vue";
 import useLoadMore from "@/hooks/loadMore";
-import Global from "@/store";
+import store from "@/store";
 import { onLoad, onPullDownRefresh, onUnload } from "@dcloudio/uni-app";
 import type { SearchSelectOption } from "@/store/SearchSelect";
 import { modifyData } from "@/utils";
@@ -51,7 +51,7 @@ import { showToast } from "@/utils/control";
 
 type Option = Required<SearchSelectOption>;
 
-const setting = Global.searchSelect.setting;
+const setting = store.searchSelect.setting;
 
 const { loadMoreData, setRequestListFn, refreshData } = useLoadMore<BaseObj>();
 
@@ -88,7 +88,7 @@ function onInput() {
 
 function onSelect(item: any) {
   setting.callback(JSON.parse(JSON.stringify(item)));
-  Global.searchSelect.reset();
+  store.searchSelect.reset();
   uni.navigateBack({});
 }
 
