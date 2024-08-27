@@ -79,7 +79,7 @@ export default function useLoadMore<ListItem>() {
         loadMoreData.list = list.concat(listData);
         // 判断是否没有数据了
         // result.data.totalCount >= loadMoreData.list.length
-        if (listData.length < loadMoreData.pageSize) {
+        if (loadMoreData.list.length >= result.data.total!) {
           loadMoreData.state = "nomore";
         } else {
           loadMoreData.currentPage++;
