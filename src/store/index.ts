@@ -21,7 +21,6 @@ export class ModuleStore extends ModuleAppOption {
       logo: getImageByName("logo.png"),
       defaultHead: getImageByName("default_head.png"),
       noneData: getImageByName("none_data.png"),
-      iconArrowRight: getImageByName("arrow-right.png")
     }
   }
 
