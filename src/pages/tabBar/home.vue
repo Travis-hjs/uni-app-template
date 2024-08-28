@@ -6,10 +6,11 @@
       <view style="margin-bottom: 40rpx; font-size: 30rpx">userInfo: {{ JSON.stringify(userInfo, null, 4) }}</view>
       <button class="button-dark" @click="setUserInfo()">修改`userInfo`</button>
     </view>
+    
     <view class="cell">
       <view class="cell-item f-vertical" v-for="(item, index) in menuList" :key="index" @click="openMenu(item.path)">
         <view class="f1">{{ item.label }}</view>
-        <img class="cell-icon" :src="imageInfo.iconArrowRight">
+        <Arrow type="right" />
       </view>
     </view>
     <view style="padding: 30rpx">
@@ -21,6 +22,7 @@
   </view>
 </template>
 <script lang="ts" setup>
+import Arrow from "@/components/Icon/Arrow.vue";
 import store from "@/store";
 import { getTestList } from "@/api/common";
 import { ref } from "vue";
@@ -31,7 +33,7 @@ const menuList = [
   { label: "form-表单组件（动态表单）", path: "/pages/form-dynamic" },
   { label: "form-表单组件（特殊/边缘处理）", path: "/pages/form-special" },
   { label: "加载更多列表", path: "/pages/load-more-list" },
-  { label: "cavans-生成海报", path: "/pages/cavans-creater" },
+  { label: "canvas-生成海报", path: "/pages/canvas-creator" },
   { label: "滚动tab居中示例", path: "/pages/scroll-tab" },
   { label: "搜索选择页", path: "search-select" },
 ];
@@ -106,10 +108,6 @@ const userInfo = store.user.info;
       }
       &:first-child {
         border-top: solid 1px #eee;
-      }
-      .cell-icon {
-        width: 38rpx;
-        height: 38rpx;
       }
     }
   }

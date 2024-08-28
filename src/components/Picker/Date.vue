@@ -1,5 +1,5 @@
 <template>
-  <view :class="['the-picker f-wrap', { 'the-picker-show': show }]">
+  <view :class="['the-picker f-wrap', { 'the-picker-show': layer.transition }]" v-show="layer.visible">
     <view class="f1" @click="onCancel()"></view>
     <view class="picker-content">
       <!-- 操作栏 -->
@@ -10,10 +10,10 @@
       </view>
 
       <picker-view class="picker-view" indicator-style="height: 36px;" @change="pickerChange" :value="selectIndexs">
-        <picker-view-column v-if="type === 'Y-M-D' || type === 'Y-M' || type === 'Y'">
+        <picker-view-column v-if="['Y-M-D', 'Y-M', 'Y'].includes(type)">
           <view class="picker-item ellipsis-1" v-for="(item, index) in yearList" :key="index">{{ item }}</view>
         </picker-view-column>
-        <picker-view-column v-if="type === 'Y-M-D' || type === 'Y-M'">
+        <picker-view-column v-if="['Y-M-D', 'Y-M'].includes(type)">
           <view class="picker-item ellipsis-1" v-for="(item, index) in monthList" :key="index">{{ item }}</view>
         </picker-view-column>
         <picker-view-column v-if="type === 'Y-M-D'">
@@ -24,8 +24,6 @@
   </view>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
-
 const now = new Date();
 
 /**
@@ -52,13 +50,14 @@ function getFormatList(start: number, total: number) {
 /**
  * 日期选择组件
  */
-export default defineComponent({
+export default {
   name: "PickerDate"
-});
+}
 </script>
 <script lang="ts" setup>
 import { ref, watch, type PropType, onMounted } from "vue";
 import { isType, findIndex } from "@/utils";
+import { useTransitionLayer } from "../index";
 
 const props = defineProps({
   show: {
@@ -199,12 +198,15 @@ function setData() {
   update();
 }
 
+const { layer } = useTransitionLayer(() => props.show);
+
 // 先输出日期选择数据
 update();
 
 onMounted(function () {
   // 再更新选中状态
-  setData();
+  // setData();
+  setTimeout(setData); // TODO: <picker-view> 的 bug，首次需要异步设置 :value="value" 才生效
 });
 
 watch(() => props.value, function (now, before) {

@@ -46,9 +46,9 @@
       }
     },
     {
-      "path": "pages/cavans-creater",
+      "path": "pages/canvas-creator",
       "style": {
-        "navigationBarTitleText": "cavans-生成海报图"
+        "navigationBarTitleText": "canvas-生成海报图"
       }
     },
     {
