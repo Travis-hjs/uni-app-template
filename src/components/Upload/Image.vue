@@ -10,7 +10,9 @@
     <!-- #endif -->
 
     <view class="close" v-if="src" @click="removeImage()"></view>
-    <view class="upload-icon" @click="uploadImage()" v-if="!src && !loading" :style="{ 'min-height': minHeight }"></view>
+    <view class="upload-icon fvc" @click="uploadImage()" v-if="!src && !loading" :style="{ 'min-height': minHeight }">
+      <Cross size="100rpx" color="#999" type="plus" />
+    </view>
     <view class="fvc" v-if="!src && loading" :style="{ 'min-height': minHeight }">
       <view class="preloader">
         <view class="preloader-inner">
@@ -27,14 +29,15 @@
   </view>
 </template>
 <script lang="ts">
-export default defineComponent({
+export default {
   name: "UploadImage"
-})
+}
 </script>
 <script lang="ts" setup>
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 import { showToast } from "@/utils/control";
 import type { UploadChange } from "@/types";
+import Cross from "../Icon/Cross.vue";
 
 const props = defineProps({
   minHeight: {
@@ -152,29 +155,6 @@ function removeImage() {
   .upload-icon {
     width: 100%;
     height: 100%;
-    position: relative;
-    &::before {
-      content: "";
-      width: 100rpx;
-      height: 2px;
-      background-color: #999;
-      border-radius: 1px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-    &::after {
-      content: "";
-      width: 100rpx;
-      height: 2px;
-      background-color: #999;
-      border-radius: 1px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) rotate(-90deg);
-    }
   }
 }
 </style>
