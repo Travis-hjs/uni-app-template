@@ -1,5 +1,5 @@
 <template>
-  <view :class="['the-picker f-wrap', { 'the-picker-show': show }]">
+  <view :class="['the-picker f-wrap', { 'the-picker-show': layer.transition }]" v-show="layer.visible">
     <view class="f1" @click="clickCancel()"></view>
     <view class="picker-content">
       <!-- 操作栏 -->
@@ -24,18 +24,18 @@
   </view>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
 /**
  * 底部弹出选择组件
  */
-export default defineComponent({
+export default {
   name: "ThePicker"
-})
+}
 </script>
 <script lang="ts" setup>
 import { type PropType, ref, watch, nextTick } from "vue";
 import type { PickerSelectItem } from "@/types";
 import { isType } from "@/utils";
+import { useTransitionLayer } from "../index";
 
 const props = defineProps({
   show: {
@@ -128,6 +128,8 @@ function clickConfirm() {
     value: result.filter(item => item.value !== ""),
   });
 }
+
+const { layer } = useTransitionLayer(() => props.show);
 
 watch(() => props.list, function () {
   nextTick(function () {
