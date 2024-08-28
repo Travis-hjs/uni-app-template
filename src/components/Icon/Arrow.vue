@@ -1,5 +1,5 @@
 <template>
-  <view class="the-arrow" :style="{ 'width': size, 'height': size, '--line-width': lineWidth, '--line-color': color }">
+  <view class="the-arrow" :style="useStyle">
     <view :class="['the-arrow-icon', type]"></view>
   </view>
 </template>
@@ -20,6 +20,23 @@ export default {
     lineWidth: String,
     /** 线条颜色 */
     color: String,
+  },
+  computed: {
+    // 傻逼小程序不会过滤 undefined 的值，导致默认参数有问题，这里处理一下
+    useStyle() {
+      const map: BaseObj<string | undefined> = {
+        "width": this.size,
+        "height": this.size,
+        "--line-width": this.lineWidth,
+        "--line-color": this.color
+      }
+      for (const key in map) {
+        if (!map[key]) {
+          delete map[key];
+        }
+      }
+      return map;
+    }
   }
 }
 </script>

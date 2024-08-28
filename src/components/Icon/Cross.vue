@@ -1,7 +1,7 @@
 <template>
-  <view class="the-cross" :style="{ 'width': size, 'height': size, '--line-width': lineWidth }">
-    <view :class="['the-cross-line', type]" :style="{ 'background-color': color }"></view>
-    <view :class="['the-cross-line', type]" :style="{ 'background-color': color }"></view>
+  <view class="the-cross" :style="useStyle">
+    <view :class="['the-cross-line', type]"></view>
+    <view :class="['the-cross-line', type]"></view>
   </view>
 </template>
 <script lang="ts">
@@ -23,6 +23,23 @@ export default {
     lineWidth: String,
     /** 线条颜色 */
     color: String,
+  },
+  computed: {
+    // 傻逼小程序不会过滤 undefined 的值，导致默认参数有问题，这里处理一下
+    useStyle() {
+      const map: BaseObj<string | undefined> = {
+        "width": this.size,
+        "height": this.size,
+        "--line-width": this.lineWidth,
+        "--bg-color": this.color
+      }
+      for (const key in map) {
+        if (!map[key]) {
+          delete map[key];
+        }
+      }
+      return map;
+    }
   }
 }
 </script>
@@ -32,8 +49,9 @@ export default {
   height: 32rpx;
   position: relative;
   --line-width: 2px;
+  --bg-color: #666;
   .the-cross-line {
-    background-color: #666;
+    background-color: var(--bg-color);
     position: absolute;
     top: 50%;
     left: 50%;
