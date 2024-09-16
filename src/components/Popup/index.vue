@@ -1,6 +1,6 @@
 <template>
   <view :class="['the-popup fvc', { 'the-popup-show': layer.transition }]" v-show="layer.visible" @click="onMask()">
-    <view class="the-popup-content" v-if="layer.visible" @click.stop>
+    <view class="the-popup-content" v-if="!props.destroySlot || layer.visible" @click.stop>
       <view class="the-popup-close" @click="onClose()">
         <Cross />
       </view>
@@ -31,6 +31,11 @@ const props = defineProps({
   },
   /** 是否可以点击遮罩关闭 */
   closeByMask: {
+    type: Boolean,
+    default: false,
+  },
+  /** 是否在关闭弹框时销毁插槽内容 */
+  destroySlot: {
     type: Boolean,
     default: false,
   }

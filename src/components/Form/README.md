@@ -1,7 +1,6 @@
 # from 表单组件
 
-- [预览地址](http://huangjingsheng.gitee.io/hjs/uni-app/#/pages/form)
-- [备用预览地址](https://travis-hjs.github.io/uni-app/#/pages/form)
+- [预览地址](https://travis-hjs.github.io/uni-app/#/pages/form)
 
 这里只实现两个核心组件`<TheForm />`和`<TheFormItem />`；因为移动端样式变化比较灵活，如果把所有表单组件都封装成`element-ui`或者`vant-ui`这类型一体库的话，导致很多无用代码和性能开销，所以这里只提供必需的功能组件，其他表单组件根据实际情况定义，保证高度灵活性。
 
@@ -10,7 +9,7 @@
 参数说明：
 
 | props |  类型 | 是否必选 | 说明 |
-| --- | --- | --- | --- | 
+| --- | --- | --- | --- |
 | model | object | 是 | 表单绑定的值（表单数据） |
 | rules | object | 否 | 表单验证数据（和`element-ui`一致） |
 | labelWidth | string | 否 | 表单字段宽度，`px`、`rpx`、`%` |
@@ -19,14 +18,14 @@
 | validateScroll | boolean | 否 | 是否需要在验证时，滚动到不通过的位置，默认`true`，短表单时建议关闭，长表单开启 |
 
 和`element-ui`差异：
+
 - `props.rules`移除了`validator`，增加了`reg`正则匹配：注意：因为微信小程序的一些特殊机制，导致传参类型会把非 `number|string|object` 的类型过滤掉，所以这里在写正则的时候，在末尾加上`.toString()`即可；
 - `props.rules`移除了`change`触发条件，组件内部做了智能触发机制；
-
 
 事件/方法说明：
 
 | 方法 |  参数 | 参数说明 | 说明 |
-| --- | --- | --- | --- | 
+| --- | --- | --- | --- |
 | validate(callback(...)) | callback(isValid, rules) | 有两个回调参数，和`element-ui`一致 | 表单验证 |
 | validateField(prop, callback(...)) | `prop`是指定验证的键值，`callback`和上面一致 | 有两个回调参数，和`element-ui`一致 | 指定验证某个字段 |
 | resetFields() | - | - | 移除所有校验 |
@@ -37,7 +36,7 @@
 参数说明：
 
 | props |  类型 | 是否必选 | 说明 |
-| --- | --- | --- | --- | 
+| --- | --- | --- | --- |
 | prop | string | 否 | 表单对象`key`字段 |
 | rules | array | 否 | 这里是上面`rules`对象里面的数组，类型一致；优先级高于父组件 |
 | label | string | 否 | 表单展示字段 |
@@ -103,13 +102,13 @@ function onUpload(res: UploadChange) {
 }
 
 function onSubmit() {
-  theForm.value!.validate((valid, reuls) => {
+  theForm.value!.validate((valid, rules) => {
     if (valid) {
       console.log("表单数据 >>", formData);
     } else {
-      const keys = Object.keys(reuls);
+      const keys = Object.keys(rules);
       const firstProp = keys[0];
-      showToast(`${reuls[firstProp][0].message}`);
+      showToast(`${rules[firstProp][0].message}`);
     }
   })
 }
