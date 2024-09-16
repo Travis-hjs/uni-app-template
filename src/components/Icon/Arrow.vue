@@ -1,5 +1,13 @@
 <template>
-  <view class="the-arrow" :style="useStyle">
+  <view
+    class="the-arrow"
+    :style="{
+      width: size,
+      height: size,
+      '--line-width': lineWidth,
+      '--line-color': color
+    }"
+  >
     <view :class="['the-arrow-icon', type]"></view>
   </view>
 </template>
@@ -15,37 +23,29 @@ export default {
       default: "right"
     },
     /** 矩阵宽高 */
-    size: String,
+    size: {
+      type: String,
+      default: "20rpx"
+    },
     /** 线条的宽度 */
-    lineWidth: String,
+    lineWidth: {
+      type: String,
+      default: "1px"
+    },
     /** 线条颜色 */
-    color: String,
-  },
-  computed: {
-    // 傻逼小程序不会过滤 undefined 的值，导致默认参数有问题，这里处理一下
-    useStyle() {
-      const map: BaseObj<string | undefined> = {
-        "width": this.size,
-        "height": this.size,
-        "--line-width": this.lineWidth,
-        "--line-color": this.color
-      }
-      for (const key in map) {
-        if (!map[key]) {
-          delete map[key];
-        }
-      }
-      return map;
-    }
+    color: {
+      type: String,
+      default: "#999"
+    },
   }
 }
 </script>
 <style lang="scss">
 .the-arrow {
-  width: 20rpx;
-  height: 20rpx;
-  --line-width: 1px;
-  --line-color: #999;
+  // width: 20rpx;
+  // height: 20rpx;
+  // --line-width: 1px;
+  // --line-color: #999;
   .the-arrow-icon {
     width: 100%;
     height: 100%;

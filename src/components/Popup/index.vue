@@ -1,10 +1,12 @@
 <template>
   <view :class="['the-popup fvc', { 'the-popup-show': layer.transition }]" v-show="layer.visible" @click="onMask()">
-    <view class="the-popup-content" v-if="layer.visible" @click.stop>
+    <view class="the-popup-content" v-if="!props.destroySlot || layer.visible" @click.stop>
       <view class="the-popup-close" @click="onClose()">
         <Cross />
       </view>
-      <slot></slot>
+      <scroll-view scroll-y="true" class="the-popup-scroll-view">
+        <slot></slot>
+      </scroll-view>
     </view>
   </view>
 </template>
@@ -29,6 +31,11 @@ const props = defineProps({
   },
   /** 是否可以点击遮罩关闭 */
   closeByMask: {
+    type: Boolean,
+    default: false,
+  },
+  /** 是否在关闭弹框时销毁插槽内容 */
+  destroySlot: {
     type: Boolean,
     default: false,
   }
@@ -65,7 +72,6 @@ function onClose() {
   padding: 0 48rpx;
   .the-popup-content {
     width: 100%;
-    min-height: 300rpx;
     background-color: #fff;
     overflow: hidden;
     border-radius: 16rpx;
@@ -73,6 +79,17 @@ function onClose() {
     position: relative;
     transition: $duration;
     transform: translate3d(0, 100px, 0);
+  }
+  .the-popup-scroll-view {
+    width: 100%;
+    min-height: 300rpx;
+    // 196rpx = 58rpx + 40rpx + 58rpx + 40rpx;
+    /*  #ifndef H5  */
+    max-height: calc(100vh - 196rpx);
+    /*  #endif  */
+    /*  #ifdef H5  */
+    max-height: calc(100vh - 196rpx - 40px);
+    /*  #endif  */
   }
   .the-popup-close {
     position: absolute;

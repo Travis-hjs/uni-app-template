@@ -1,5 +1,13 @@
 <template>
-  <view class="the-cross" :style="useStyle">
+  <view
+    class="the-cross"
+    :style="{
+      width: size,
+      height: size,
+      '--line-width': lineWidth,
+      '--line-color': color
+    }"
+  >
     <view :class="['the-cross-line', type]"></view>
     <view :class="['the-cross-line', type]"></view>
   </view>
@@ -18,40 +26,32 @@ export default {
       default: "close"
     },
     /** 矩阵宽高 */
-    size: String,
+    size: {
+      type: String,
+      default: "32rpx"
+    },
     /** 线条的宽度 */
-    lineWidth: String,
+    lineWidth: {
+      type: String,
+      default: "2px"
+    },
     /** 线条颜色 */
-    color: String,
+    color: {
+      type: String,
+      default: "#666"
+    },
   },
-  computed: {
-    // 傻逼小程序不会过滤 undefined 的值，导致默认参数有问题，这里处理一下
-    useStyle() {
-      const map: BaseObj<string | undefined> = {
-        "width": this.size,
-        "height": this.size,
-        "--line-width": this.lineWidth,
-        "--bg-color": this.color
-      }
-      for (const key in map) {
-        if (!map[key]) {
-          delete map[key];
-        }
-      }
-      return map;
-    }
-  }
 }
 </script>
 <style lang="scss">
 .the-cross {
-  width: 32rpx;
-  height: 32rpx;
+  // width: 32rpx;
+  // height: 32rpx;
+  // --line-width: 2px;
+  // --line-color: #666;
   position: relative;
-  --line-width: 2px;
-  --bg-color: #666;
   .the-cross-line {
-    background-color: var(--bg-color);
+    background-color: var(--line-color);
     position: absolute;
     top: 50%;
     left: 50%;
