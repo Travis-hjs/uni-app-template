@@ -199,14 +199,14 @@ export function computeNumber(a: number, type: NumberSymbols, b: number) {
  * @example 
  * ```js
  * // 当前网址为 www.https://hjs.com?id=99&age=123&key=sdasfdfr
- * const targetAge = getQueryParam("age", "id=12&age=14&name=hjs");
- * const params = getQueryParam();
- * const age = getQueryParam("age");
+ * const targetAge = getLinkQuery("age", "id=12&age=14&name=hjs");
+ * const params = getLinkQuery();
+ * const age = getLinkQuery("age");
  * // 非IE浏览器下简便方法
  * new URLSearchParams(location.search).get("age");
  * ```
  */
-export function getQueryParam(name?: string, target?: string) {
+export function getLinkQuery(name?: string, target?: string) {
   const code = target || location.href.split("?")[1] || "";
   const list = code.split("&");
   const params: any = {};
