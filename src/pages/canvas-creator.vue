@@ -23,7 +23,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import TheButton from "@/components/TheButton.vue";
-import canvasCreater from "@/utils/canvasCreater";
+import { canvasCreator } from "@/utils/canvasCreator";
 import { showToast, showLoading, showAlert } from "@/utils/control";
 
 const canvasSize = {
@@ -36,7 +36,7 @@ const canvasUrl = ref("");
 
 function createBanner() {
   showLoading("生成中...");
-  canvasCreater({
+  canvasCreator({
     canvasId: "the-canvas",
     // fileType: "jpg",
     ...canvasSize,

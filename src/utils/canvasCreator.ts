@@ -275,7 +275,7 @@ function loadImage(url: string, callback: (val: string) => void, fail: (error: a
  * `canvas`生成器
  * @param params 传参配置
  */
-export default function canvasCreater(params: Canvas.Options) {
+export function canvasCreator(params: Canvas.Options) {
   /** `canvas`绘图上下文 */
   const context = uni.createCanvasContext(params.canvasId);
   // console.log("context >>", context);
@@ -398,6 +398,6 @@ export default function canvasCreater(params: Canvas.Options) {
     index = 0;
     start();
   } else {
-    console.warn("canvasCreater >> 没有可生成的列表数据");
+    console.warn("canvasCreator >> 没有可生成的列表数据");
   }
 }
