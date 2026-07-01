@@ -2,8 +2,8 @@
 
 参数说明：
 
-| props |  类型 | 是否必选 | 说明 |
-| --- | --- | --- | --- | 
+| props | 类型 | 是否必选 | 说明 |
+| --- | --- | --- | --- |
 | show | boolean | 是 | 是否显示弹出选择器 |
 | title | string,number | 否 | 选择器标题 |
 | list | `Array<PickerSelectItem>` | 是 | 选择器数据，最多显示三层 |
@@ -13,8 +13,8 @@
 事件说明：
 
 | 方法件名 | 说明 |
-| --- | --- | 
-| `setIndexs(indexs: Array<number>)` | 设置当前选择器选中的位置，传入的参数则为每一列的索引位置 |
+| --- | --- |
+| `setIndexes(indexes: Array<number>)` | 设置当前选择器选中的位置，传入的参数则为每一列的索引位置 |
 
 `list`注意事项说明：小程序端无法多列动态自适应，需要使用`column`指定列数；原因是组件用了`v-show`在小程序端有`bug`，改用`v-if`可以实现动态层级，不过会有些展示上的行为小瑕疵，可以自行修改测试看具体效果就知道了，这里推荐使用`v-show`+指定列数`column`在小程序端的使用。
 
@@ -37,7 +37,7 @@ interface PickerSelectItem<T = string | number> {
 }
 ```
 
-**使用示例**
+使用示例
 
 ```html
 <template>
@@ -89,8 +89,8 @@ function onPicker(res: { id: string, value: Array<PickerSelectItem<number>> }) {
 
 ## 日期选择组件
 
-| props |  类型 | 是否必选 | 说明 |
-| --- | --- | --- | --- | 
+| props | 类型 | 是否必选 | 说明 |
+| --- | --- | --- | --- |
 | show | boolean | 是 | 是否显示弹出选择器 |
 | title | string,number | 否 | 选择器标题 |
 | type | string: `Y-M-D`,`Y-M`,`Y` | 否，默认`Y-M-D` | 分别对应年月日 |
@@ -100,7 +100,7 @@ function onPicker(res: { id: string, value: Array<PickerSelectItem<number>> }) {
 
 细心看过`index.vue`的可以发现，其实可以二次封装一下日期数据就可以复用上面的组件，这里我单独抽出来的理由是：因为上面的组件需要依赖固定的上下级数据，如果日期选择两个年份差较大的话，会导致庞大的日期数据；另外日期的范围逻辑也跟其他的选项数据不太一样，所以这里单独抽出来性能会好很多。
 
-**使用示例**
+使用示例
 
 ```html
 <template>

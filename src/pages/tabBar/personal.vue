@@ -7,7 +7,7 @@
 </template>
 <script lang="ts" setup>
 import store from "@/store";
-import config from "@/utils/config";
+import { config } from "@/utils/config";
 
 const userInfo = store.user.info;
 

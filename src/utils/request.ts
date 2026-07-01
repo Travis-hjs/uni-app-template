@@ -1,4 +1,4 @@
-import config from "./config";
+import { config } from "./config";
 import store from "@/store";
 
 function getResultInfo(result: { statusCode: number, data: any }) {
@@ -45,7 +45,7 @@ export default function request<T = any>(
   options: Partial<Api.Options> = {}
 ) {
   const headers = options.headers || {};
-  return new Promise<Api.Result<T>>(function (resolve, reject) {
+  return new Promise<Api.Result<T>>(function (resolve) {
     uni.request({
       method: method,
       header: {
@@ -74,6 +74,6 @@ export default function request<T = any>(
         info.msg = err.errMsg;
         resolve(info);
       }
-    })
-  })
+    });
+  });
 }

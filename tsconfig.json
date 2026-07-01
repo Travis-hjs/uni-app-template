@@ -1,26 +1,47 @@
 {
   "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
+    "strict": true,
+    "noEmit": true,
+    "incremental": true,
+    "useDefineForClassFields": true,
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Node",
-    "jsx": "preserve",
-    "strict": true,
-    "sourceMap": true,
-    "useDefineForClassFields": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    // "isolatedModules": true,
-    "verbatimModuleSyntax": true,
-    "lib": ["esnext", "dom"],
-    "baseUrl": "./",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": [
       "@dcloudio/types",
       "@types/node"
-    ]
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+  
+    // 格式相关
+    "noUnusedLocals": true,
+    // "noImplicitThis": true,
+    "noUnusedParameters": true,
+    // "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    // "noUncheckedSideEffectImports": true
+
+    // 编译器相关
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+
+    // jsx 相关配置
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+  
+    // 导入类型必需带有 type 关键字
+    "verbatimModuleSyntax": true,
+
+    "sourceMap": true,        // 调试友好
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    // "libReplacement": false,
+    "skipLibCheck": true,
   },
   "include": [
     "src/**/*.ts",

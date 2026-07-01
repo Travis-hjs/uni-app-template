@@ -142,7 +142,7 @@ export function copyText(value: string, success?: () => void) {
   // #endif
 }
 
-interface ScrollviewCenterOptions<T = any> {
+interface ScrollViewCenterOptions<T = any> {
   /**
    * 当前实例
    * ```js
@@ -167,7 +167,7 @@ interface ScrollviewCenterOptions<T = any> {
  * 监听`<scroll-view>`组件指定元素滚动到视图中心的偏移值
  * @param option 配置参数
  */
-export function onScrollviewCenter(option: ScrollviewCenterOptions) {
+export function onScrollViewCenter(option: ScrollViewCenterOptions) {
   const width = option.wrapWidth || uni.getSystemInfoSync().windowWidth;
   nextTick(function () {
     const node = uni.createSelectorQuery().in(option.ctx).select(`#${option.id}`);

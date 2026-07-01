@@ -1,7 +1,7 @@
 <template>
   <view class="scroll-tab">
 
-    <scroll-view scroll-x="true" scroll-with-animation :scroll-left="state.scrollLeft1" class="list-1 mgb-50">
+    <scroll-view scroll-x="true" scroll-with-animation :scroll-left="state.scrollLeft1" class="list-1">
       <view class="tab-box flex">
         <view :class="['tab-item fvc', { 'active': state.activeValue1 === item.value }]" v-for="item in list" @click="onTab1(item, $event)" :id="'one-' + item.value" :key="item.value">
           {{ item.label }}
@@ -23,11 +23,11 @@
 import { getCurrentInstance, reactive } from "vue";
 import { onReady } from "@dcloudio/uni-app";
 import { randomText } from "@/utils";
-import { onScrollviewCenter } from "@/utils/control";
+import { onScrollViewCenter } from "@/utils/control";
 
 const instance = getCurrentInstance();
 
-const list = new Array(12).fill(0).map(function (item, index) {
+const list = new Array(12).fill(0).map(function (_, index) {
   return {
     label: randomText(2, 6),
     value: index,
@@ -44,7 +44,7 @@ const state = reactive({
 
 function onTab1(item: { value: number }, e: Event) {
   state.activeValue1 = item.value;
-  onScrollviewCenter({
+  onScrollViewCenter({
     ctx: instance,
     id: "one-" + item.value,
     event: e,
@@ -59,7 +59,7 @@ let list2Width = 0;
 
 function onTab2(item: { value: number }, e?: Event) {
   state.activeValue2 = item.value;
-  onScrollviewCenter({
+  onScrollViewCenter({
     ctx: instance,
     id: "two-" + item.value,
     event: e,
@@ -78,7 +78,7 @@ onReady(function () {
 
   // 页面初始化选中某个选项
   state.activeValue1 = 5;
-  onScrollviewCenter({
+  onScrollViewCenter({
     ctx: instance,
     id: "one-" + 5,
     scrollValue: state.scrollLeft1,
@@ -110,6 +110,7 @@ onReady(function () {
     width: 100%;
     height: 90rpx;
     background-color: #eee;
+    margin-bottom: 50rpx;
   }
 
   .list-2 {

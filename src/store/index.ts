@@ -1,7 +1,7 @@
-import ModuleAppOption from "./AppOption";
+import ModuleApp from "./AppOption";
 import ModuleUser from "./User";
 import { getImageByName } from "@/utils";
-export class ModuleStore extends ModuleAppOption {
+export class ModuleStore extends ModuleApp {
   constructor() {
     super();
   }

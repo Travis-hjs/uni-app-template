@@ -9,15 +9,15 @@
         <view class="btn confirm" @click="clickConfirm()">确定</view>
       </view>
       <!-- 选择栏 -->
-      <picker-view class="picker-view" indicator-style="height: 36px;" :value="selectIndexs" @change="pickerChange">
+      <picker-view class="picker-view" indicator-style="height: 36px;" :value="state.indexes" @change="pickerChange">
         <picker-view-column v-show="list.length > 0">
           <view class="picker-item ellipsis-1" v-for="(item, index) in list" :key="index">{{ item.label }}</view>
         </picker-view-column>
-        <picker-view-column v-show="secondList.length > 0">
-          <view class="picker-item ellipsis-1" v-for="(item, index) in secondList" :key="index">{{ item.label }}</view>
+        <picker-view-column v-show="state.seconds.length > 0">
+          <view class="picker-item ellipsis-1" v-for="(item, index) in state.seconds" :key="index">{{ item.label }}</view>
         </picker-view-column>
-        <picker-view-column v-show="thirdList.length > 0">
-          <view class="picker-item ellipsis-1" v-for="(item, index) in thirdList" :key="index">{{ item.label }}</view>
+        <picker-view-column v-show="state.thirds.length > 0">
+          <view class="picker-item ellipsis-1" v-for="(item, index) in state.thirds" :key="index">{{ item.label }}</view>
         </picker-view-column>
       </picker-view>
     </view>
@@ -32,10 +32,11 @@ export default {
 }
 </script>
 <script lang="ts" setup>
-import { type PropType, ref, watch, nextTick } from "vue";
+import { type PropType, watch, nextTick } from "vue";
 import type { PickerSelectItem } from "@/types";
 import { isType } from "@/utils";
 import { useTransitionLayer } from "../index";
+import { reactive } from "vue";
 
 const props = defineProps({
   show: {
@@ -68,33 +69,35 @@ const emit = defineEmits<{
   (event: "confirm", res: { id: any, value: Array<PickerSelectItem<any>> }): void
 }>();
 
-/** 选中的索引列表 */
-const selectIndexs = ref([0, 0, 0]);
-/** 第二级列表 */
-const secondList = ref<Array<PickerSelectItem>>([]);
-/** 第三级列表 */
-const thirdList = ref<Array<PickerSelectItem>>([]);
+const state = reactive({
+  /** 选中的索引列表 */
+  indexes: [0, 0, 0],
+  /** 第二级列表 */
+  seconds: [] as Array<PickerSelectItem>,
+  /** 第三级列表 */
+  thirds: [] as Array<PickerSelectItem>,
+});
 
 function update() {
   const list = props.list;
-  const indexs = selectIndexs.value;
+  const indexes = state.indexes;
   const column = props.column;
 
-  const hasSecond = list.length && list[indexs[0]] && list[indexs[0]].children && list[indexs[0]].children!.length > 0;
+  const hasSecond = list.length && list[indexes[0]] && list[indexes[0]].children && list[indexes[0]].children!.length > 0;
 
   if (column >= 2) {
-    secondList.value = hasSecond ? list[indexs[0]].children! : [{ label: "-", value: "" }];
+    state.seconds = hasSecond ? list[indexes[0]].children! : [{ label: "-", value: "" }];
   } else if (column === 0) {
-    secondList.value = hasSecond ? list[indexs[0]].children! : [];
+    state.seconds = hasSecond ? list[indexes[0]].children! : [];
   }
 
-  const second = secondList.value;
-  const hasThird = second.length > 0 && second[indexs[1]] && second[indexs[1]].children && second[indexs[1]].children!.length > 0;
+  const second = state.seconds;
+  const hasThird = second.length > 0 && second[indexes[1]] && second[indexes[1]].children && second[indexes[1]].children!.length > 0;
 
   if (column >= 3) {
-    thirdList.value = hasThird ? second[indexs[1]].children! : [{ label: "-", value: "" }];
+    state.thirds = hasThird ? second[indexes[1]].children! : [{ label: "-", value: "" }];
   } else if (column === 0) {
-    thirdList.value = hasThird ? second[indexs[1]].children! : [];
+    state.thirds = hasThird ? second[indexes[1]].children! : [];
   }
 }
 
@@ -108,19 +111,19 @@ function pickerChange(e: UniAppChangeEvent<Array<number>>) {
   const val1 = isType(list[0], "number") ? list[0] : 0;
   const val2 = isType(list[1], "number") ? list[1] : 0;
   const val3 = isType(list[2], "number") ? list[2] : 0;
-  selectIndexs.value = [val1, val2, val3];
+  state.indexes = [val1, val2, val3];
   update();
 }
 
 function clickConfirm() {
-  const indexs = selectIndexs.value;
-  const result = [props.list[indexs[0]]];
+  const indexes = state.indexes;
+  const result = [props.list[indexes[0]]];
 
-  if (secondList.value[indexs[1]]) {
-    result.push(secondList.value[indexs[1]]);
+  if (state.seconds[indexes[1]]) {
+    result.push(state.seconds[indexes[1]]);
   }
-  if (thirdList.value[indexs[2]]) {
-    result.push(thirdList.value[indexs[2]]);
+  if (state.thirds[indexes[2]]) {
+    result.push(state.thirds[indexes[2]]);
   }
 
   emit("confirm", {
@@ -142,15 +145,13 @@ watch(() => props.list, function () {
 defineExpose({
   /**
    * 设置当前选择器选中的位置，即索引
-   * @param indexs 
+   * @param indexes 
    */
-  setIndexs(indexs: Array<number>) {
-    const current = selectIndexs.value;
-    selectIndexs.value = Object.assign(current, indexs);
+  setIndexes(indexes: Array<number>) {
+    const current = state.indexes;
+    state.indexes = Object.assign(current, indexes);
   }
 });
 
 </script>
-<style lang="scss">
-@import "./picker.scss";
-</style>
+<style lang="scss" src="./picker.scss"></style>

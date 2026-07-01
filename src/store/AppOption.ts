@@ -1,6 +1,6 @@
 import { reactive } from "vue";
 
-export default class ModuleAppOption {
+export default class ModuleApp {
 
   /** `APP`操作信息 */
   readonly appOption = reactive({
@@ -46,8 +46,8 @@ export default class ModuleAppOption {
     this.appOption.screenHeight = systemInfo.screenHeight
 
     const isIos = systemInfo.system.toLocaleLowerCase().includes("ios");
-    const vaule = (systemInfo.screenWidth / systemInfo.screenHeight) < 0.5;
-    this.appOption.isIPhoneX = (isIos && vaule);
+    const value = (systemInfo.screenWidth / systemInfo.screenHeight) < 0.5;
+    this.appOption.isIPhoneX = (isIos && value);
 
     // #ifdef H5
     this.appOption.tabBarHeight = 50;

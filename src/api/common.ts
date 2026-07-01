@@ -25,7 +25,7 @@ export function searchUserType(value: "admin" | "vip" | "normal") {
  */
 const photoPrefix = "https://game.gtimg.cn/images/lol/act/img/item/";
 
-const testList = new Array(52).fill(0).map((_, index) => {
+const testList = new Array(52).fill(0).map((_) => {
   const mock = mockList[ranInt(0, mockList.length - 1)];
   return {
     id: mock.icon.replace(".png", ""),

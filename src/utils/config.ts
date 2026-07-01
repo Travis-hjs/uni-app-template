@@ -1,11 +1,12 @@
-function moduleConfig() {
+/** 配置模块 */
+export const config = (function () {
   /** 当前项目运行地址 */
   let url = location.origin;
   /** 当前环境 */
   let env: "dev" | "test" | "prod" = "dev";
   /** 请求域名 */
   let requestUrl = "";
-  
+
   // 测试环境
   if (location.hostname === "test.com") {
     env = "test";
@@ -44,9 +45,4 @@ function moduleConfig() {
       return "http://xxx.com/upload"
     }
   }
-}
-
-/** 配置模块 */
-const config = moduleConfig();
-
-export default config;
+})();

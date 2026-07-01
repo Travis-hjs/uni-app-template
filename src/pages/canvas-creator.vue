@@ -1,5 +1,5 @@
 <template>
-  <view class="canvas-creater">
+  <view class="canvas-creator">
     <canvas class="banner-box" id="the-canvas" canvas-id="the-canvas" :width="canvasSize.width" :height="canvasSize.height"></canvas>
     <view class="line"></view>
     <TheButton color="#07c160" @click="createBanner()">生成 canvas 海报图</TheButton>
@@ -184,7 +184,7 @@ function download() {
 
 </script>
 <style lang="scss">
-.canvas-creater {
+.canvas-creator {
   width: 100%;
   padding: 30rpx;
   .banner-box {
